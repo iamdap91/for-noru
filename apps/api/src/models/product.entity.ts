@@ -31,8 +31,8 @@ export class Product extends CommonEntity {
 
   @IsOptional()
   @IsString()
-  @Column({ type: 'varchar', nullable: true })
-  imageUrl?: string;
+  @Column({ type: 'varchar', array: true, nullable: true })
+  images?: string[];
 
   @ValidateNested({ each: true })
   @Type(() => ProductOption)
