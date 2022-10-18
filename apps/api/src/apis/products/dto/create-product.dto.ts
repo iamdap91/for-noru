@@ -1,4 +1,4 @@
-import { PickType } from '@nestjs/swagger';
+import { ApiProperty, PickType } from '@nestjs/swagger';
 import { Product, ProductOption } from '../../../models';
 import { IsNumber, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -8,17 +8,20 @@ export class CreateProductDto extends PickType(Product, [
   'description',
   'manufacturer',
   'price',
-  'imageUrl',
+  'images',
 ]) {
+  @ApiProperty({ type: () => Option })
   @ValidateNested()
   @Type(() => Option)
   options: Option[];
 }
 
 export class Option extends PickType(ProductOption, ['name', 'color']) {
+  @ApiProperty()
   @IsNumber()
   price: number;
 
+  @ApiProperty()
   @IsNumber()
   stock: number;
 }
