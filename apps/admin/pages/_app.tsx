@@ -8,7 +8,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>Welcome to admin!</title>
       </Head>
-      <main className="dark:bg-gray-600">
+      <main className="w-screen h-screen dark:bg-gray-600">
         <Component {...pageProps} />
       </main>
     </>
