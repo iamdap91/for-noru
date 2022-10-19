@@ -6,11 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
-import { ProductsService } from './products.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ProductsService } from './products.service';
+import {
+  CreateProductDto,
+  UpdateProductDto,
+  UpsertProductOptionDto,
+} from './dto';
 
 @ApiTags('products')
 @Controller('products')
@@ -23,8 +27,8 @@ export class ProductsController {
   }
 
   @Get()
-  findAll() {
-    return this.productsService.findAll();
+  find() {
+    return this.productsService.find();
   }
 
   @Get(':id')
@@ -40,5 +44,18 @@ export class ProductsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.productsService.remove(+id);
+  }
+
+  @Get(':id/options')
+  findOptions(@Param('id') id: string) {
+    return this.productsService.findOptions(+id);
+  }
+
+  @Put(':id/options')
+  upsertOptions(
+    @Param('id') id: string,
+    @Body() upsertOptionsDto: UpsertProductOptionDto
+  ) {
+    return this.productsService.upsertOptions(+id, upsertOptionsDto);
   }
 }

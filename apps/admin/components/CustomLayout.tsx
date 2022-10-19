@@ -21,8 +21,8 @@ const CustomLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <Layout className="h-screen">
-      <Layout className="w-screen">
+    <Layout className="h-screen w-screen">
+      <Layout>
         <Header className="flex justify-between">
           <div>
             <Link href="/" passHref>
@@ -45,6 +45,7 @@ const CustomLayout = ({ children }) => {
           collapsible
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
+          className="h-screen"
         >
           <div className="logo" />
           <Menu
@@ -57,7 +58,7 @@ const CustomLayout = ({ children }) => {
             }
           />
         </Sider>
-        <Content>{children}</Content>
+        <Content className="w-full h-screen  p-10">{children}</Content>
       </Layout>
     </Layout>
   );

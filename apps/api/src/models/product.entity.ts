@@ -6,7 +6,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { CommonEntity } from './common.entity';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { ProductOption } from './product-option.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -29,6 +29,7 @@ export class Product extends CommonEntity {
   @Column({ type: 'varchar', nullable: true })
   manufacturer?: string;
 
+  @Transform(({ value }) => +value)
   @ApiProperty()
   @IsNumber()
   @Column({ type: 'int', unsigned: true })

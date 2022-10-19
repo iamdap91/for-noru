@@ -11,7 +11,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
       </Head>
 
       <CustomLayout>
-        <main className="w-screen h-screen dark:bg-gray-800">
+        <main>
           <Component {...pageProps} />
         </main>
       </CustomLayout>
