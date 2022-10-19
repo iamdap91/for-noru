@@ -11,9 +11,9 @@ import Link from 'next/link';
 const { Sider, Content, Header } = Layout;
 
 const items = [
-  { label: 'Product', key: 'product', icon: <ShoppingOutlined /> },
-  { label: 'User', key: 'user', icon: <ShoppingOutlined /> },
-  { label: 'Order', key: 'order', icon: <ShoppingOutlined /> },
+  { label: 'Users', key: 'users', icon: <ShoppingOutlined /> },
+  { label: 'Products', key: 'products', icon: <ShoppingOutlined /> },
+  { label: 'Orders', key: 'orders', icon: <ShoppingOutlined /> },
 ];
 
 const CustomLayout = ({ children }) => {

@@ -10,7 +10,7 @@ export class CreateProductDto extends PickType(Product, [
   'price',
   'images',
 ]) {
-  @ApiProperty({ type: () => Option })
+  @ApiProperty({ type: () => Option, isArray: true })
   @ValidateNested()
   @Type(() => Option)
   options: Option[];

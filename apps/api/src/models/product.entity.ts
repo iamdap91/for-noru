@@ -36,7 +36,7 @@ export class Product extends CommonEntity {
 
   @ApiProperty()
   @IsOptional()
-  @IsString()
+  @IsString({ each: true })
   @Column({ type: 'varchar', array: true, nullable: true })
   images?: string[];
 

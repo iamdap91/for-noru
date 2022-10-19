@@ -12,7 +12,7 @@ export class ProductsService {
     private readonly repository: Repository<Product>
   ) {}
   async create(createProductDto: CreateProductDto) {
-    return 'create';
+    await this.repository.save(createProductDto, { transaction: true });
   }
 
   async findAll() {

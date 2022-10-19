@@ -1,5 +1,5 @@
 export function Index() {
-  return <div></div>;
+  return <div>Noru-Admin Rearranged</div>;
 }
 
 export default Index;
