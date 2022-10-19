@@ -1,6 +1,7 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import './styles.css';
+import CustomLayout from '../components/CustomLayout';
 
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
@@ -8,9 +9,12 @@ function CustomApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>Welcome to admin!</title>
       </Head>
-      <main className="w-screen h-screen dark:bg-gray-600">
-        <Component {...pageProps} />
-      </main>
+
+      <CustomLayout>
+        <main className="w-screen h-screen dark:bg-gray-600">
+          <Component {...pageProps} />
+        </main>
+      </CustomLayout>
     </>
   );
 }
