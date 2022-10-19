@@ -1,5 +1,14 @@
-import { Button, Col, Divider, Drawer, Form, Row, Table } from 'antd';
-import { PlusCircleFilled } from '@ant-design/icons';
+import {
+  Button,
+  Card,
+  Divider,
+  Drawer,
+  Form,
+  Input,
+  Slider,
+  Table,
+} from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import axios from 'axios';
 import { from } from 'rxjs';
@@ -9,8 +18,21 @@ import ProductForm from '../../components/ProductForm';
 import ProductOptionForm from '../../components/ProductOptionForm';
 import { TABLE_COLUMNS } from './table-column.constants';
 
-const Products = ({ products }) => {
+const getProductList = (query = {}) => {
+  return from(
+    axios.get('http://localhost:3333/api/products/', {
+      params: query,
+    })
+  );
+};
+
+const keyGenerator = (items: Record<string, never>[], key = 'key') => {
+  return items.map((item) => ({ ...item, key: item[key] }));
+};
+
+const Products = ({ productList }) => {
   const [form] = Form.useForm();
+  const [products, setProducts] = useState(productList);
   const [productDrawerStatus, setProductDrawerStatus] = useState(false);
   const [optionDrawerStatus, setOptionDrawerStatus] = useState(false);
   const columns = [
@@ -24,8 +46,12 @@ const Products = ({ products }) => {
     },
   ];
 
-  const openProductDrawer = (id: number) => {
+  const openProductDrawer = (id?: number) => {
     form.resetFields();
+    if (!id) {
+      setProductDrawerStatus(true);
+      return;
+    }
 
     fromFetch(`http://localhost:3333/api/products/${id}`, {
       selector: (res) => res.json(),
@@ -51,16 +77,29 @@ const Products = ({ products }) => {
     });
   };
 
-  const onProductSave = () => {
+  const saveProduct = () => {
     const product = form.getFieldValue('product');
+
     from(
-      axios.patch(`http://localhost:3333/api/products/${product.id}`, product)
+      product?.id
+        ? axios.patch(
+            `http://localhost:3333/api/products/${product.id}`,
+            product
+          )
+        : axios.post(`http://localhost:3333/api/products/`, product)
     ).subscribe({
+      next: () => {
+        getProductList().subscribe({
+          next: ({ data }) => setProducts(keyGenerator(data, 'id')),
+        });
+        setProductDrawerStatus(false);
+        setOptionDrawerStatus(false);
+      },
       error: () => alert('상품 정보를 업데이트하는데 실패하였습니다.'),
     });
   };
 
-  const onProductOptionSave = () => {
+  const saveProductOption = () => {
     const product = form.getFieldValue(['product']);
 
     from(
@@ -71,39 +110,83 @@ const Products = ({ products }) => {
         })),
       })
     ).subscribe({
-      error: (e) => {
-        console.error(e);
-        alert('상품 옵션 정보를 업데이트하는데 실패하였습니다.');
+      next: () => {
+        getProductList().subscribe({
+          next: ({ data }) => setProducts(keyGenerator(data, 'id')),
+        });
+        setOptionDrawerStatus(false);
       },
+      error: () => alert('상품 옵션 정보를 업데이트하는데 실패하였습니다.'),
+    });
+  };
+
+  const searchProducts = () => {
+    const filter = form.getFieldValue('filter');
+    getProductList(filter).subscribe({
+      next: ({ data }) => setProducts(keyGenerator(data)),
+      error: () => alert('상품 목록 조회에 실패하였습니다.'),
     });
   };
 
   return (
     <div className="p-5">
-      <div className="p-5">
-        <Row className="flex justify-between">
-          <Col></Col>
-          <Col>
-            <Button className="border-none text-3xl rounded-full">
-              <PlusCircleFilled />
-            </Button>
-          </Col>
-        </Row>
-      </div>
-      <Table dataSource={products} columns={columns}></Table>
-      <div>
-        <Drawer
-          title={'상품 정보'}
-          extra={<Button onClick={onProductSave}>저장</Button>}
-          width="40%"
-          open={productDrawerStatus}
-          onClose={() => setProductDrawerStatus(false)}
+      <Form form={form} layout="vertical">
+        <div className="py-3">
+          <Card>
+            <Card.Grid className="w-1/4" hoverable={true}>
+              <Form.Item label="상품명" name={['filter', 'name']}>
+                <Input />
+              </Form.Item>
+            </Card.Grid>
+            <Card.Grid className="w-1/4" hoverable={true}>
+              <Form.Item label="브랜드" name={['filter', 'brand']}>
+                <Input disabled />
+              </Form.Item>
+            </Card.Grid>
+            <Card.Grid className="w-1/4" hoverable={true}>
+              <Form.Item
+                label="가격 범위"
+                name={['filter', 'priceRange']}
+                initialValue={[0, 1000000]}
+              >
+                <Slider
+                  min={0}
+                  max={1000000}
+                  range={{ draggableTrack: true }}
+                />
+              </Form.Item>
+            </Card.Grid>
+            <Card.Grid className="w-1/4" hoverable={true}>
+              <div className="flex flex-col justify-between h-full">
+                <Button type="primary" onClick={() => searchProducts()}>
+                  <span>
+                    <SearchOutlined />
+                  </span>
+                  조회
+                </Button>
+                <Button onClick={() => form.resetFields()}>초기화</Button>
+              </div>
+            </Card.Grid>
+          </Card>
+        </div>
+        <Card
+          title={`총 상품 수 : - (추가 예정)`}
+          extra={<Button onClick={() => openProductDrawer()}>상품 등록</Button>}
         >
-          <Form form={form} layout="vertical">
+          <Table dataSource={products} columns={columns}></Table>
+        </Card>
+        <div>
+          <Drawer
+            title={'상품 정보'}
+            extra={<Button onClick={saveProduct}>저장</Button>}
+            width="40%"
+            open={productDrawerStatus}
+            onClose={() => setProductDrawerStatus(false)}
+          >
             <ProductForm />
             <Drawer
               title={'옵션 정보'}
-              extra={<Button onClick={onProductOptionSave}>저장</Button>}
+              extra={<Button onClick={saveProductOption}>저장</Button>}
               width="40%"
               open={optionDrawerStatus}
               onClose={() => setOptionDrawerStatus(false)}
@@ -118,9 +201,9 @@ const Products = ({ products }) => {
             >
               상품 옵션 보기
             </Button>
-          </Form>
-        </Drawer>
-      </div>
+          </Drawer>
+        </div>
+      </Form>
     </div>
   );
 };
@@ -132,7 +215,7 @@ export async function getServerSideProps() {
 
   return {
     props: {
-      products: products.map((product) => ({ ...product, key: product.id })),
+      productList: products.map((product) => ({ ...product, key: product.id })),
     },
   };
 }

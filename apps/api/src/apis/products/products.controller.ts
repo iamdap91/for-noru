@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ProductsService } from './products.service';
 import {
   CreateProductDto,
+  FindProductsDto,
   UpdateProductDto,
   UpsertProductOptionDto,
 } from './dto';
@@ -27,8 +29,8 @@ export class ProductsController {
   }
 
   @Get()
-  find() {
-    return this.productsService.find();
+  find(@Query() findProductsDto: FindProductsDto) {
+    return this.productsService.find(findProductsDto);
   }
 
   @Get(':id')

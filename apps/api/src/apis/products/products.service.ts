@@ -1,11 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Between, Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { throwIfIsNil } from '@gong-gu/common';
 import {
   UpdateProductDto,
   CreateProductDto,
   UpsertProductOptionDto,
+  FindProductsDto,
 } from './dto';
 import { Product, ProductOption } from '../../models';
 
@@ -22,8 +23,12 @@ export class ProductsService {
     await this.productRepo.save(createProductDto, { transaction: true });
   }
 
-  async find() {
+  async find({ name, priceRange }: FindProductsDto) {
     return await this.productRepo.find({
+      where: {
+        name: name ? Like(`%${name}%`) : undefined,
+        price: priceRange ? Between(priceRange[0], priceRange[1]) : undefined,
+      },
       order: { id: -1 },
     });
   }

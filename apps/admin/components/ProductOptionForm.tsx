@@ -99,6 +99,7 @@ const ProductOptionForm = ({ form }) => {
                         {...rest}
                         name={[name, 'color']}
                         label="색상"
+                        initialValue=""
                       >
                         <Input />
                       </Form.Item>
