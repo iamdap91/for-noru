@@ -1,4 +1,5 @@
 import { ColumnsType } from 'antd/es/table';
+import { Tag } from 'antd';
 
 export const TABLE_COLUMNS: ColumnsType<any> = [
   {
@@ -15,7 +16,7 @@ export const TABLE_COLUMNS: ColumnsType<any> = [
     title: 'Price',
     dataIndex: 'price',
     key: 'price',
-    render: (_, { price }) => `₩ ${price.toLocaleString()}`,
+    render: (_, { price }) => <Tag>{`₩ ${price.toLocaleString()}`}</Tag>,
   },
   {
     title: 'Description',

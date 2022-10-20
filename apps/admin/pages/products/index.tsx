@@ -26,7 +26,7 @@ const getProductList = (query = {}) => {
   );
 };
 
-const keyGenerator = (items: Record<string, never>[], key = 'key') => {
+const keyGenerator = (items: Record<string, never>[], key = 'id') => {
   return items.map((item) => ({ ...item, key: item[key] }));
 };
 
