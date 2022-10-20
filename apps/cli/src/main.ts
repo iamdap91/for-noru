@@ -4,7 +4,7 @@ import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
   try {
-    await CommandFactory.run(CommandsModule, ['warn', 'error']);
+    await CommandFactory.run(CommandsModule, ['log', 'warn', 'error']);
   } catch (e) {
     Logger.error(e);
   } finally {

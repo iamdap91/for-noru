@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { CommandsService } from './commands.service';
+import { RestaurantsCommands } from './restaurants-commands';
 
 @Module({
   imports: [],
-  providers: [CommandsService],
+  providers: [RestaurantsCommands],
 })
 export class CommandsModule {}
