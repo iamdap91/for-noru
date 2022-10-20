@@ -5,6 +5,7 @@
   "scripts": {
     "start:api:dev": "nx serve api",
     "start:admin:dev": "nx serve admin",
+    "start:cli": "nx serve cli",
     "build:api": "nx build api",
     "test": "nx test"
   },
@@ -24,6 +25,7 @@
     "core-js": "^3.6.5",
     "lodash": "^4.17.21",
     "mysql2": "^2.3.3",
+    "nest-commander": "^3.1.0",
     "next": "12.3.1",
     "pg": "^8.8.0",
     "react": "18.2.0",
