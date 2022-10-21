@@ -37,7 +37,7 @@ export class Restaurant extends CommonEntity {
   yCoordinate: string;
 
   @IsString()
-  @Column({ type: 'datetime' })
+  @Column({ type: 'timestamp' })
   lastUpdated: Date;
 
   @IsString()

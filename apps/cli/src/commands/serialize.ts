@@ -25,18 +25,18 @@ const arrangeFields = (object: Record<string, string>) => {
   return record;
 };
 
-export const serialize = (item) => {
-  return flow([
-    pick(Object.keys(REQUIRED_FIELDS)),
-    arrangeFields,
-    (record) => {
-      const { postalCode, active } = record;
-      return {
-        ...record,
-        postalCode: +postalCode,
-        active: +active === 1,
-        ...ADDITIONAL_FIELDS,
-      };
-    },
-  ])(item);
+export const serialize = (record: string[]) => {
+  // return flow([
+  //   pick(Object.keys(REQUIRED_FIELDS)),
+  //   arrangeFields,
+  //   (record) => {
+  //     const { postalCode, active } = record;
+  //     return {
+  //       ...record,
+  //       postalCode: +postalCode,
+  //       active: +active === 1,
+  //       ...ADDITIONAL_FIELDS,
+  //     };
+  //   },
+  // ])(record);
 };
