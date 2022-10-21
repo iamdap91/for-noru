@@ -3,7 +3,7 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { Product } from './product.entity';
-import { CommonEntity } from './common.entity';
+import { CommonEntity } from '../common.entity';
 
 @Entity()
 export class ProductOption extends CommonEntity {

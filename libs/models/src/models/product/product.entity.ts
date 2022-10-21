@@ -5,7 +5,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { CommonEntity } from './common.entity';
+import { CommonEntity } from '../common.entity';
 import { Transform, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductOption } from './product-option.entity';
