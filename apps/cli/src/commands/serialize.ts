@@ -1,4 +1,4 @@
-import { flow, pick } from 'lodash/fp';
+import { CSV_HEADERS } from './restaurant.constants';
 
 const REQUIRED_FIELDS = {
   개방서비스명: 'type',
@@ -25,18 +25,17 @@ const arrangeFields = (object: Record<string, string>) => {
   return record;
 };
 
-export const serialize = (record: string[]) => {
-  // return flow([
-  //   pick(Object.keys(REQUIRED_FIELDS)),
-  //   arrangeFields,
-  //   (record) => {
-  //     const { postalCode, active } = record;
-  //     return {
-  //       ...record,
-  //       postalCode: +postalCode,
-  //       active: +active === 1,
-  //       ...ADDITIONAL_FIELDS,
-  //     };
-  //   },
-  // ])(record);
+export const serialize = (items: string[]) => {
+  const records: Record<string, string> = {};
+  for (const [index, val] of Object.entries(items)) {
+    records[CSV_HEADERS[index]] = val;
+  }
+
+  const arrangedRecords = arrangeFields(records);
+  return {
+    ...arrangedRecords,
+    ...ADDITIONAL_FIELDS,
+    active: +arrangedRecords.active === 1,
+    postalCode: +arrangedRecords.postalCode,
+  };
 };
