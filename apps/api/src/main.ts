@@ -18,7 +18,6 @@ async function bootstrap() {
   app.enableCors({ origin: '*' });
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
-  await app.init();
 
   const { port, isProduction } =
     app.get<CommonConfigService>(CommonConfigService);

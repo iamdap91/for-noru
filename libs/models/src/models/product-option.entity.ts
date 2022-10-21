@@ -1,9 +1,9 @@
 import { IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
 import { Column, Entity, ManyToOne } from 'typeorm';
-import { Product } from './product.entity';
-import { CommonEntity } from './common.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
+import { Product } from './product.entity';
+import { CommonEntity } from './common.entity';
 
 @Entity()
 export class ProductOption extends CommonEntity {

@@ -8,7 +8,7 @@ import {
   UpsertProductOptionDto,
   FindProductsDto,
 } from './dto';
-import { Product, ProductOption } from '../../models';
+import { Product, ProductOption } from '@gong-gu/models';
 
 @Injectable()
 export class ProductsService {

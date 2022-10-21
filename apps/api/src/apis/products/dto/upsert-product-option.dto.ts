@@ -1,7 +1,7 @@
 import { ApiProperty, PickType } from '@nestjs/swagger';
-import { ProductOption } from '../../../models';
 import { ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
+import { ProductOption } from '@gong-gu/models';
 
 export class UpsertProductOptionDto {
   @ApiProperty({ type: () => Option, isArray: true })

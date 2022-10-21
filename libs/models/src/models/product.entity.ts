@@ -7,8 +7,8 @@ import {
 } from 'class-validator';
 import { CommonEntity } from './common.entity';
 import { Transform, Type } from 'class-transformer';
-import { ProductOption } from './product-option.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { ProductOption } from './product-option.entity';
 
 @Entity()
 export class Product extends CommonEntity {
