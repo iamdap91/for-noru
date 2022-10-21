@@ -1,9 +1,13 @@
 import { Command, CommandRunner } from 'nest-commander';
+import * as fs from 'fs';
+import * as readline from 'readline';
 
 export enum SubCommand {
-  'CREATE' = 'create',
-  'UPDATE' = 'update',
+  CREATE = 'create',
+  UPDATE = 'update',
 }
+
+// const keyResolver = (column: string) => {};
 
 @Command({
   name: 'restaurant',
@@ -17,14 +21,44 @@ export class RestaurantsCommands extends CommandRunner {
   async run([subCommand]: SubCommand[]): Promise<void> {
     switch (subCommand) {
       case SubCommand.CREATE:
-        console.log('create');
-        return;
+        return await this.create();
       case SubCommand.UPDATE:
-        console.log('update');
-        return;
       default:
-        console.log('default');
         return;
     }
+  }
+
+  async create() {
+    const lines = await this.readFile();
+    const [one, two] = lines;
+
+    console.log(one);
+    console.log(two);
+    // const columns = zero.split(',');
+
+    // for (const line of [one, two]) {
+    //   const fields = line.split(',');
+    //   const obj = {} as Record<string, string>;
+    //   for (const [key, val] of Object.entries(columns)) {
+    //     obj[val as string] = fields[key];
+    //   }
+    //   console.log(obj);
+    // }
+  }
+
+  async readFile() {
+    const lines = [];
+    await new Promise<void>((resolve) => {
+      const fileStream = fs.createReadStream('tmp/output.csv', {
+        encoding: 'utf8',
+      });
+      const readLine = readline.createInterface({ input: fileStream });
+
+      readLine.on('line', async (row) => lines.push(row));
+      fileStream.on('end', () => resolve());
+      fileStream.on('error', (err) => console.error(err));
+    });
+
+    return lines;
   }
 }
