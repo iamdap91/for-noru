@@ -1,13 +1,13 @@
 import { Command, CommandRunner } from 'nest-commander';
 import * as fs from 'fs';
-import * as readline from 'readline';
+import { parse } from 'csv-parse';
+import { Logger } from '@nestjs/common';
+import { serialize } from './serialize';
 
 export enum SubCommand {
   CREATE = 'create',
   UPDATE = 'update',
 }
-
-// const keyResolver = (column: string) => {};
 
 @Command({
   name: 'restaurant',
@@ -29,36 +29,34 @@ export class RestaurantsCommands extends CommandRunner {
   }
 
   async create() {
-    const lines = await this.readFile();
-    const [one, two] = lines;
+    const records = await this.readCsv();
 
-    console.log(one);
-    console.log(two);
-    // const columns = zero.split(',');
-
-    // for (const line of [one, two]) {
-    //   const fields = line.split(',');
-    //   const obj = {} as Record<string, string>;
-    //   for (const [key, val] of Object.entries(columns)) {
-    //     obj[val as string] = fields[key];
-    //   }
-    //   console.log(obj);
-    // }
+    for (const record of records) {
+      serialize(record);
+    }
   }
 
-  async readFile() {
-    const lines = [];
-    await new Promise<void>((resolve) => {
-      const fileStream = fs.createReadStream('tmp/output.csv', {
-        encoding: 'utf8',
-      });
-      const readLine = readline.createInterface({ input: fileStream });
+  async readCsv() {
+    const records = [];
 
-      readLine.on('line', async (row) => lines.push(row));
-      fileStream.on('end', () => resolve());
-      fileStream.on('error', (err) => console.error(err));
+    const parserOptions = {
+      columns: true,
+      delimiter: ',',
+      trim: true,
+      skip_empty_lines: true,
+      skipRecordsWithError: true,
+    };
+
+    await new Promise<void>((resolve) => {
+      fs.createReadStream('tmp/output.csv', {
+        encoding: 'utf8',
+      })
+        .pipe(parse(parserOptions))
+        .on('error', (e) => Logger.error(e))
+        .on('data', (data) => records.push(data))
+        .on('end', () => resolve());
     });
 
-    return lines;
+    return records;
   }
 }
