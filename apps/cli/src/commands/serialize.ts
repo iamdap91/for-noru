@@ -2,6 +2,7 @@ import { flow, pick } from 'lodash/fp';
 
 const REQUIRED_FIELDS = {
   개방서비스명: 'type',
+  관리번호: 'manageId',
   사업장명: 'name',
   소재지우편번호: 'postalCode',
   소재지전체주소: 'address',
@@ -10,6 +11,10 @@ const REQUIRED_FIELDS = {
   '좌표정보(y)': 'yCoordinate',
   데이터갱신일자: 'lastUpdated',
   상세영업상태코드: 'active',
+};
+
+const ADDITIONAL_FIELDS = {
+  petAllowed: false,
 };
 
 const arrangeFields = (object: Record<string, string>) => {
@@ -26,7 +31,12 @@ export const serialize = (item) => {
     arrangeFields,
     (record) => {
       const { postalCode, active } = record;
-      return { ...record, postalCode: +postalCode, active: +active === 1 };
+      return {
+        ...record,
+        postalCode: +postalCode,
+        active: +active === 1,
+        ...ADDITIONAL_FIELDS,
+      };
     },
   ])(item);
 };

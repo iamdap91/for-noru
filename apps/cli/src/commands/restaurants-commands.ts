@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import { parse } from 'csv-parse';
 import { Logger } from '@nestjs/common';
 import { serialize } from './serialize';
+import { flow, take, filter } from 'lodash/fp';
 
 export enum SubCommand {
   CREATE = 'create',
@@ -31,7 +32,12 @@ export class RestaurantsCommands extends CommandRunner {
   async create() {
     const records = (await this.readCsv()).map((record) => serialize(record));
 
-    console.log(records[0], records[1]);
+    // const tenRows = flow(
+    //   filter((record: any) => record.active),
+    //   take(10)
+    // )(records);
+    //
+    // console.log(tenRows);
   }
 
   async readCsv() {
