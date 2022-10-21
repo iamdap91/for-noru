@@ -7,7 +7,7 @@
     "start:admin:dev": "nx serve admin",
     "start:cli:build": "nx serve cli",
     "build:api": "nx build api",
-    "test": "nx test"
+    "graph": "nx dep-graph"
   },
   "private": true,
   "dependencies": {
