@@ -1,7 +1,7 @@
 import { registerAs } from '@nestjs/config';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
-import { SnakeNamingStrategy } from '../strategies';
-import { Product, ProductOption } from '../../models';
+// import { Product, ProductOption } from '../../models';
+import { SnakeNamingStrategy } from './snake-naming.strategy';
 
 const { env } = process;
 
@@ -15,7 +15,7 @@ export default registerAs('postgres', (): PostgresConnectionOptions => {
     username: DB_USER || 'postgres',
     password: DB_PASSWORD || 'example',
     database: DB_NAME || 'gong-gu',
-    entities: [Product, ProductOption],
+    entities: [],
     namingStrategy: new SnakeNamingStrategy(),
     synchronize: true,
   };

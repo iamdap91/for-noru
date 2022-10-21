@@ -1,7 +1,7 @@
 /** 환경변수 서비스 */
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
-import commonConfig from '../sources/common.config';
+import commonConfig from './common.config';
 
 @Injectable()
 export class CommonConfigService {

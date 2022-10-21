@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
-import { CommonConfigService } from './configs/services';
+import { CommonConfigService } from '@gong-gu/config';
 
 const globalPrefix = 'api';
 
@@ -18,8 +18,10 @@ async function bootstrap() {
   app.enableCors({ origin: '*' });
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  await app.init();
 
-  const { port, isProduction } = app.get(CommonConfigService);
+  const { port, isProduction } =
+    app.get<CommonConfigService>(CommonConfigService);
 
   if (!isProduction) {
     const doc = new DocumentBuilder()

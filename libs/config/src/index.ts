@@ -1,1 +1,2 @@
-export * from './lib/config.module';
+export * from './common';
+export * from './postgres';
