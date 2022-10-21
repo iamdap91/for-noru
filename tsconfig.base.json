@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@gong-gu/common": ["libs/common/src/index.ts"],
-      "@gong-gu/config": ["libs/config/src/index.ts"]
+      "@gong-gu/config": ["libs/config/src/index.ts"],
+      "@gong-gu/models": ["libs/models/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
