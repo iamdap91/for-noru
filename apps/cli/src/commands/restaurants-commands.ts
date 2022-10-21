@@ -2,6 +2,7 @@ import { Command, CommandRunner } from 'nest-commander';
 import * as fs from 'fs';
 import { parse } from 'csv-parse';
 import { Logger } from '@nestjs/common';
+import { RestaurantsService } from '@gong-gu/backend/restaurants';
 import { serialize } from './serialize';
 import { flow, take, filter } from 'lodash/fp';
 
@@ -15,7 +16,7 @@ export enum SubCommand {
   description: '음식점 관련 cli',
 })
 export class RestaurantsCommands extends CommandRunner {
-  constructor() {
+  constructor(private readonly restaurantsService: RestaurantsService) {
     super();
   }
 
