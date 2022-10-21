@@ -10,6 +10,22 @@ export class RestaurantsService {
     private readonly repository: Repository<Restaurant>
   ) {}
 
+  async bulkInsert(restaurants: Partial<Restaurant>[]) {
+    try {
+      await this.repository.insert(restaurants);
+    } catch (e) {
+      Logger.error(e);
+    }
+  }
+
+  async create(restaurant: Partial<Restaurant>) {
+    try {
+      await this.repository.insert(restaurant);
+    } catch (e) {
+      Logger.error(e);
+    }
+  }
+
   async upsert(restaurant: Partial<Restaurant>) {
     try {
       await this.repository.save(restaurant);
