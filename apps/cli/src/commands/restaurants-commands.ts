@@ -29,11 +29,9 @@ export class RestaurantsCommands extends CommandRunner {
   }
 
   async create() {
-    const records = await this.readCsv();
+    const records = (await this.readCsv()).map((record) => serialize(record));
 
-    for (const record of records) {
-      serialize(record);
-    }
+    console.log(records[0], records[1]);
   }
 
   async readCsv() {

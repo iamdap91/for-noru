@@ -21,14 +21,12 @@ const arrangeFields = (object: Record<string, string>) => {
 };
 
 export const serialize = (item) => {
-  const value = flow(
+  return flow([
     pick(Object.keys(REQUIRED_FIELDS)),
     arrangeFields,
     (record) => {
       const { postalCode, active } = record;
       return { ...record, postalCode: +postalCode, active: +active === 1 };
-    }
-  )(item);
-
-  console.log(value);
+    },
+  ])(item);
 };
