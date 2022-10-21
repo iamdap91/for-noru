@@ -1,5 +1,5 @@
 import { CommonEntity } from '../common.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, Index } from 'typeorm';
 import { IsString } from 'class-validator';
 
 @Entity()
@@ -8,6 +8,7 @@ export class Restaurant extends CommonEntity {
   @Column({ type: 'varchar' })
   type: string;
 
+  @Index({ unique: true })
   @IsString()
   @Column({ type: 'varchar' })
   manageId: string;
@@ -36,10 +37,7 @@ export class Restaurant extends CommonEntity {
   @Column({ type: 'varchar' })
   yCoordinate: string;
 
-  @IsString()
-  @Column({ type: 'timestamp' })
-  lastUpdated: Date;
-
+  @Index()
   @IsString()
   @Column({ type: 'boolean' })
   active: boolean;

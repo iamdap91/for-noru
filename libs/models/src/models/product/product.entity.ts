@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
 import {
   IsNumber,
   IsOptional,
@@ -12,6 +12,7 @@ import { ProductOption } from './product-option.entity';
 
 @Entity()
 export class Product extends CommonEntity {
+  @Index()
   @ApiProperty()
   @IsString()
   @Column({ type: 'varchar' })
@@ -29,6 +30,7 @@ export class Product extends CommonEntity {
   @Column({ type: 'varchar', nullable: true })
   manufacturer?: string;
 
+  @Index()
   @Transform(({ value }) => +value)
   @ApiProperty()
   @IsNumber()

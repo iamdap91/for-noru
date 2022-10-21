@@ -37,5 +37,6 @@ export const serialize = (items: string[]) => {
     ...ADDITIONAL_FIELDS,
     active: +arrangedRecords.active === 1,
     postalCode: +arrangedRecords.postalCode,
+    // lastUpdated: new Date(arrangedRecords.lastUpdated),
   };
 };
