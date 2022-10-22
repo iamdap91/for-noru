@@ -1,12 +1,12 @@
-import { Command, CommandRunner, SubCommand } from 'nest-commander';
+import { CommandRunner, SubCommand } from 'nest-commander';
 import * as fs from 'fs';
-import { Logger } from '@nestjs/common';
-import { RestaurantsService } from '@gong-gu/backend/restaurants';
-import { serialize } from './serialize';
 import * as readline from 'readline';
 import { chunk } from 'lodash';
+import { Logger } from '@nestjs/common';
+import { RestaurantsService } from '@gong-gu/backend/restaurants';
+import { serialize } from '../serialize';
 
-@SubCommand({ name: 'create' })
+@SubCommand({ name: 'create', description: '음식점 생성' })
 export class RestaurantCreateCommand extends CommandRunner {
   constructor(private readonly restaurantsService: RestaurantsService) {
     super();
@@ -43,17 +43,5 @@ export class RestaurantCreateCommand extends CommandRunner {
         });
     });
     return records;
-  }
-}
-
-@Command({
-  name: 'restaurant',
-  arguments: '[name]',
-  description: '음식점 관련 cli',
-  subCommands: [RestaurantCreateCommand],
-})
-export class RestaurantsCommands extends CommandRunner {
-  async run(): Promise<void> {
-    Logger.log('restaurant cli start');
   }
 }
