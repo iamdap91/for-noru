@@ -2,8 +2,8 @@ import { BrowserOptionInterface, EngineInterface } from '../interfaces';
 import { WITH_BROWSER_META_DATA } from '../constants';
 
 export class EngineFactory {
-  static async build(shopCode: string): Promise<EngineInterface> {
-    const engineModule = await import(`../${shopCode}/index`);
+  static async build(code: string): Promise<EngineInterface> {
+    const engineModule = await import(`../${code}/index`);
 
     const engine = new engineModule['default']();
     if (!engine) {

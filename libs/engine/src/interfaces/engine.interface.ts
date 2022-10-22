@@ -1,3 +1,5 @@
+import { Browser } from 'puppeteer';
+
 export class EngineInterface {
-  // product: (targetUrl, browser) => Promise<any>;
+  restaurant: (id: number, browser: Browser) => Promise<never>;
 }

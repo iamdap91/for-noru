@@ -11,7 +11,7 @@ export class BrowserFactory {
     return await puppeteer.use(StealthPlugin()).launch(options);
   }
 
-  static async getPage(browser): Promise<Page> {
+  static async getPage(browser: Browser): Promise<Page> {
     const [page] = await browser.pages();
     await page.setUserAgent(new UserAgent().random().toString());
 
