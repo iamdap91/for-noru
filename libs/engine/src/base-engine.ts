@@ -1,9 +1,10 @@
 import { Browser } from 'puppeteer';
 import { EngineInterface } from './interfaces';
+import { EngineParam } from './interfaces/engine-param.interface';
 
 export class BaseEngine implements EngineInterface {
-  restaurant(name: string, address: string, browser: Browser): Promise<void>;
+  restaurant(param: EngineParam, browser: Browser): Promise<void>;
   restaurant(): Promise<void> {
-    throw new Error('product 기능 개발중');
+    throw new Error('restaurant 기능 개발중');
   }
 }

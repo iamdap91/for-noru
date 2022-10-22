@@ -1,9 +1,6 @@
 import { Browser } from 'puppeteer';
+import { EngineParam } from './engine-param.interface';
 
 export class EngineInterface {
-  restaurant: (
-    name: string,
-    address: string,
-    browser: Browser
-  ) => Promise<void>;
+  restaurant: (param: EngineParam, browser: Browser) => Promise<void>;
 }
