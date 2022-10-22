@@ -1,5 +1,8 @@
 import { Module } from '@nestjs/common';
-import { RestaurantsCommands } from './restaurants-commands';
+import {
+  RestaurantCreateCommand,
+  RestaurantsCommands,
+} from './restaurants-commands';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgresConfigModule, PostgresConfigService } from '@gong-gu/config';
 import { BackendRestaurantsModule } from '@gong-gu/backend/restaurants';
@@ -10,6 +13,6 @@ import { BackendRestaurantsModule } from '@gong-gu/backend/restaurants';
     TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
     BackendRestaurantsModule,
   ],
-  providers: [RestaurantsCommands],
+  providers: [RestaurantsCommands, RestaurantCreateCommand],
 })
 export class CommandsModule {}

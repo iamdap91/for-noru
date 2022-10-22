@@ -1,4 +1,4 @@
-import { Command, CommandRunner } from 'nest-commander';
+import { Command, CommandRunner, SubCommand } from 'nest-commander';
 import * as fs from 'fs';
 import { Logger } from '@nestjs/common';
 import { RestaurantsService } from '@gong-gu/backend/restaurants';
@@ -6,31 +6,13 @@ import { serialize } from './serialize';
 import * as readline from 'readline';
 import { chunk } from 'lodash';
 
-export enum SubCommand {
-  CREATE = 'create',
-  UPDATE = 'update',
-}
-
-@Command({
-  name: 'restaurant',
-  description: '음식점 관련 cli',
-})
-export class RestaurantsCommands extends CommandRunner {
+@SubCommand({ name: 'create' })
+export class RestaurantCreateCommand extends CommandRunner {
   constructor(private readonly restaurantsService: RestaurantsService) {
     super();
   }
 
-  async run([subCommand]: SubCommand[]): Promise<void> {
-    switch (subCommand) {
-      case SubCommand.CREATE:
-        return await this.create();
-      case SubCommand.UPDATE:
-      default:
-        return;
-    }
-  }
-
-  async create() {
+  async run() {
     const records: string[] = await this.readFile();
     records.shift();
 
@@ -61,5 +43,17 @@ export class RestaurantsCommands extends CommandRunner {
         });
     });
     return records;
+  }
+}
+
+@Command({
+  name: 'restaurant',
+  arguments: '[name]',
+  description: '음식점 관련 cli',
+  subCommands: [RestaurantCreateCommand],
+})
+export class RestaurantsCommands extends CommandRunner {
+  async run(): Promise<void> {
+    Logger.log('restaurant cli start');
   }
 }
