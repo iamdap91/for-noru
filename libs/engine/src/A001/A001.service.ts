@@ -22,9 +22,8 @@ export class A001Service {
     const restaurant = response?.result?.place?.list?.find(
       (item) => item.name === name
     );
-
     if (!restaurant) {
-      return;
+      return false;
     }
 
     const detailInterceptor = this.interceptRequest(
@@ -32,9 +31,12 @@ export class A001Service {
       page
     );
     await page.goto(`${NAVER_MAP_URL}/${name}/place/${restaurant.id}`);
-    const detail = await detailInterceptor;
+    const detail: any = await detailInterceptor;
+    if (!detail) {
+      return false;
+    }
 
-    return detail;
+    return detail.options.find((option) => option.id === 15);
   }
 
   async interceptRequest(url: string, page: Page) {
