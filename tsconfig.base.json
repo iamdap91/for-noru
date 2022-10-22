@@ -18,6 +18,7 @@
       "@gong-gu/backend/restaurants": ["libs/backend/restaurants/src/index.ts"],
       "@gong-gu/common": ["libs/common/src/index.ts"],
       "@gong-gu/config": ["libs/config/src/index.ts"],
+      "@gong-gu/engine": ["libs/engine/src/index.ts"],
       "@gong-gu/models": ["libs/models/src/index.ts"]
     }
   },
