@@ -36,7 +36,7 @@ export class A001Service {
       return false;
     }
 
-    return detail.options.find((option) => option.id === 15);
+    return detail?.options?.find((option) => option.id === 15);
   }
 
   async interceptRequest(url: string, page: Page) {
