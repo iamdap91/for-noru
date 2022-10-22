@@ -11,7 +11,7 @@ export class RestaurantScrapeCommand extends CommandRunner {
     super();
   }
 
-  async run() {
-    console.log('scrape');
+  async run([id]: string[]) {
+    console.log('scrape', id);
   }
 }
