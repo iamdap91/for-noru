@@ -2,6 +2,7 @@ import { Repository } from 'typeorm';
 import { Injectable, Logger } from '@nestjs/common';
 import { Restaurant } from '@gong-gu/models';
 import { InjectRepository } from '@nestjs/typeorm';
+import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 @Injectable()
 export class RestaurantsService {
@@ -20,5 +21,13 @@ export class RestaurantsService {
 
   async upsert(restaurant: Partial<Restaurant>) {
     await this.repository.save(restaurant).catch((e) => Logger.error(e));
+  }
+
+  async isActive(id: number) {
+    await this.repository.findOne({ where: { id, active: true } });
+  }
+
+  async findOne(query: FindOneOptions<Restaurant>) {
+    return await this.repository.findOne(query);
   }
 }

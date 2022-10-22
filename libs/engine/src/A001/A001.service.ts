@@ -3,7 +3,7 @@ import { Page } from 'puppeteer';
 
 @Injectable()
 export class A001Service {
-  async restaurant(id: number, page: Page) {
+  async restaurant(name: string, address: string, page: Page) {
     console.log('restaurant scrape');
   }
 }

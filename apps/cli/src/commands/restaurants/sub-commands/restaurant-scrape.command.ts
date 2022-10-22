@@ -5,6 +5,7 @@ import {
   BrowserOptionInterface,
   EngineFactory,
 } from '@gong-gu/engine';
+import { throwIfIsNil } from '@gong-gu/common';
 
 @SubCommand({
   name: 'scrape',
@@ -17,10 +18,14 @@ export class RestaurantScrapeCommand extends CommandRunner {
   }
 
   async run([code, id]: string[]) {
+    const { name, address, roadAddress } = await this.restaurantsService
+      .findOne({ where: { id: +id, active: true } })
+      .then(throwIfIsNil(new Error('존재하지 않는 레스토랑입니다.')));
+
     const engine = await EngineFactory.build(code);
     const browserOptions: BrowserOptionInterface = EngineFactory.scan(engine);
 
     const browser = await BrowserFactory.createBrowser(browserOptions);
-    const restaurant = await engine.restaurant(+id, browser);
+    await engine.restaurant(name, `${address} | ${roadAddress}`, browser);
   }
 }
