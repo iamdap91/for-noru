@@ -11,9 +11,9 @@ export default class Engine implements BaseEngine {
     this.service = new A001Service();
   }
 
-  @WithBrowser({ headless: false, channel: 'chrome' })
+  @WithBrowser({ headless: true, channel: 'chrome' })
   async restaurant(param: EngineParam, browser: Browser) {
     const page = await BrowserFactory.getPage(browser);
-    return this.service.restaurant(param, page);
+    await this.service.restaurant(param, page);
   }
 }

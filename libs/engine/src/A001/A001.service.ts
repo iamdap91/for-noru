@@ -19,7 +19,7 @@ export class A001Service {
     await page.waitForNavigation();
     const response: any = await listInterceptor;
 
-    const restaurant = response.result.place.list.find(
+    const restaurant = response?.result?.place?.list?.find(
       (item) => item.name === name
     );
 
