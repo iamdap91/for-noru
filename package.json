@@ -31,6 +31,9 @@
     "nest-commander": "^3.1.0",
     "next": "12.3.1",
     "pg": "^8.8.0",
+    "puppeteer": "^19.1.0",
+    "puppeteer-extra": "^3.3.4",
+    "puppeteer-extra-plugin-stealth": "^2.11.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "reflect-metadata": "^0.1.13",
@@ -38,6 +41,7 @@
     "rxjs": "^7.5.7",
     "tslib": "^2.3.0",
     "typeorm": "^0.3.10",
+    "user-agents": "^1.0.1176",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
