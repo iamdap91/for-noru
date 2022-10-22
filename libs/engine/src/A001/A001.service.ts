@@ -6,9 +6,9 @@ import { EPS2097 } from '../../../common/src/geo-transcoder';
 
 @Injectable()
 export class A001Service {
-  async restaurant({ name, address, coordinates }: EngineParam, page: Page) {
+  async restaurant({ name, coordinates }: EngineParam, page: Page) {
     const url = this.figureUrl(name, coordinates);
-    console.log(name, address, coordinates);
+    console.log(name, coordinates);
     console.log(url);
 
     const listInterceptor = this.interceptRequest(

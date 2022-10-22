@@ -18,10 +18,9 @@ export class RestaurantScrapeCommand extends CommandRunner {
   }
 
   async run([code, id]: string[]) {
-    const { name, address, roadAddress, xCoordinate, yCoordinate } =
-      await this.restaurantsService
-        .findOne({ where: { id: +id, active: true } })
-        .then(throwIfIsNil(new Error('존재하지 않는 레스토랑입니다.')));
+    const { name, xCoordinate, yCoordinate } = await this.restaurantsService
+      .findOne({ where: { id: +id, active: true } })
+      .then(throwIfIsNil(new Error('존재하지 않는 레스토랑입니다.')));
 
     const engine = await EngineFactory.build(code);
     const browserOptions: BrowserOptionInterface = EngineFactory.scan(engine);
@@ -30,7 +29,6 @@ export class RestaurantScrapeCommand extends CommandRunner {
     await engine.restaurant(
       {
         name,
-        address: `${address} | ${roadAddress}`,
         coordinates: [+xCoordinate, +yCoordinate],
       },
       browser
