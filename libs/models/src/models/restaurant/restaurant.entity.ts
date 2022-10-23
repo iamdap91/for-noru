@@ -13,6 +13,7 @@ export class Restaurant extends CommonEntity {
   @Column({ type: 'varchar' })
   manageId: string;
 
+  @Index()
   @IsString()
   @Column({ type: 'varchar' })
   name: string;
@@ -41,4 +42,9 @@ export class Restaurant extends CommonEntity {
   @IsString()
   @Column({ type: 'boolean' })
   active: boolean;
+
+  @Index()
+  @IsString()
+  @Column({ type: 'boolean' })
+  petAllowed: boolean;
 }
