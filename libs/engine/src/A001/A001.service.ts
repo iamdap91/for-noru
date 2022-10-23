@@ -55,21 +55,21 @@ export class A001Service {
     };
   }
 
-  async interceptRequest<T>(url: string, page: Page): Promise<T> {
-    return new Promise(async (resolve, reject) => {
-      await page.on('response', async (response) => {
+  async interceptRequest<T>(url: string, page: Page): Promise<T | null> {
+    return new Promise(async (resolve) => {
+      page.on('response', async (response) => {
         const request = response.request();
         if (request.url().includes(url) && request.method() === 'GET') {
           try {
             const json = await response.json();
             resolve(json);
           } catch (e) {
-            reject(e);
+            resolve(null);
           }
         }
       });
       setTimeout(() => {
-        reject();
+        resolve(null);
       }, 5 * 1000);
     });
   }

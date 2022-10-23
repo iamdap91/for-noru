@@ -6,7 +6,6 @@ import {
   EngineFactory,
 } from '@gong-gu/engine';
 import ora from 'ora';
-import { Browser } from 'puppeteer';
 
 @SubCommand({
   name: 'scrape-all',
@@ -19,7 +18,7 @@ export class RestaurantScrapeAllCommand extends CommandRunner {
   }
 
   async run([code]: string[]) {
-    const spinner = ora('process scrape-all start').start();
+    const spinner = ora('scrape-all start').start();
     const list = await this.restaurantsService.find({
       where: { active: true },
     });
@@ -28,31 +27,28 @@ export class RestaurantScrapeAllCommand extends CommandRunner {
     const engine = await EngineFactory.build(code);
     const browserOptions: BrowserOptionInterface = EngineFactory.scan(engine);
 
-    // todo 이거 2단 트라이-캐치 고쳐야한다.
-    let browser: Browser;
-    try {
-      browser = await BrowserFactory.createBrowser(browserOptions);
-
-      for (const { id, name, xCoordinate, yCoordinate } of list) {
-        try {
-          const restaurantInfo = await engine.restaurant(
-            {
-              name,
-              coordinates: [+xCoordinate, +yCoordinate],
-            },
-            browser
-          );
-
-          await this.restaurantsService.update(+id, restaurantInfo);
-        } catch (e) {
-          console.error(e);
-          spinner.fail(e);
-        }
+    const browserFactory = await new BrowserFactory(browserOptions).init();
+    const page = await browserFactory.getPage();
+    for (const { id, name, xCoordinate, yCoordinate } of list) {
+      try {
+        const restaurantInfo = await engine.restaurant(
+          { name, coordinates: [+xCoordinate, +yCoordinate] },
+          page
+        );
+        await this.restaurantsService.update(+id, restaurantInfo);
+      } catch (e) {
+        console.error(e);
       }
-    } catch (e) {
-      spinner.fail(e);
-    } finally {
-      await browser.close();
     }
+
+    // const browser = await BrowserFactory.createBrowser(browserOptions);
+    // for (const { id, name, xCoordinate, yCoordinate } of list) {
+    //   const restaurantInfo = await engine.restaurant(
+    //     { name, coordinates: [+xCoordinate, +yCoordinate] },
+    //     browser
+    //   );
+    //
+    //   await this.restaurantsService.update(+id, restaurantInfo);
+    // }
   }
 }

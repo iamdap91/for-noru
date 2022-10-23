@@ -25,13 +25,11 @@ export class RestaurantScrapeCommand extends CommandRunner {
     const engine = await EngineFactory.build(code);
     const browserOptions: BrowserOptionInterface = EngineFactory.scan(engine);
 
-    const browser = await BrowserFactory.createBrowser(browserOptions);
+    const browserFactory = await new BrowserFactory(browserOptions).init();
+    const page = await browserFactory.getPage();
     const restaurantInfo = await engine.restaurant(
-      {
-        name,
-        coordinates: [+xCoordinate, +yCoordinate],
-      },
-      browser
+      { name, coordinates: [+xCoordinate, +yCoordinate] },
+      page
     );
 
     await this.restaurantsService.update(+id, restaurantInfo);

@@ -14,12 +14,22 @@ const TYPES_TO_BLOCK: ResourceType[] = [
 ];
 
 export class BrowserFactory {
-  static async createBrowser(
-    options: BrowserOptionInterface
-  ): Promise<Browser> {
+  browser: Browser;
+  options: BrowserOptionInterface;
+
+  constructor(options: BrowserOptionInterface) {
+    this.options = options;
+  }
+
+  async init() {
+    this.browser = await this.createBrowser(this.options);
+    return this;
+  }
+
+  async createBrowser(options: BrowserOptionInterface): Promise<Browser> {
     const { fastMode, ...launchOptions } = options;
 
-    const browser = await puppeteer.use(StealthPlugin()).launch(options);
+    const browser = await puppeteer.use(StealthPlugin()).launch(launchOptions);
 
     if (fastMode) {
       const [page] = await browser.pages();
@@ -33,12 +43,22 @@ export class BrowserFactory {
     return browser;
   }
 
-  static async getPage(browser: Browser): Promise<Page> {
-    const [page] = await browser.pages();
+  async getPage(): Promise<Page> {
+    const [page] = await this.browser.pages();
     await page.setUserAgent(
       new UserAgent({ platform: 'Win32' }).random().toString()
     );
 
     return page;
+  }
+
+  async restartBrowser() {
+    await this.browser.close();
+    this.browser = await this.createBrowser(this.options);
+  }
+
+  async terminateBrowser() {
+    await this.browser.close();
+    this.browser = null;
   }
 }
