@@ -40,15 +40,5 @@ export class RestaurantScrapeAllCommand extends CommandRunner {
         console.error(e);
       }
     }
-
-    // const browser = await BrowserFactory.createBrowser(browserOptions);
-    // for (const { id, name, xCoordinate, yCoordinate } of list) {
-    //   const restaurantInfo = await engine.restaurant(
-    //     { name, coordinates: [+xCoordinate, +yCoordinate] },
-    //     browser
-    //   );
-    //
-    //   await this.restaurantsService.update(+id, restaurantInfo);
-    // }
   }
 }
