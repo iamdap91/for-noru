@@ -45,6 +45,6 @@ export class Restaurant extends CommonEntity {
 
   @Index()
   @IsString()
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: false })
   petAllowed: boolean;
 }
