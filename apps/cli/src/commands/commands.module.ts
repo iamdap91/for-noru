@@ -4,6 +4,7 @@ import { PostgresConfigModule, PostgresConfigService } from '@gong-gu/config';
 import { BackendRestaurantsModule } from '@gong-gu/backend/restaurants';
 import { RestaurantCommands, RestaurantCreateCommand } from './restaurants';
 import { RestaurantScrapeCommand } from './restaurants/sub-commands/restaurant-scrape.command';
+import { RestaurantScrapeAllCommand } from './restaurants/sub-commands/restaurant-scrape-all.command';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { RestaurantScrapeCommand } from './restaurants/sub-commands/restaurant-s
     RestaurantCommands,
     RestaurantCreateCommand,
     RestaurantScrapeCommand,
+    RestaurantScrapeAllCommand,
   ],
 })
 export class CommandsModule {}

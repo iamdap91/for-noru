@@ -5,6 +5,7 @@ import {
   RestaurantsUpdateCommand,
 } from './sub-commands';
 import { RestaurantScrapeCommand } from './sub-commands/restaurant-scrape.command';
+import { RestaurantScrapeAllCommand } from './sub-commands/restaurant-scrape-all.command';
 
 @Command({
   name: 'restaurant',
@@ -14,6 +15,7 @@ import { RestaurantScrapeCommand } from './sub-commands/restaurant-scrape.comman
     RestaurantCreateCommand,
     RestaurantsUpdateCommand,
     RestaurantScrapeCommand,
+    RestaurantScrapeAllCommand,
   ],
 })
 export class RestaurantCommands extends CommandRunner {

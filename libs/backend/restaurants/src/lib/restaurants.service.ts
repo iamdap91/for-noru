@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { Injectable, Logger } from '@nestjs/common';
 import { Restaurant } from '@gong-gu/models';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,6 +10,10 @@ export class RestaurantsService {
     @InjectRepository(Restaurant)
     private readonly repository: Repository<Restaurant>
   ) {}
+
+  async find(options: FindManyOptions) {
+    return await this.repository.find(options);
+  }
 
   async bulkInsert(restaurants: Partial<Restaurant>[]) {
     await this.repository.insert(restaurants).catch((e) => Logger.error(e));
