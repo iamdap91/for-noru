@@ -42,7 +42,12 @@ export class A001Service {
       throwIfIsNil(new Error('장소 상세 정보를 가져오지 못했습니다.'))
     );
 
-    console.log(name, !!detail?.options?.find((option) => option.id === 15));
+    console.log(
+      name,
+      !!detail?.options?.find((option) => option.id === 15),
+      detail?.imageURL || detail?.images?.[0]?.url || ''
+    );
+    console.log('=======================================================');
     return {
       images: [detail?.imageURL || detail?.images?.[0]?.url || ''],
       categories: detail.categories || [],
@@ -55,8 +60,12 @@ export class A001Service {
       await page.on('response', async (response) => {
         const request = response.request();
         if (request.url().includes(url) && request.method() === 'GET') {
-          const json = await response.json();
-          resolve(json);
+          try {
+            const json = await response.json();
+            resolve(json);
+          } catch (e) {
+            reject(e);
+          }
         }
       });
       setTimeout(() => {

@@ -6,6 +6,7 @@ import {
   EngineFactory,
 } from '@gong-gu/engine';
 import ora from 'ora';
+import { Browser } from 'puppeteer';
 
 @SubCommand({
   name: 'scrape-all',
@@ -26,23 +27,32 @@ export class RestaurantScrapeAllCommand extends CommandRunner {
 
     const engine = await EngineFactory.build(code);
     const browserOptions: BrowserOptionInterface = EngineFactory.scan(engine);
-    const browser = await BrowserFactory.createBrowser(browserOptions);
-    for (const { id, name, xCoordinate, yCoordinate } of list) {
-      try {
-        const restaurantInfo = await engine.restaurant(
-          {
-            name,
-            coordinates: [+xCoordinate, +yCoordinate],
-          },
-          browser
-        );
 
-        await this.restaurantsService.update(+id, restaurantInfo);
-      } catch (e) {
-        console.error(e);
-        spinner.fail(e);
+    // todo 이거 2단 트라이-캐치 고쳐야한다.
+    let browser: Browser;
+    try {
+      browser = await BrowserFactory.createBrowser(browserOptions);
+
+      for (const { id, name, xCoordinate, yCoordinate } of list) {
+        try {
+          const restaurantInfo = await engine.restaurant(
+            {
+              name,
+              coordinates: [+xCoordinate, +yCoordinate],
+            },
+            browser
+          );
+
+          await this.restaurantsService.update(+id, restaurantInfo);
+        } catch (e) {
+          console.error(e);
+          spinner.fail(e);
+        }
       }
+    } catch (e) {
+      spinner.fail(e);
+    } finally {
+      await browser.close();
     }
-    await browser.close();
   }
 }
