@@ -52,6 +52,7 @@ export class RestaurantScrapeAllCommand extends CommandRunner {
       }
     }
 
+    await browserFactory.terminateBrowser();
     spinner.succeed('scrape-all end');
   }
 }

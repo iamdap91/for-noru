@@ -21,7 +21,7 @@ export class BrowserFactory {
     this.options = options;
   }
 
-  async init() {
+  async init(): Promise<BrowserFactory> {
     this.browser = await this.createBrowser(this.options);
     return this;
   }
@@ -52,12 +52,12 @@ export class BrowserFactory {
     return page;
   }
 
-  async restartBrowser() {
+  async restartBrowser(): Promise<void> {
     await this.browser.close();
     this.browser = await this.createBrowser(this.options);
   }
 
-  async terminateBrowser() {
+  async terminateBrowser(): Promise<void> {
     await this.browser.close();
     this.browser = null;
   }
