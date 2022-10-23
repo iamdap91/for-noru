@@ -4,6 +4,8 @@ import {
   BrowserFactory,
   BrowserOptionInterface,
   EngineFactory,
+  NavigationError,
+  PageBlockedError,
 } from '@gong-gu/engine';
 import ora from 'ora';
 
@@ -24,11 +26,15 @@ export class RestaurantScrapeAllCommand extends CommandRunner {
     });
     spinner.warn(`List length : ${list.length}`);
 
+    // 엔진 생성
     const engine = await EngineFactory.build(code);
     const browserOptions: BrowserOptionInterface = EngineFactory.scan(engine);
 
+    // 브라우저 생성
     const browserFactory = await new BrowserFactory(browserOptions).init();
     const page = await browserFactory.getPage();
+
+    // 엔진 실행
     for (const { id, name, xCoordinate, yCoordinate } of list) {
       try {
         const restaurantInfo = await engine.restaurant(
@@ -38,7 +44,14 @@ export class RestaurantScrapeAllCommand extends CommandRunner {
         await this.restaurantsService.update(+id, restaurantInfo);
       } catch (e) {
         console.error(e);
+        switch (true) {
+          case e instanceof NavigationError:
+          case e instanceof PageBlockedError:
+            await browserFactory.restartBrowser();
+        }
       }
     }
+
+    spinner.succeed('scrape-all end');
   }
 }
