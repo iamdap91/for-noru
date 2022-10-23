@@ -4,10 +4,15 @@ import { NAVER_MAP_URL } from '../constants';
 import { EngineParam } from '../interfaces/engine-param.interface';
 import { EPS2097 } from '../../../common/src/geo-transcoder';
 import { PlaceDetail } from './interface';
+import { FormattedPlace } from '@gong-gu/engine';
+import { throwIfIsNil } from '@gong-gu/common';
 
 @Injectable()
 export class A001Service {
-  async restaurant({ name, coordinates }: EngineParam, page: Page) {
+  async restaurant(
+    { name, coordinates }: EngineParam,
+    page: Page
+  ): Promise<FormattedPlace> {
     const url = this.figureUrl(name, coordinates);
     console.log(name, coordinates);
     console.log(url);
@@ -20,27 +25,24 @@ export class A001Service {
     await page.waitForNavigation();
     const response: any = await listInterceptor;
 
+    // 해당하는 내역이 하나밖에 없을 경우 `네이버 플레이스`에서 자동으로 하나뿐인 장소로 리다이렉트 해주므로 에러차리 안함.
     const restaurant = response?.result?.place?.list?.find(
       (item) => item.name === name
     );
-    if (!restaurant) {
-      return false;
-    }
 
     const detailInterceptor = this.interceptRequest<PlaceDetail>(
-      `https://map.naver.com/v5/api/sites/summary/${restaurant.id}`,
+      `https://map.naver.com/v5/api/sites/summary/`,
       page
     );
-    await page.goto(`${NAVER_MAP_URL}/${name}/place/${restaurant.id}`);
-    const detail: PlaceDetail = await detailInterceptor;
-    if (!detail) {
-      return false;
-    }
+    await page.goto(`${NAVER_MAP_URL}/${name}/place/${restaurant?.id}`);
+    const detail: PlaceDetail = await detailInterceptor.then(
+      throwIfIsNil(new Error('장소 상세 정보를 가져오지 못했습니다.'))
+    );
 
     return {
-      image: detail?.imageURL || detail?.images?.[0] || '',
+      images: [detail?.imageURL || detail?.images?.[0]?.url || ''],
       categories: detail.categories || [],
-      petAllowed: detail?.options?.find((option) => option.id === 15),
+      petAllowed: !!detail?.options?.find((option) => option.id === 15),
     };
   }
 

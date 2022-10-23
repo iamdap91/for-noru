@@ -1,6 +1,6 @@
 import { CommonEntity } from '../common.entity';
 import { Column, Entity, Index } from 'typeorm';
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 @Entity()
 export class Restaurant extends CommonEntity {
@@ -47,4 +47,14 @@ export class Restaurant extends CommonEntity {
   @IsString()
   @Column({ type: 'boolean', default: false })
   petAllowed: boolean;
+
+  @IsOptional()
+  @IsString({ each: true })
+  @Column({ type: 'varchar', array: true, nullable: true })
+  images?: string[];
+
+  @IsOptional()
+  @IsString({ each: true })
+  @Column({ type: 'varchar', array: true, nullable: true })
+  categories?: string[];
 }

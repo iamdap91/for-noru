@@ -26,7 +26,7 @@ export class RestaurantScrapeCommand extends CommandRunner {
     const browserOptions: BrowserOptionInterface = EngineFactory.scan(engine);
 
     const browser = await BrowserFactory.createBrowser(browserOptions);
-    const petAllowed = await engine.restaurant(
+    const restaurantInfo = await engine.restaurant(
       {
         name,
         coordinates: [+xCoordinate, +yCoordinate],
@@ -34,6 +34,6 @@ export class RestaurantScrapeCommand extends CommandRunner {
       browser
     );
 
-    await this.restaurantsService.update(+id, { petAllowed });
+    await this.restaurantsService.update(+id, restaurantInfo);
   }
 }
