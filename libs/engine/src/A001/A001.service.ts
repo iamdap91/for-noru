@@ -1,7 +1,7 @@
 import { Page } from 'puppeteer';
 import { FormattedPlace } from '@gong-gu/engine';
 import { Injectable } from '@nestjs/common';
-import { throwIfIsNil } from '@gong-gu/common';
+import { sleep, throwIfIsNil } from '@gong-gu/common';
 import { EPS2097, nonBlank } from '@gong-gu/common';
 import { EngineParam } from '../interfaces/engine-param.interface';
 import { NAVER_MAP_URL } from '../constants';
@@ -14,8 +14,7 @@ export class A001Service {
     page: Page
   ): Promise<FormattedPlace> {
     const url = this.figureUrl(name, coordinates);
-    console.log(name, coordinates);
-    // console.log(url);
+    console.log(name, coordinates, url);
 
     const listInterceptor = this.interceptRequest(
       'https://map.naver.com/v5/api/search?caller=pcweb&query=',
@@ -41,12 +40,9 @@ export class A001Service {
     const detail: PlaceDetail = await detailInterceptor.then(
       throwIfIsNil(new Error('장소 상세 정보를 가져오지 못했습니다.'))
     );
+    await sleep(1000);
 
-    console.log(
-      name,
-      !!detail?.options?.find((option) => option.id === 15),
-      detail?.imageURL || detail?.images?.[0]?.url || ''
-    );
+    console.log(name, !!detail?.options?.find((option) => option.id === 15));
     console.log('=======================================================');
     return {
       images: [detail?.imageURL || detail?.images?.[0]?.url || ''],

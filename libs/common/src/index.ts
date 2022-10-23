@@ -3,3 +3,4 @@ export * from './throw-if';
 export * from './to-chunks';
 export * from './geo-transcoder';
 export * from './non-blank';
+export * from './sleep';
