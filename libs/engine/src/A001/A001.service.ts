@@ -50,7 +50,7 @@ export class A001Service {
     return new Promise(async (resolve) => {
       await page.on('response', async (response) => {
         const request = response.request();
-        if (request.url().includes(url)) {
+        if (request.url().includes(url) && request.method() === 'GET') {
           const json = await response.json();
           resolve(json);
         }

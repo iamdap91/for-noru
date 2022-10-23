@@ -5,6 +5,8 @@ import {
   BrowserOptionInterface,
   EngineFactory,
 } from '@gong-gu/engine';
+import ora from 'ora';
+import { Browser } from 'puppeteer';
 
 @SubCommand({
   name: 'scrape-all',
@@ -17,23 +19,32 @@ export class RestaurantScrapeAllCommand extends CommandRunner {
   }
 
   async run([code]: string[]) {
+    const spinner = ora('process scrape-all start').start();
     const list = await this.restaurantsService.find({
       where: { active: true },
     });
+    spinner.warn(`List length : ${list.length}`);
 
-    const engine = await EngineFactory.build(code);
-    const browserOptions: BrowserOptionInterface = EngineFactory.scan(engine);
-    for (const { id, name, xCoordinate, yCoordinate } of list) {
-      const browser = await BrowserFactory.createBrowser(browserOptions);
-      const restaurantInfo = await engine.restaurant(
-        {
-          name,
-          coordinates: [+xCoordinate, +yCoordinate],
-        },
-        browser
-      );
+    let browser: Browser;
+    try {
+      const engine = await EngineFactory.build(code);
+      const browserOptions: BrowserOptionInterface = EngineFactory.scan(engine);
+      browser = await BrowserFactory.createBrowser(browserOptions);
+      for (const { id, name, xCoordinate, yCoordinate } of list) {
+        const restaurantInfo = await engine.restaurant(
+          {
+            name,
+            coordinates: [+xCoordinate, +yCoordinate],
+          },
+          browser
+        );
 
-      await this.restaurantsService.update(+id, restaurantInfo);
+        await this.restaurantsService.update(+id, restaurantInfo);
+      }
+    } catch (e) {
+      spinner.fail(e);
+    } finally {
+      await browser.close();
     }
   }
 }
