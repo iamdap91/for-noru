@@ -26,12 +26,14 @@ export class RestaurantScrapeCommand extends CommandRunner {
     const browserOptions: BrowserOptionInterface = EngineFactory.scan(engine);
 
     const browser = await BrowserFactory.createBrowser(browserOptions);
-    await engine.restaurant(
+    const petAllowed = await engine.restaurant(
       {
         name,
         coordinates: [+xCoordinate, +yCoordinate],
       },
       browser
     );
+
+    await this.restaurantsService.update(+id, { petAllowed });
   }
 }

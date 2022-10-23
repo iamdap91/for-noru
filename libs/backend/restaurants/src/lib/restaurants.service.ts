@@ -23,8 +23,8 @@ export class RestaurantsService {
     await this.repository.save(restaurant).catch((e) => Logger.error(e));
   }
 
-  async isActive(id: number) {
-    await this.repository.findOne({ where: { id, active: true } });
+  async update(id: number, restaurant: Partial<Restaurant>) {
+    await this.repository.update(id, restaurant).catch((e) => Logger.error(e));
   }
 
   async findOne(query: FindOneOptions<Restaurant>) {
