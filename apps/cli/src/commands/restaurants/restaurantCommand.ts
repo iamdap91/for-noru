@@ -2,10 +2,10 @@ import { Command, CommandRunner } from 'nest-commander';
 import { Logger } from '@nestjs/common';
 import {
   RestaurantCreateCommand,
+  RestaurantScrapeAllCommand,
+  RestaurantScrapeCommand,
   RestaurantsUpdateCommand,
 } from './sub-commands';
-import { RestaurantScrapeCommand } from './sub-commands/restaurant-scrape.command';
-import { RestaurantScrapeAllCommand } from './sub-commands/restaurant-scrape-all.command';
 
 @Command({
   name: 'restaurant',
@@ -18,7 +18,7 @@ import { RestaurantScrapeAllCommand } from './sub-commands/restaurant-scrape-all
     RestaurantScrapeAllCommand,
   ],
 })
-export class RestaurantCommands extends CommandRunner {
+export class RestaurantCommand extends CommandRunner {
   async run(): Promise<void> {
     Logger.log('-h --help 명령어를 참고해주세요.');
   }

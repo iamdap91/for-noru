@@ -1,2 +1,2 @@
-export * from './restaurant.commands';
+export * from './restaurantCommand';
 export * from './sub-commands';
