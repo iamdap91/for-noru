@@ -37,7 +37,11 @@ export class A001Service {
       return false;
     }
 
-    return detail?.options?.find((option) => option.id === 15);
+    return {
+      image: detail?.imageURL || detail?.images?.[0] || '',
+      categories: detail.categories || [],
+      petAllowed: detail?.options?.find((option) => option.id === 15),
+    };
   }
 
   async interceptRequest<T>(url: string, page: Page): Promise<T> {
