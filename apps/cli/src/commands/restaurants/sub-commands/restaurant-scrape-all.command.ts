@@ -6,7 +6,6 @@ import {
   EngineFactory,
 } from '@gong-gu/engine';
 import ora from 'ora';
-import { Browser } from 'puppeteer';
 
 @SubCommand({
   name: 'scrape-all',
@@ -25,12 +24,11 @@ export class RestaurantScrapeAllCommand extends CommandRunner {
     });
     spinner.warn(`List length : ${list.length}`);
 
-    let browser: Browser;
-    try {
-      const engine = await EngineFactory.build(code);
-      const browserOptions: BrowserOptionInterface = EngineFactory.scan(engine);
-      browser = await BrowserFactory.createBrowser(browserOptions);
-      for (const { id, name, xCoordinate, yCoordinate } of list) {
+    const engine = await EngineFactory.build(code);
+    const browserOptions: BrowserOptionInterface = EngineFactory.scan(engine);
+    const browser = await BrowserFactory.createBrowser(browserOptions);
+    for (const { id, name, xCoordinate, yCoordinate } of list) {
+      try {
         const restaurantInfo = await engine.restaurant(
           {
             name,
@@ -40,11 +38,11 @@ export class RestaurantScrapeAllCommand extends CommandRunner {
         );
 
         await this.restaurantsService.update(+id, restaurantInfo);
+      } catch (e) {
+        console.error(e);
+        spinner.fail(e);
       }
-    } catch (e) {
-      spinner.fail(e);
-    } finally {
-      await browser.close();
     }
+    await browser.close();
   }
 }
