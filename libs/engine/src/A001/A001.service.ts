@@ -3,6 +3,7 @@ import { Page } from 'puppeteer';
 import { NAVER_MAP_URL } from '../constants';
 import { EngineParam } from '../interfaces/engine-param.interface';
 import { EPS2097 } from '../../../common/src/geo-transcoder';
+import { PlaceDetail } from './interface';
 
 @Injectable()
 export class A001Service {
@@ -26,12 +27,12 @@ export class A001Service {
       return false;
     }
 
-    const detailInterceptor = this.interceptRequest(
+    const detailInterceptor = this.interceptRequest<PlaceDetail>(
       `https://map.naver.com/v5/api/sites/summary/${restaurant.id}`,
       page
     );
     await page.goto(`${NAVER_MAP_URL}/${name}/place/${restaurant.id}`);
-    const detail: any = await detailInterceptor;
+    const detail: PlaceDetail = await detailInterceptor;
     if (!detail) {
       return false;
     }
@@ -39,7 +40,7 @@ export class A001Service {
     return detail?.options?.find((option) => option.id === 15);
   }
 
-  async interceptRequest(url: string, page: Page) {
+  async interceptRequest<T>(url: string, page: Page): Promise<T> {
     return new Promise(async (resolve) => {
       await page.on('response', async (response) => {
         const request = response.request();
