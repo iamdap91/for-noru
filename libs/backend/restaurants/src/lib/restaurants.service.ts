@@ -16,7 +16,7 @@ export class RestaurantsService {
   ) {}
 
   async addQueue(id: number) {
-    await this.queue.add(id);
+    await this.queue.add(id, { jobId: id });
   }
 
   async find(options: FindManyOptions) {
