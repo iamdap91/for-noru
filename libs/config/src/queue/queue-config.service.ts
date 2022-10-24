@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { BullModuleOptions, BullOptionsFactory } from '@nestjs/bull';
 
 @Injectable()
-export class PostgresConfigService implements BullOptionsFactory {
+export class QueueConfigService implements BullOptionsFactory {
   constructor(private configService: ConfigService) {}
 
   createBullOptions(): BullModuleOptions {

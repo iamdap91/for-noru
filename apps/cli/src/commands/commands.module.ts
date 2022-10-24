@@ -1,6 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PostgresConfigModule, PostgresConfigService } from '@gong-gu/config';
+import {
+  PostgresConfigModule,
+  PostgresConfigService,
+  QueueConfigModule,
+  QueueConfigService,
+} from '@gong-gu/config';
 import { BackendRestaurantsModule } from '@gong-gu/backend/restaurants';
 import {
   RestaurantCommand,
@@ -9,12 +14,18 @@ import {
   RestaurantScrapeAllCommand,
 } from './restaurants';
 import { QueueCommand, QueuePushRestaurantsCommand } from './queue';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
     PostgresConfigModule,
-    TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
     BackendRestaurantsModule,
+    QueueConfigModule,
+    TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
+    BullModule.registerQueueAsync({
+      name: 'restaurants',
+      useClass: QueueConfigService,
+    }),
   ],
   providers: [
     RestaurantCommand,
