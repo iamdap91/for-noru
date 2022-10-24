@@ -9,6 +9,7 @@ import {
   EngineFactory,
   EngineInterface,
 } from '@gong-gu/engine';
+import { waitForCondition } from '@gong-gu/common';
 
 @Processor(QUEUE_NAME)
 export class RestaurantScrapeConsumer implements OnModuleInit {
@@ -19,8 +20,10 @@ export class RestaurantScrapeConsumer implements OnModuleInit {
     this.logger = new Logger('consumer');
   }
 
-  @Process({ concurrency: 2 })
+  @Process({ concurrency: 1 })
   async run({ data: id }: Job, done: DoneCallback) {
+    await waitForCondition(() => !!this.page, 500);
+
     try {
       const { name, xCoordinate, yCoordinate } = await this.service.findOne({
         where: { id },
@@ -32,14 +35,17 @@ export class RestaurantScrapeConsumer implements OnModuleInit {
       await this.service.update(+id, restaurantInfo);
       done(null);
     } catch (e) {
+      console.error(e);
       done(e);
     }
   }
 
   async onModuleInit() {
     // 엔진 생성
-    const engine = await EngineFactory.build('A001');
-    const browserOptions: BrowserOptionInterface = EngineFactory.scan(engine);
+    this.engine = await EngineFactory.build('A001');
+    const browserOptions: BrowserOptionInterface = EngineFactory.scan(
+      this.engine
+    );
 
     // 브라우저 생성
     const browserFactory = await new BrowserFactory(browserOptions).init();

@@ -5,7 +5,7 @@ export const waitForCondition = (
   interval = 1000
 ) => {
   return new Promise<void>(async (resolve) => {
-    for (let i = 0; i <= Number.MIN_SAFE_INTEGER; i++) {
+    for (let i = 0; i <= Number.MAX_SAFE_INTEGER; i++) {
       if (condition()) resolve();
       await sleep(interval);
     }
