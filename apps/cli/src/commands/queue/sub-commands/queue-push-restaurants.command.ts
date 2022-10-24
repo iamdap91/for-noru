@@ -3,7 +3,7 @@ import { RestaurantsService } from '@gong-gu/backend/restaurants';
 
 @SubCommand({
   name: 'restaurants',
-  description: '네이버 크롤링해서 반려동물 동반인지 체크',
+  description: '큐에 영업중인 레스토랑 리스트 추가',
 })
 export class QueuePushRestaurantsCommand extends CommandRunner {
   constructor(private readonly restaurantsService: RestaurantsService) {
