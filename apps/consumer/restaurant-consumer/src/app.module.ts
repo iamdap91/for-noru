@@ -6,6 +6,7 @@ import {
   QueueConfigModule,
 } from '@gong-gu/config';
 import { BackendRestaurantsModule } from '@gong-gu/backend/restaurants';
+import { RestaurantScrapeConsumer } from './restaurant-scrape.consumer';
 
 @Module({
   imports: [
@@ -14,7 +15,6 @@ import { BackendRestaurantsModule } from '@gong-gu/backend/restaurants';
     QueueConfigModule,
     TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
   ],
-  controllers: [],
-  providers: [],
+  providers: [RestaurantScrapeConsumer],
 })
 export class AppModule {}
