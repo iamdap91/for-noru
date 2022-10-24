@@ -1,0 +1,60 @@
+{
+  "name": "consumer-restaurant-consumer",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/consumer/restaurant-consumer/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/consumer/restaurant-consumer",
+        "main": "apps/consumer/restaurant-consumer/src/main.ts",
+        "tsConfig": "apps/consumer/restaurant-consumer/tsconfig.app.json",
+        "assets": []
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/consumer/restaurant-consumer/src/environments/environment.ts",
+              "with": "apps/consumer/restaurant-consumer/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/js:node",
+      "options": {
+        "buildTarget": "consumer-restaurant-consumer:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "consumer-restaurant-consumer:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/consumer/restaurant-consumer/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/consumer/restaurant-consumer"],
+      "options": {
+        "jestConfig": "apps/consumer/restaurant-consumer/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
