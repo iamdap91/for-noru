@@ -4,12 +4,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Restaurant } from '@gong-gu/models';
 import { BullModule } from '@nestjs/bull';
 import { QueueConfigService } from '@gong-gu/config';
+import { QUEUE_NAME } from './constants';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Restaurant]),
     BullModule.registerQueueAsync({
-      name: 'restaurants',
+      name: QUEUE_NAME,
       useClass: QueueConfigService,
     }),
   ],
