@@ -1,15 +1,23 @@
+import { Queue } from 'bull';
 import { FindManyOptions, Repository } from 'typeorm';
 import { Injectable, Logger } from '@nestjs/common';
-import { Restaurant } from '@gong-gu/models';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
+import { InjectQueue } from '@nestjs/bull';
+import { Restaurant } from '@gong-gu/models';
 
 @Injectable()
 export class RestaurantsService {
   constructor(
     @InjectRepository(Restaurant)
-    private readonly repository: Repository<Restaurant>
+    private readonly repository: Repository<Restaurant>,
+    @InjectQueue('restaurants')
+    private readonly queue: Queue
   ) {}
+
+  async addQueue(id: number) {
+    await this.queue.add(id);
+  }
 
   async find(options: FindManyOptions) {
     return await this.repository.find(options);
