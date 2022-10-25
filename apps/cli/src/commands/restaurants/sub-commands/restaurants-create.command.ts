@@ -21,8 +21,10 @@ export class RestaurantCreateCommand extends CommandRunner {
     const records: string[] = await this.readFile();
     records.shift();
 
+    let i = 1;
     const chunks = chunk(records, 1000);
     for (const chunk of chunks) {
+      console.log(`${i++} 번째`);
       const restaurants = chunk
         .map((record) => record.split('\t'))
         .map((recordItems) => serialize(recordItems));
@@ -34,7 +36,7 @@ export class RestaurantCreateCommand extends CommandRunner {
   async readFile() {
     const records = [];
     await new Promise<void>((resolve) => {
-      const fileStream = fs.createReadStream('tmp/csv/general.txt', {
+      const fileStream = fs.createReadStream('tmp/csv/rest.txt', {
         encoding: 'utf16le',
       });
       const readLine = readline.createInterface({ input: fileStream });

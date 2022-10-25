@@ -40,7 +40,7 @@ export class A001Service {
     const detail: PlaceDetail = await detailInterceptor.then(
       throwIfIsNil(new Error('장소 상세 정보를 가져오지 못했습니다.'))
     );
-    await sleep(1000);
+    await sleep(500);
 
     console.log(!!detail?.options?.find((option) => option.id === 15));
 

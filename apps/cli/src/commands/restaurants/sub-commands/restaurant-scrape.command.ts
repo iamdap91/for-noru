@@ -23,7 +23,7 @@ export class RestaurantScrapeCommand extends CommandRunner {
   }
 
   async run([code, id]: string[]) {
-    const { name, xCoordinate, yCoordinate } = await this.repository
+    const { name, coordinates } = await this.repository
       .findOne({ where: { id: +id, active: true } })
       .then(throwIfIsNil(new Error('존재하지 않는 레스토랑입니다.')));
 
@@ -32,10 +32,7 @@ export class RestaurantScrapeCommand extends CommandRunner {
 
     const browserFactory = await new BrowserFactory(browserOptions).init();
     const page = await browserFactory.getPage();
-    const restaurantInfo = await engine.restaurant(
-      { name, coordinates: [+xCoordinate, +yCoordinate] },
-      page
-    );
+    const restaurantInfo = await engine.restaurant({ name, coordinates }, page);
 
     await this.repository.update(+id, restaurantInfo);
   }

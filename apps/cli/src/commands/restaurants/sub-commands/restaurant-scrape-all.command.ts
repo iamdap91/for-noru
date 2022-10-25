@@ -40,15 +40,14 @@ export class RestaurantScrapeAllCommand extends CommandRunner {
     const page = await browserFactory.getPage();
 
     // 엔진 실행
-    for (const { id, name, xCoordinate, yCoordinate } of list) {
+    for (const { id, name, coordinates } of list) {
       try {
         const restaurantInfo = await engine.restaurant(
-          { name, coordinates: [+xCoordinate, +yCoordinate] },
+          { name, coordinates },
           page
         );
         await this.repository.update(+id, restaurantInfo);
       } catch (e) {
-        console.error(e);
         switch (true) {
           case e instanceof NavigationError:
           case e instanceof PageBlockedError:
