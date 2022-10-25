@@ -11,9 +11,10 @@ import {
 import { waitForCondition } from '@gong-gu/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Restaurant } from '@gong-gu/models';
+import { RESTAURANTS_QUEUE_NAME } from '@gong-gu/config';
 import { Repository } from 'typeorm';
 
-@Processor('restaurants')
+@Processor(RESTAURANTS_QUEUE_NAME)
 export class RestaurantScrapeConsumer implements OnModuleInit {
   private engine: EngineInterface;
   private page: Page;
