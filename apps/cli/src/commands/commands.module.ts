@@ -23,7 +23,7 @@ import { BullModule } from '@nestjs/bull';
     TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
     TypeOrmModule.forFeature([Restaurant]),
     BullModule.registerQueueAsync({
-      name: 'restaurants',
+      name: 'RESTAURANTS_QUEUE_NAME',
       useClass: QueueConfigService,
     }),
   ],
