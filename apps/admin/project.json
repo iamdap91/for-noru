@@ -9,6 +9,7 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
+        "generatePackageJson": true,
         "root": "apps/admin",
         "outputPath": "dist/apps/admin"
       },
