@@ -32,8 +32,8 @@ export class Restaurant extends CommonEntity {
 
   @IsOptional()
   @IsString({ each: true })
-  @Column({ type: 'int', array: true, nullable: true })
-  coordinates?: [number, number];
+  @Column({ type: 'varchar', array: true, nullable: true })
+  coordinates?: [string, string];
 
   @Index()
   @IsString()

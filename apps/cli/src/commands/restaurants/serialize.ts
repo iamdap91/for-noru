@@ -36,7 +36,7 @@ export const serialize = (items: string[]) => {
   return {
     ...arrangedRecords,
     ...ADDITIONAL_FIELDS,
-    coordinates: x && y ? [+x, +y] : null,
+    coordinates: x && y ? [x, y] : null,
     active: +arrangedRecords.active === 1,
     postalCode: +arrangedRecords.postalCode,
   };
