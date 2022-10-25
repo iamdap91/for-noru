@@ -1,0 +1,7 @@
+version: '3.7'
+services:
+  build:
+    image: for-noru:${TAG}
+    build:
+      context: ../../
+      dockerfile: .deploy/cli/Dockerfile
