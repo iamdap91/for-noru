@@ -5,6 +5,7 @@ import {
   PostgresConfigService,
   QueueConfigModule,
   QueueConfigService,
+  RESTAURANTS_QUEUE_NAME,
 } from '@gong-gu/config';
 import {
   RestaurantCommand,
@@ -23,7 +24,7 @@ import { BullModule } from '@nestjs/bull';
     TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
     TypeOrmModule.forFeature([Restaurant]),
     BullModule.registerQueueAsync({
-      name: 'RESTAURANTS_QUEUE_NAME',
+      name: RESTAURANTS_QUEUE_NAME,
       useClass: QueueConfigService,
     }),
   ],
