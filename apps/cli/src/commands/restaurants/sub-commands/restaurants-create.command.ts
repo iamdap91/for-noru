@@ -3,12 +3,17 @@ import * as fs from 'fs';
 import * as readline from 'readline';
 import { chunk } from 'lodash';
 import { Logger } from '@nestjs/common';
-import { RestaurantsService } from '@gong-gu/backend/restaurants';
 import { serialize } from '../serialize';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Restaurant } from '@gong-gu/models';
+import { Repository } from 'typeorm';
 
 @SubCommand({ name: 'create', description: '음식점 생성' })
 export class RestaurantCreateCommand extends CommandRunner {
-  constructor(private readonly restaurantsService: RestaurantsService) {
+  constructor(
+    @InjectRepository(Restaurant)
+    private readonly repository: Repository<Restaurant>
+  ) {
     super();
   }
 
@@ -22,7 +27,7 @@ export class RestaurantCreateCommand extends CommandRunner {
         .map((record) => record.split('\t'))
         .map((recordItems) => serialize(recordItems));
 
-      await this.restaurantsService.bulkInsert(restaurants);
+      await this.repository.insert(restaurants);
     }
   }
 

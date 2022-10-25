@@ -1,11 +1,13 @@
 import { CommandRunner, SubCommand } from 'nest-commander';
-import { RestaurantsService } from '@gong-gu/backend/restaurants';
 import {
   BrowserFactory,
   BrowserOptionInterface,
   EngineFactory,
 } from '@gong-gu/engine';
 import { throwIfIsNil } from '@gong-gu/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Restaurant } from '@gong-gu/models';
+import { Repository } from 'typeorm';
 
 @SubCommand({
   name: 'scrape',
@@ -13,12 +15,15 @@ import { throwIfIsNil } from '@gong-gu/common';
   description: '네이버 크롤링해서 반려동물 동반인지 체크',
 })
 export class RestaurantScrapeCommand extends CommandRunner {
-  constructor(private readonly restaurantsService: RestaurantsService) {
+  constructor(
+    @InjectRepository(Restaurant)
+    private readonly repository: Repository<Restaurant>
+  ) {
     super();
   }
 
   async run([code, id]: string[]) {
-    const { name, xCoordinate, yCoordinate } = await this.restaurantsService
+    const { name, xCoordinate, yCoordinate } = await this.repository
       .findOne({ where: { id: +id, active: true } })
       .then(throwIfIsNil(new Error('존재하지 않는 레스토랑입니다.')));
 
@@ -32,6 +37,6 @@ export class RestaurantScrapeCommand extends CommandRunner {
       page
     );
 
-    await this.restaurantsService.update(+id, restaurantInfo);
+    await this.repository.update(+id, restaurantInfo);
   }
 }

@@ -1,5 +1,4 @@
 import { CommandRunner, SubCommand } from 'nest-commander';
-import { RestaurantsService } from '@gong-gu/backend/restaurants';
 import {
   BrowserFactory,
   BrowserOptionInterface,
@@ -8,6 +7,9 @@ import {
   PageBlockedError,
 } from '@gong-gu/engine';
 import ora from 'ora';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Restaurant } from '@gong-gu/models';
+import { Repository } from 'typeorm';
 
 @SubCommand({
   name: 'scrape-all',
@@ -15,13 +17,16 @@ import ora from 'ora';
   description: '네이버 크롤링해서 반려동물 동반인지 체크',
 })
 export class RestaurantScrapeAllCommand extends CommandRunner {
-  constructor(private readonly restaurantsService: RestaurantsService) {
+  constructor(
+    @InjectRepository(Restaurant)
+    private readonly repository: Repository<Restaurant>
+  ) {
     super();
   }
 
   async run([code]: string[]) {
     const spinner = ora('scrape-all start').start();
-    const list = await this.restaurantsService.find({
+    const list = await this.repository.find({
       where: { active: true },
     });
     spinner.warn(`List length : ${list.length}`);
@@ -41,7 +46,7 @@ export class RestaurantScrapeAllCommand extends CommandRunner {
           { name, coordinates: [+xCoordinate, +yCoordinate] },
           page
         );
-        await this.restaurantsService.update(+id, restaurantInfo);
+        await this.repository.update(+id, restaurantInfo);
       } catch (e) {
         console.error(e);
         switch (true) {

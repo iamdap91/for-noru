@@ -4,8 +4,8 @@ import {
   PostgresConfigModule,
   PostgresConfigService,
   QueueConfigModule,
+  QueueConfigService,
 } from '@gong-gu/config';
-import { BackendRestaurantsModule } from '@gong-gu/backend/restaurants';
 import {
   RestaurantCommand,
   RestaurantCreateCommand,
@@ -13,13 +13,19 @@ import {
   RestaurantScrapeAllCommand,
 } from './restaurants';
 import { QueueCommand, QueuePushRestaurantsCommand } from './queue';
+import { Restaurant } from '@gong-gu/models';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
     PostgresConfigModule,
-    BackendRestaurantsModule,
     QueueConfigModule,
     TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
+    TypeOrmModule.forFeature([Restaurant]),
+    BullModule.registerQueueAsync({
+      name: 'restaurants',
+      useClass: QueueConfigService,
+    }),
   ],
   providers: [
     RestaurantCommand,

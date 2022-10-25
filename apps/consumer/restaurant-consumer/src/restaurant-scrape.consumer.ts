@@ -1,8 +1,7 @@
 import { Process, Processor } from '@nestjs/bull';
 import { Page } from 'puppeteer';
 import { DoneCallback, Job } from 'bull';
-import { QUEUE_NAME, RestaurantsService } from '@gong-gu/backend/restaurants';
-import { Logger, OnModuleInit } from '@nestjs/common';
+import { OnModuleInit } from '@nestjs/common';
 import {
   BrowserFactory,
   BrowserOptionInterface,
@@ -10,29 +9,32 @@ import {
   EngineInterface,
 } from '@gong-gu/engine';
 import { waitForCondition } from '@gong-gu/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Restaurant } from '@gong-gu/models';
+import { Repository } from 'typeorm';
 
-@Processor(QUEUE_NAME)
+@Processor('restaurants')
 export class RestaurantScrapeConsumer implements OnModuleInit {
   private engine: EngineInterface;
   private page: Page;
-  private logger: Logger;
-  constructor(private readonly service: RestaurantsService) {
-    this.logger = new Logger('consumer');
-  }
+  constructor(
+    @InjectRepository(Restaurant)
+    private readonly repository: Repository<Restaurant>
+  ) {}
 
   @Process({ concurrency: 1 })
   async run({ data: id }: Job, done: DoneCallback) {
     await waitForCondition(() => !!this.page, 500);
 
     try {
-      const { name, xCoordinate, yCoordinate } = await this.service.findOne({
+      const { name, xCoordinate, yCoordinate } = await this.repository.findOne({
         where: { id },
       });
       const restaurantInfo = await this.engine.restaurant(
         { name, coordinates: [+xCoordinate, +yCoordinate] },
         this.page
       );
-      await this.service.update(+id, restaurantInfo);
+      await this.repository.update(+id, restaurantInfo);
       done(null);
     } catch (e) {
       console.error(e);
