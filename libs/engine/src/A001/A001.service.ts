@@ -70,12 +70,12 @@ export class A001Service {
     });
   }
 
-  figureUrl(name: string, coordinates: [number, number]) {
+  figureUrl(name: string, coordinates: [string, string]) {
     let url = `${NAVER_MAP_URL}/${name}`;
 
     const [origX, origY] = coordinates || [];
     if (Boolean(origX && origY)) {
-      const [x, y] = EPS2097.toEPSG3857(coordinates);
+      const [x, y] = EPS2097.toEPSG3857([+origX, +origY]);
       url += `?c=${x},${y},0,0,0,0,dh`;
     }
 
