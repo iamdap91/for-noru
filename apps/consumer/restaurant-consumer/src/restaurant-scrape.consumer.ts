@@ -18,6 +18,7 @@ import { Repository } from 'typeorm';
 export class RestaurantScrapeConsumer implements OnModuleInit {
   private engine: EngineInterface;
   private page: Page;
+
   constructor(
     @InjectRepository(Restaurant)
     private readonly repository: Repository<Restaurant>

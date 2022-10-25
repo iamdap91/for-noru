@@ -23,6 +23,7 @@ export class QueuePushRestaurantsCommand extends CommandRunner {
   async run() {
     const restaurants = await this.repository.find({
       where: { active: true },
+      order: { id: 'desc' },
     });
 
     for (const { id } of restaurants) {
