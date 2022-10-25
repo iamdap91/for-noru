@@ -42,8 +42,6 @@ export class A001Service {
     );
     await sleep(1000);
 
-    console.log(name, !!detail?.options?.find((option) => option.id === 15));
-    console.log('=======================================================');
     return {
       images: [detail?.imageURL || detail?.images?.[0]?.url || ''],
       categories: detail.categories || [],
