@@ -29,11 +29,11 @@ export class RestaurantScrapeConsumer implements OnModuleInit {
     await waitForCondition(() => !!this.page, 500);
 
     try {
-      const { name, xCoordinate, yCoordinate } = await this.repository.findOne({
+      const { name, coordinates } = await this.repository.findOne({
         where: { id },
       });
       const restaurantInfo = await this.engine.restaurant(
-        { name, coordinates: [+xCoordinate, +yCoordinate] },
+        { name, coordinates },
         this.page
       );
       await this.repository.update(+id, restaurantInfo);
