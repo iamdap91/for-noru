@@ -26,7 +26,12 @@ export class QueuePushRestaurantsCommand extends CommandRunner {
     });
 
     for (const { id } of restaurants) {
-      await this.queue.add(id, { jobId: id });
+      await this.queue.add(id, {
+        jobId: id,
+        attempts: 2,
+        removeOnComplete: false,
+        removeOnFail: false,
+      });
     }
   }
 }

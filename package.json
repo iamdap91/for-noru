@@ -5,7 +5,7 @@
   "scripts": {
     "start:api:dev": "nx serve api",
     "start:admin:dev": "nx serve admin",
-    "start:cli:dev": "nx serve cli",
+    "build:cli:dev": "nx serve cli",
     "start:restaurant-consumer:dev": "nx serve consumer-restaurant-consumer",
     "build:api": "nx build api",
     "graph": "nx dep-graph"
