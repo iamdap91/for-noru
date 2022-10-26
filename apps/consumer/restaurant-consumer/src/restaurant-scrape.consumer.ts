@@ -1,7 +1,7 @@
-import { Process, Processor } from '@nestjs/bull';
+import { OnQueueCompleted, Process, Processor } from '@nestjs/bull';
 import { Page } from 'puppeteer';
 import { DoneCallback, Job } from 'bull';
-import { OnModuleInit } from '@nestjs/common';
+import { Logger, OnModuleInit } from '@nestjs/common';
 import {
   BrowserFactory,
   BrowserOptionInterface,
@@ -54,5 +54,10 @@ export class RestaurantScrapeConsumer implements OnModuleInit {
     // 브라우저 생성
     const browserFactory = await new BrowserFactory(browserOptions).init();
     this.page = await browserFactory.getPage();
+  }
+
+  @OnQueueCompleted()
+  async onQueueComplete(job: Job) {
+    Logger.error(`${job?.data} done`);
   }
 }

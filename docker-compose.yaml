@@ -1,7 +1,7 @@
 version: '3.1'
 
 services:
-  db:
+  postgres:
     image: postgres
     environment:
       POSTGRES_USER: ${DB_USER}
@@ -21,3 +21,8 @@ services:
 
   consumer:
     image: for-noru/consumer/restaurant
+
+  redis:
+    image: redis:6.0.5
+    ports:
+      - '6379:6379'
