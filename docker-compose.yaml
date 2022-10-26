@@ -20,7 +20,7 @@ services:
     command: server /data --console-address ":9001"
 
   consumer:
-    image: for-noru/consumer/restaurant:44ced7329f443f428250111d9a669f65c2f3ba28
+    image: for-noru/consumer/restaurant:latest
     ports:
       - '3333:3333'
 
