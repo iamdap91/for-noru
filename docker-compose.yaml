@@ -22,7 +22,10 @@ services:
   consumer:
     image: for-noru/consumer/restaurant:latest
     ports:
-      - '3333:3333'
+      - ${PORT}:${PORT}
+    environment:
+      DB_HOST: 'postgres'
+      DB_NAME: ${DB_NAME}
 
   redis:
     image: redis:6.0.5

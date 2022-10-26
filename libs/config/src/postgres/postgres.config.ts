@@ -14,7 +14,7 @@ export default registerAs('postgres', (): PostgresConnectionOptions => {
     port: +DB_PORT || 5432,
     username: DB_USER || 'postgres',
     password: DB_PASSWORD || 'example',
-    database: DB_NAME || 'gong-gu',
+    database: DB_NAME || 'for-noru',
     entities: [Product, ProductOption, Restaurant],
     namingStrategy: new SnakeNamingStrategy(),
     synchronize: true,
