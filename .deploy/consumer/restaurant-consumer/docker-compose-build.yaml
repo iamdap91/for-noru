@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   build:
-    image: for-noru/cli:${TAG}
+    image: for-noru/consumer/restaurant:${TAG}
     build:
-      context: ../../
+      context: ../../../
       dockerfile: .deploy/cli/Dockerfile

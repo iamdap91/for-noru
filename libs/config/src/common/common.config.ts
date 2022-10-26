@@ -3,9 +3,9 @@ import { registerAs } from '@nestjs/config';
 const { env } = process;
 
 enum NodeEnv {
-  DEVELOPMENT = 'dev',
+  DEVELOPMENT = 'development',
   TEST = 'test',
-  PRODUCTION = 'prod',
+  PRODUCTION = 'production',
 }
 
 interface CommonConfig {

@@ -11,6 +11,8 @@ else
   exit 0
 fi
 
+TAG="$(git rev-parse HEAD)"
+export TAG
 docker-compose -f docker-compose-build.yaml build build
 #aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
 #docker tag $IMAGE:$TAG $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$IMAGE:$TAG
