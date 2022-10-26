@@ -18,3 +18,6 @@ services:
       MINIO_ACCESS_KEY: minio
       MINIO_SECRET_KEY: password
     command: server /data --console-address ":9001"
+
+  consumer:
+    image: for-noru/consumer/restaurant

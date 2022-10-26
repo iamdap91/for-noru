@@ -23,5 +23,5 @@ ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_a
 RUN chmod +x /usr/local/bin/dumb-init
 ENTRYPOINT ["dumb-init", "--", "node", "-r", "source-map-support/register", "main.js"]
 
-COPY --from=build /usr/src/app/dist/apps/cli ./
+COPY --from=build /usr/src/app/dist/apps/consumer/restaurant-consumer ./
 RUN npm install && npm i source-map-support
