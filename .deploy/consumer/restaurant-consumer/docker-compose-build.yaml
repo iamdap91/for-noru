@@ -4,4 +4,4 @@ services:
     image: for-noru/consumer/restaurant:${TAG}
     build:
       context: ../../../
-      dockerfile: .deploy/cli/Dockerfile
+      dockerfile: .deploy/consumer/restaurant-consumer/Dockerfile
