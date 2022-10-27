@@ -21,18 +21,17 @@ services:
 
   consumer:
     image: for-noru/consumer/restaurant:latest
-    ports:
-      - ${PORT}:${PORT}
     environment:
       DB_HOST: 'postgres'
       DB_NAME: ${DB_NAME}
       BROWSER_EXECUTABLE_PATH: ${BROWSER_EXECUTABLE_PATH}
+    deploy:
+      replicas: 2
 
   redis:
     image: redis:6.0.5
     ports:
       - '6379:6379'
-
-  ubuntu:
-    image: node:16.14.0-stretch-slim
-    command: ['tail', '-f', '/dev/null']
+#  ubuntu:
+#    image: node:16.14.0-stretch-slim
+#    command: ['tail', '-f', '/dev/null']
