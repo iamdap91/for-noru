@@ -24,7 +24,9 @@ services:
     environment:
       DB_HOST: 'postgres'
       DB_NAME: ${DB_NAME}
-#      BROWSER_EXECUTABLE_PATH: ${BROWSER_EXECUTABLE_PATH}
+      BROWSER_EXECUTABLE_PATH: ${BROWSER_EXECUTABLE_PATH}
+      REDIS_HOST: 'redis'
+      REDIS_PORT: '6379'
     deploy:
       replicas: 2
 
