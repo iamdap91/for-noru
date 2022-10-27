@@ -32,7 +32,8 @@ export class RestaurantScrapeConsumer implements OnModuleInit {
 
   @Process({ concurrency: 1 })
   async run({ data: id }: Job, done: DoneCallback) {
-    await waitForCondition(() => !!this.page, 500);
+    console.log(id);
+    // await waitForCondition(() => !!this.page, 500);
 
     try {
       const { name, coordinates } = await this.repository.findOne({
