@@ -5,7 +5,7 @@ const { env } = process;
 
 export default registerAs('queue', () => {
   const config: RedisOptions = {
-    host: env.REDIS_HOST || 'localhost',
+    host: env.REDIS_HOST || 'redis',
     port: Number(env.REDIS_PORT) || 6379,
   };
 
