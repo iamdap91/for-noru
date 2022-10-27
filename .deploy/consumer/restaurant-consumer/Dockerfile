@@ -25,3 +25,4 @@ ENTRYPOINT ["dumb-init", "--", "node", "-r", "source-map-support/register", "mai
 
 COPY --from=build /usr/src/app/dist/apps/consumer/restaurant-consumer ./
 RUN npm install && npm i source-map-support && npm i pg --save
+RUN sudo apt install chromium

@@ -1,4 +1,9 @@
-import { OnQueueCompleted, Process, Processor } from '@nestjs/bull';
+import {
+  OnQueueCompleted,
+  OnQueueFailed,
+  Process,
+  Processor,
+} from '@nestjs/bull';
 import { Page } from 'puppeteer';
 import { DoneCallback, Job } from 'bull';
 import { Logger, OnModuleInit } from '@nestjs/common';
@@ -39,7 +44,6 @@ export class RestaurantScrapeConsumer implements OnModuleInit {
       await this.repository.update(+id, restaurantInfo);
       done(null);
     } catch (e) {
-      console.error(e);
       done(e);
     }
   }
@@ -58,6 +62,11 @@ export class RestaurantScrapeConsumer implements OnModuleInit {
 
   @OnQueueCompleted()
   async onQueueComplete(job: Job) {
-    Logger.error(`${job?.data} done`);
+    Logger.log(`${job?.data} done`);
+  }
+
+  @OnQueueFailed()
+  async onQueueFailed(job: Job) {
+    Logger.error(`jobId: ${job?.data}  Failed : ${job?.failedReason}`);
   }
 }

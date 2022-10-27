@@ -14,7 +14,6 @@ export class A001Service {
     page: Page
   ): Promise<FormattedPlace> {
     const url = this.figureUrl(name, coordinates);
-    console.log(name, coordinates, url);
 
     const listInterceptor = this.interceptRequest(
       'https://map.naver.com/v5/api/search?caller=pcweb&query=',
@@ -41,8 +40,6 @@ export class A001Service {
       throwIfIsNil(new Error('장소 상세 정보를 가져오지 못했습니다.'))
     );
     await sleep(500);
-
-    console.log(!!detail?.options?.find((option) => option.id === 15));
 
     return {
       images: [detail?.imageURL || detail?.images?.[0]?.url || ''],

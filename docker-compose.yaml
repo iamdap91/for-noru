@@ -33,5 +33,5 @@ services:
       - '6379:6379'
 
   ubuntu:
-    image: ubuntu
+    image: node:16.14.0-stretch-slim
     command: ['tail', '-f', '/dev/null']

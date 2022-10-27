@@ -25,7 +25,7 @@ export class BrowserFactory {
   options: BrowserOptionInterface;
 
   constructor(options: BrowserOptionInterface) {
-    this.options = options;
+    this.options = options || {};
   }
 
   async init(): Promise<BrowserFactory> {
@@ -36,9 +36,12 @@ export class BrowserFactory {
   async createBrowser(options: BrowserOptionInterface): Promise<Browser> {
     const { fastMode, ...launchOptions } = options;
 
-    const browser = await puppeteer
-      .use(StealthPlugin())
-      .launch({ ...DEFAULT_BROWSER_OPTIONS, ...launchOptions });
+    const browser = await puppeteer.use(StealthPlugin()).launch({
+      ...DEFAULT_BROWSER_OPTIONS,
+      ...launchOptions,
+      executablePath:
+        process?.env?.BROWSER_EXECUTABLE_PATH || '/usr/local/bin/chromium',
+    });
 
     if (fastMode) {
       const [page] = await browser.pages();
