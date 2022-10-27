@@ -28,12 +28,13 @@ services:
       REDIS_HOST: 'redis'
       REDIS_PORT: '6379'
     deploy:
-      replicas: 2
+      replicas: 1
 
   redis:
     image: redis:6.0.5
     ports:
       - '6379:6379'
+
 #  ubuntu:
 #    image: node:16.14.0-stretch-slim
 #    command: ['tail', '-f', '/dev/null']

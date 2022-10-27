@@ -32,8 +32,7 @@ export class RestaurantScrapeConsumer implements OnModuleInit {
 
   @Process({ concurrency: 1 })
   async run({ data: id }: Job, done: DoneCallback) {
-    console.log(id);
-    // await waitForCondition(() => !!this.page, 500);
+    await waitForCondition(() => !!this.page, 500);
 
     try {
       const { name, coordinates } = await this.repository.findOne({
@@ -65,7 +64,6 @@ export class RestaurantScrapeConsumer implements OnModuleInit {
   @OnQueueActive()
   async onQueueActive(job: Job) {
     Logger.log(`jobId: ${job.id} start`);
-    console.log(`jobId: ${job.id} start`);
   }
 
   @OnQueueCompleted()
