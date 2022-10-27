@@ -24,7 +24,7 @@ services:
     environment:
       DB_HOST: 'postgres'
       DB_NAME: ${DB_NAME}
-      BROWSER_EXECUTABLE_PATH: ${BROWSER_EXECUTABLE_PATH}
+#      BROWSER_EXECUTABLE_PATH: ${BROWSER_EXECUTABLE_PATH}
     deploy:
       replicas: 2
 
