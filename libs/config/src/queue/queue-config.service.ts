@@ -7,6 +7,6 @@ export class QueueConfigService implements BullOptionsFactory {
   constructor(private configService: ConfigService) {}
 
   createBullOptions(): BullModuleOptions {
-    return this.configService.get<BullModuleOptions>('redis');
+    return this.configService.get<BullModuleOptions>('queue');
   }
 }

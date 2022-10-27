@@ -30,7 +30,8 @@ export class QueuePushRestaurantsCommand extends CommandRunner {
       await this.queue.add(id, {
         jobId: id,
         attempts: 2,
-        removeOnFail: false,
+        removeOnFail: true,
+        removeOnComplete: true,
       });
     }
   }

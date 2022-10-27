@@ -4,7 +4,6 @@ import {
   PostgresConfigModule,
   PostgresConfigService,
   QueueConfigModule,
-  QueueConfigService,
   RESTAURANTS_QUEUE_NAME,
 } from '@gong-gu/config';
 import { RestaurantScrapeConsumer } from './restaurant-scrape.consumer';
@@ -17,9 +16,12 @@ import { Restaurant } from '@gong-gu/models';
     QueueConfigModule,
     TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
     TypeOrmModule.forFeature([Restaurant]),
-    BullModule.registerQueueAsync({
+    BullModule.registerQueue({
       name: RESTAURANTS_QUEUE_NAME,
-      useClass: QueueConfigService,
+      redis: {
+        host: process.env.REDIS_HOST || 'redis',
+        port: +process.env.REDIS_PORT || 6379,
+      },
     }),
   ],
   providers: [RestaurantScrapeConsumer],

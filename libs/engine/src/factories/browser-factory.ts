@@ -7,9 +7,36 @@ import { BrowserOptionInterface } from '../interfaces';
 const DEFAULT_BROWSER_OPTIONS = {
   args: [
     '--no-sandbox',
+    '--disable-background-networking',
+    '--disable-background-timer-throttling',
+    '--disable-backgrounding-occluded-windows',
+    '--disable-breakpad',
     '--disable-setuid-sandbox',
     '--disable-dev-shm-usage',
     '--disable-extensions',
+    '--disable-features=AudioServiceOutOfProcess',
+    '--disable-default-apps',
+    '--disable-hang-monitor',
+    '--disable-ipc-flooding-protection',
+    '--disable-notifications',
+    '--disable-offer-store-unmasked-wallet-cards',
+    '--disable-print-preview',
+    '--disable-popup-blocking',
+    '--disable-prompt-on-repost',
+    '--disable-renderer-backgrounding',
+    '--disable-speech-api',
+    '--disable-sync',
+    '--hide-scrollbars',
+    '--ignore-gpu-blacklist',
+    '--metrics-recording-only',
+    '--mute-audio',
+    '--no-default-browser-check',
+    '--no-first-run',
+    '--no-pings',
+    '--no-zygote',
+    '--password-store=basic',
+    '--use-mock-keychain',
+    '--lang=ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,ja;q=0.6,da;q=0.5,zh-CN;q=0.4,zh;q=0.3',
   ],
 };
 const TYPES_TO_BLOCK: ResourceType[] = [
@@ -37,10 +64,9 @@ export class BrowserFactory {
     const { fastMode, ...launchOptions } = options;
 
     const browser = await puppeteer.use(StealthPlugin()).launch({
+      defaultViewport: { width: 1366, height: 768 },
       ...DEFAULT_BROWSER_OPTIONS,
       ...launchOptions,
-      executablePath:
-        process?.env?.BROWSER_EXECUTABLE_PATH || '/usr/local/bin/chromium',
     });
 
     if (fastMode) {
