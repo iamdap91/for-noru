@@ -31,3 +31,7 @@ services:
     image: redis:6.0.5
     ports:
       - '6379:6379'
+
+  ubuntu:
+    image: ubuntu
+    command: ['tail', '-f', '/dev/null']
