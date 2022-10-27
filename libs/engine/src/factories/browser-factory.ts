@@ -4,7 +4,14 @@ import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { BrowserOptionInterface } from '../interfaces';
 
-// const DEFAULT_OPTIONS = { args: ['--no-sandbox'] };
+const DEFAULT_BROWSER_OPTIONS = {
+  args: [
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-dev-shm-usage',
+    '--disable-extensions',
+  ],
+};
 const TYPES_TO_BLOCK: ResourceType[] = [
   'image',
   'media',
@@ -29,7 +36,9 @@ export class BrowserFactory {
   async createBrowser(options: BrowserOptionInterface): Promise<Browser> {
     const { fastMode, ...launchOptions } = options;
 
-    const browser = await puppeteer.use(StealthPlugin()).launch(launchOptions);
+    const browser = await puppeteer
+      .use(StealthPlugin())
+      .launch({ ...DEFAULT_BROWSER_OPTIONS, ...launchOptions });
 
     if (fastMode) {
       const [page] = await browser.pages();
