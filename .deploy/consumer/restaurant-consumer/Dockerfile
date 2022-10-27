@@ -21,9 +21,9 @@ WORKDIR /usr/src/app
 
 ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
 RUN chmod +x /usr/local/bin/dumb-init
-ENTRYPOINT ["dumb-init", "--", "node", "-r", "source-map-support/register", "main.js"]
+#ENTRYPOINT ["dumb-init", "--", "node", "-r", "source-map-support/register", "main.js"]
+ENTRYPOINT ["BROWSER_EXECUTABLE_PATH=/usr/bin/chromium", "node", "main.js"]
 
 COPY --from=build /usr/src/app/dist/apps/consumer/restaurant-consumer ./
 RUN npm install && npm i source-map-support && npm i pg --save
 RUN apt update && apt install chromium -y
-RUN export BROWSER_EXECUTABLE_PATH="/usr/bin/chromium"
