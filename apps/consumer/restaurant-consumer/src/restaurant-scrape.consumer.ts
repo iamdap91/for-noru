@@ -1,4 +1,5 @@
 import {
+  OnQueueActive,
   OnQueueCompleted,
   OnQueueFailed,
   Process,
@@ -58,6 +59,12 @@ export class RestaurantScrapeConsumer implements OnModuleInit {
     // 브라우저 생성
     const browserFactory = await new BrowserFactory(browserOptions).init();
     this.page = await browserFactory.getPage();
+  }
+
+  @OnQueueActive()
+  async onQueueActive(job: Job) {
+    Logger.log(`jobId: ${job.id} start`);
+    console.log(`jobId: ${job.id} start`);
   }
 
   @OnQueueCompleted()
