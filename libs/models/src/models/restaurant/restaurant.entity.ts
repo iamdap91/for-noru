@@ -19,7 +19,7 @@ export class Restaurant extends CommonEntity {
   name: string;
 
   @IsString()
-  @Column({ type: 'int' })
+  @Column({ type: 'int', nullable: true })
   postalCode: number;
 
   @IsString()
@@ -39,19 +39,4 @@ export class Restaurant extends CommonEntity {
   @IsString()
   @Column({ type: 'boolean' })
   active: boolean;
-
-  @Index()
-  @IsString()
-  @Column({ type: 'boolean', default: false })
-  petAllowed: boolean;
-
-  @IsOptional()
-  @IsString({ each: true })
-  @Column({ type: 'varchar', array: true, nullable: true })
-  images?: string[];
-
-  @IsOptional()
-  @IsString({ each: true })
-  @Column({ type: 'varchar', array: true, nullable: true })
-  categories?: string[];
 }
