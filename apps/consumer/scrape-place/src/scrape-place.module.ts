@@ -8,6 +8,7 @@ import {
 import { ScrapePlaceConsumer } from './scrape-place.consumer';
 import { BullModule } from '@nestjs/bull';
 import { StandardPlace } from '@gong-gu/models';
+import { environment } from './environments/environment';
 
 @Module({
   imports: [
@@ -17,8 +18,8 @@ import { StandardPlace } from '@gong-gu/models';
     BullModule.registerQueue({
       name: RESTAURANTS_QUEUE_NAME,
       redis: {
-        host: process.env.REDIS_HOST || 'redis',
-        port: +process.env.REDIS_PORT || 6379,
+        host: environment.REDIS_HOST || 'redis',
+        port: +environment.REDIS_PORT || 6379,
       },
     }),
   ],
