@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   PostgresConfigModule,
   PostgresConfigService,
-  QueueConfigModule,
   RESTAURANTS_QUEUE_NAME,
 } from '@gong-gu/config';
 import { RestaurantScrapeConsumer } from './restaurant-scrape.consumer';
@@ -13,7 +12,6 @@ import { Restaurant } from '@gong-gu/models';
 @Module({
   imports: [
     PostgresConfigModule,
-    QueueConfigModule,
     TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
     TypeOrmModule.forFeature([Restaurant]),
     BullModule.registerQueue({
