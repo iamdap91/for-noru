@@ -12,7 +12,7 @@ export default class Engine implements BaseEngine {
   }
 
   @WithBrowser({ headless: true, fastMode: true, channel: 'chrome' })
-  async restaurant(param: EngineParam, page: Page) {
-    return await this.service.restaurant(param, page);
+  async place(param: EngineParam, page: Page) {
+    return await this.service.place(param, page);
   }
 }

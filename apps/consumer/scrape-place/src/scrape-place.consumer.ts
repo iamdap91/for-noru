@@ -42,7 +42,7 @@ export class ScrapePlaceConsumer implements OnModuleInit {
           where: { id },
         })
         .then(throwIfIsNil(new NotFoundError('표준 데이터 정보가 없습니다.')));
-      const placeInfo = await this.engine.restaurant(
+      const placeInfo = await this.engine.place(
         { name, coordinates },
         this.page
       );

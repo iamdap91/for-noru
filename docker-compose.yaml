@@ -20,7 +20,7 @@ services:
     command: server /data --console-address ":9001"
 
   consumer:
-    image: for-noru/consumer/restaurant:latest
+    image: for-noru/consumer/scrape-place:latest
     environment:
       DB_HOST: 'postgres'
       DB_NAME: ${DB_NAME}

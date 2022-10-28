@@ -42,7 +42,7 @@ export class PlaceScrapeAllCommand extends CommandRunner {
     // 엔진 실행
     for (const { id, name, coordinates } of list) {
       try {
-        const placeInfo = await engine.restaurant({ name, coordinates }, page);
+        const placeInfo = await engine.place({ name, coordinates }, page);
         await this.repository.update(+id, placeInfo);
       } catch (e) {
         switch (true) {

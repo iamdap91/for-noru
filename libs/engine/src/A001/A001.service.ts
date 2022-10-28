@@ -9,7 +9,7 @@ import { PlaceDetail } from './interface';
 
 @Injectable()
 export class A001Service {
-  async restaurant(
+  async place(
     { name, coordinates }: EngineParam,
     page: Page
   ): Promise<FormattedPlace> {
@@ -23,10 +23,10 @@ export class A001Service {
     await page.waitForNavigation();
     const listResponse: any = await listInterceptor;
     // 해당하는 내역이 하나밖에 없을 경우 `네이버 플레이스`에서 자동으로 하나뿐인 장소로 리다이렉트 해주므로 에러차리 안함.
-    const restaurant = listResponse?.result?.place?.list?.find(
+    const placeInfo = listResponse?.result?.place?.list?.find(
       (item: { name: string }) => nonBlank(name).includes(nonBlank(item.name))
     );
-    if (!restaurant) {
+    if (!placeInfo) {
       throw new Error('장소 상세 정보를 가져오지 못했습니다.');
     }
 
@@ -35,7 +35,7 @@ export class A001Service {
       page
     );
 
-    await page.goto(`${NAVER_MAP_URL}/${name}/place/${restaurant?.id || ''}`);
+    await page.goto(`${NAVER_MAP_URL}/${name}/place/${placeInfo?.id || ''}`);
     const detail: PlaceDetail = await detailInterceptor.then(
       throwIfIsNil(new Error('장소 상세 정보를 가져오지 못했습니다.'))
     );

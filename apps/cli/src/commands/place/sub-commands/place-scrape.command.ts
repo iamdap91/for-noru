@@ -32,7 +32,7 @@ export class PlaceScrapeCommand extends CommandRunner {
 
     const browserFactory = await new BrowserFactory(browserOptions).init();
     const page = await browserFactory.getPage();
-    const placeInfo = await engine.restaurant({ name, coordinates }, page);
+    const placeInfo = await engine.place({ name, coordinates }, page);
 
     await this.repository.update(+id, placeInfo);
   }
