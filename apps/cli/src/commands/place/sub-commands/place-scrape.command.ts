@@ -17,13 +17,13 @@ import { Repository } from 'typeorm';
 export class PlaceScrapeCommand extends CommandRunner {
   constructor(
     @InjectRepository(StandardPlace)
-    private readonly repository: Repository<StandardPlace>
+    private readonly standardPlaceRepo: Repository<StandardPlace>
   ) {
     super();
   }
 
   async run([code, id]: string[]) {
-    const { name, coordinates } = await this.repository
+    const { name, coordinates } = await this.standardPlaceRepo
       .findOne({ where: { id: +id, active: true } })
       .then(throwIfIsNil(new Error('존재하지 않는 장소입니다.')));
 
@@ -34,6 +34,6 @@ export class PlaceScrapeCommand extends CommandRunner {
     const page = await browserFactory.getPage();
     const placeInfo = await engine.place({ name, coordinates }, page);
 
-    await this.repository.update(+id, placeInfo);
+    await this.standardPlaceRepo.update(+id, placeInfo);
   }
 }
