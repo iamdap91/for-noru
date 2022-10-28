@@ -18,11 +18,11 @@ import {
 import { throwIfIsNil, waitForCondition } from '@gong-gu/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StandardPlace } from '@gong-gu/models';
-import { RESTAURANTS_QUEUE_NAME } from '@gong-gu/config';
+import { STANDARD_PLACE_QUEUE_NAME } from '@gong-gu/config';
 import { Repository } from 'typeorm';
 import { NotFoundError } from 'rxjs';
 
-@Processor(RESTAURANTS_QUEUE_NAME)
+@Processor(STANDARD_PLACE_QUEUE_NAME)
 export class ScrapePlaceConsumer implements OnModuleInit {
   private engine: EngineInterface;
   private page: Page;

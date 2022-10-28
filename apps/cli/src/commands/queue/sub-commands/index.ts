@@ -1,1 +1,1 @@
-export * from './queue-push-restaurants.command';
+export * from './queue-push-place.command';

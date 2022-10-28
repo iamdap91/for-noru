@@ -1,11 +1,11 @@
 import { Command, CommandRunner } from 'nest-commander';
-import { QueuePushRestaurantsCommand } from './sub-commands';
+import { QueuePushPlaceCommand } from './sub-commands';
 
 @Command({
   name: 'queue-push',
   arguments: '[name]',
   description: '큐 적재 cli',
-  subCommands: [QueuePushRestaurantsCommand],
+  subCommands: [QueuePushPlaceCommand],
 })
 export class QueueCommand extends CommandRunner {
   async run(): Promise<void> {

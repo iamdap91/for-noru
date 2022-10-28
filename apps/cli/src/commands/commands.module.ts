@@ -5,7 +5,7 @@ import {
   PostgresConfigService,
   QueueConfigModule,
   QueueConfigService,
-  RESTAURANTS_QUEUE_NAME,
+  STANDARD_PLACE_QUEUE_NAME,
 } from '@gong-gu/config';
 import {
   PlaceCommand,
@@ -13,7 +13,7 @@ import {
   PlaceScrapeCommand,
   PlaceScrapeAllCommand,
 } from './place';
-import { QueueCommand, QueuePushRestaurantsCommand } from './queue';
+import { QueueCommand, QueuePushPlaceCommand } from './queue';
 import { StandardPlace } from '@gong-gu/models';
 import { BullModule } from '@nestjs/bull';
 
@@ -24,7 +24,7 @@ import { BullModule } from '@nestjs/bull';
     TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
     TypeOrmModule.forFeature([StandardPlace]),
     BullModule.registerQueueAsync({
-      name: RESTAURANTS_QUEUE_NAME,
+      name: STANDARD_PLACE_QUEUE_NAME,
       useClass: QueueConfigService,
     }),
   ],
@@ -34,7 +34,7 @@ import { BullModule } from '@nestjs/bull';
     PlaceScrapeCommand,
     PlaceScrapeAllCommand,
     QueueCommand,
-    QueuePushRestaurantsCommand,
+    QueuePushPlaceCommand,
   ],
 })
 export class CommandsModule {}
