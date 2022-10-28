@@ -15,11 +15,12 @@ import {
   EngineFactory,
   EngineInterface,
 } from '@gong-gu/engine';
-import { waitForCondition } from '@gong-gu/common';
+import { throwIfIsNil, waitForCondition } from '@gong-gu/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StandardPlace } from '@gong-gu/models';
 import { RESTAURANTS_QUEUE_NAME } from '@gong-gu/config';
 import { Repository } from 'typeorm';
+import { NotFoundError } from 'rxjs';
 
 @Processor(RESTAURANTS_QUEUE_NAME)
 export class ScrapePlaceConsumer implements OnModuleInit {
@@ -36,9 +37,11 @@ export class ScrapePlaceConsumer implements OnModuleInit {
     await waitForCondition(() => !!this.page, 500);
 
     try {
-      const { name, coordinates } = await this.repository.findOne({
-        where: { id },
-      });
+      const { name, coordinates } = await this.repository
+        .findOne({
+          where: { id },
+        })
+        .then(throwIfIsNil(new NotFoundError('표준 데이터 정보가 없습니다.')));
       const restaurantInfo = await this.engine.restaurant(
         { name, coordinates },
         this.page
