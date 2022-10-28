@@ -9,7 +9,6 @@ const REQUIRED_FIELDS = {
   도로명전체주소: 'roadAddress',
   '좌표정보(x)': 'x',
   '좌표정보(y)': 'y',
-  // 데이터갱신일자: 'lastUpdated',
   상세영업상태코드: 'active',
 };
 
