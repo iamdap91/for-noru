@@ -1,1 +1,1 @@
-export const RESTAURANTS_QUEUE_NAME = 'restaurants';
+export const RESTAURANTS_QUEUE_NAME = 'place';

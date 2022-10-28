@@ -1,4 +1,4 @@
-import { CSV_HEADERS } from './restaurant.constants';
+import { CSV_HEADERS } from './standard-place.constants';
 
 const REQUIRED_FIELDS = {
   개방서비스명: 'type',

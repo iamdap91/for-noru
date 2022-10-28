@@ -8,11 +8,11 @@ import {
   RESTAURANTS_QUEUE_NAME,
 } from '@gong-gu/config';
 import {
-  RestaurantCommand,
-  RestaurantCreateCommand,
-  RestaurantScrapeCommand,
-  RestaurantScrapeAllCommand,
-} from './restaurants';
+  PlaceCommand,
+  PlaceCreateCommand,
+  PlaceScrapeCommand,
+  PlaceScrapeAllCommand,
+} from './place';
 import { QueueCommand, QueuePushRestaurantsCommand } from './queue';
 import { StandardPlace } from '@gong-gu/models';
 import { BullModule } from '@nestjs/bull';
@@ -29,10 +29,10 @@ import { BullModule } from '@nestjs/bull';
     }),
   ],
   providers: [
-    RestaurantCommand,
-    RestaurantCreateCommand,
-    RestaurantScrapeCommand,
-    RestaurantScrapeAllCommand,
+    PlaceCommand,
+    PlaceCreateCommand,
+    PlaceScrapeCommand,
+    PlaceScrapeAllCommand,
     QueueCommand,
     QueuePushRestaurantsCommand,
   ],

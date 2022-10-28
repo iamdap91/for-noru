@@ -16,7 +16,7 @@ import { Repository } from 'typeorm';
   arguments: '[code]',
   description: '네이버 크롤링해서 반려동물 동반인지 체크',
 })
-export class RestaurantScrapeAllCommand extends CommandRunner {
+export class PlaceScrapeAllCommand extends CommandRunner {
   constructor(
     @InjectRepository(StandardPlace)
     private readonly repository: Repository<StandardPlace>

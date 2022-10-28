@@ -9,7 +9,7 @@ import { StandardPlace } from '@gong-gu/models';
 import { Repository } from 'typeorm';
 
 @SubCommand({ name: 'create', description: '음식점 생성' })
-export class RestaurantCreateCommand extends CommandRunner {
+export class PlaceCreateCommand extends CommandRunner {
   constructor(
     @InjectRepository(StandardPlace)
     private readonly repository: Repository<StandardPlace>
@@ -25,11 +25,11 @@ export class RestaurantCreateCommand extends CommandRunner {
     const chunks = chunk(records, 1000);
     for (const chunk of chunks) {
       console.log(`${i++} 번째`);
-      const restaurants = chunk
+      const places = chunk
         .map((record) => record.split('\t'))
         .map((recordItems) => serialize(recordItems));
 
-      await this.repository.insert(restaurants);
+      await this.repository.insert(places);
     }
   }
 
