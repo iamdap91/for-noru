@@ -1,7 +1,7 @@
 {
-  "name": "consumer-restaurant-consumer",
+  "name": "consumer-scrape-place",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/consumer/restaurant-consumer/src",
+  "sourceRoot": "apps/consumer/scrape-place/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -10,9 +10,9 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/apps/consumer/restaurant-consumer",
-        "main": "apps/consumer/restaurant-consumer/src/main.ts",
-        "tsConfig": "apps/consumer/restaurant-consumer/tsconfig.app.json",
+        "outputPath": "dist/apps/consumer/scrape-place",
+        "main": "apps/consumer/scrape-place/src/main.ts",
+        "tsConfig": "apps/consumer/scrape-place/tsconfig.app.json",
         "assets": [],
         "generatePackageJson": true
       },
@@ -23,8 +23,8 @@
           "inspect": false,
           "fileReplacements": [
             {
-              "replace": "apps/consumer/restaurant-consumer/src/environments/environment.ts",
-              "with": "apps/consumer/restaurant-consumer/src/environments/environment.prod.ts"
+              "replace": "apps/consumer/scrape-place/src/environments/environment.ts",
+              "with": "apps/consumer/scrape-place/src/environments/environment.prod.ts"
             }
           ]
         }
@@ -33,11 +33,11 @@
     "serve": {
       "executor": "@nrwl/js:node",
       "options": {
-        "buildTarget": "consumer-restaurant-consumer:build"
+        "buildTarget": "consumer-scrape-place:build"
       },
       "configurations": {
         "production": {
-          "buildTarget": "consumer-restaurant-consumer:build:production"
+          "buildTarget": "consumer-scrape-place:build:production"
         }
       }
     },
@@ -45,14 +45,14 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/consumer/restaurant-consumer/**/*.ts"]
+        "lintFilePatterns": ["apps/consumer/scrape-place/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/consumer/restaurant-consumer"],
+      "outputs": ["coverage/apps/consumer/scrape-place"],
       "options": {
-        "jestConfig": "apps/consumer/restaurant-consumer/jest.config.ts",
+        "jestConfig": "apps/consumer/scrape-place/jest.config.ts",
         "passWithNoTests": true
       }
     }

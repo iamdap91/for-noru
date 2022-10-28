@@ -7,8 +7,8 @@
     "start:admin:dev": "nx serve admin",
     "build:cli:watch": "nx serve cli",
     "build:cli": "nx build cli",
-    "build:restaurant-consumer": "nx build consumer-restaurant-consumer",
-    "start:restaurant-consumer:dev": "nx serve consumer-restaurant-consumer",
+    "build:consumer-scrape-place": "nx build consumer-scrape-place",
+    "start:consumer-scrape-place:dev": "nx serve consumer-scrape-place",
     "build:api": "nx build api",
     "graph": "nx dep-graph"
   },
