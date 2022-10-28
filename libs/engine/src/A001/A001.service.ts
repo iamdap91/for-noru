@@ -42,9 +42,13 @@ export class A001Service {
     await sleep(500);
 
     return {
+      code: detail?.id,
+      name: detail?.name || name,
+      address: detail?.address || '',
       images: [detail?.imageURL || detail?.images?.[0]?.url || ''],
       categories: detail.categories || [],
       petAllowed: !!detail?.options?.find((option) => option.id === 15),
+      coordinates: [placeInfo.x, placeInfo.y],
     };
   }
 

@@ -8,7 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { StandardPlace } from '@gong-gu/models';
 import { Repository } from 'typeorm';
 
-@SubCommand({ name: 'create', description: '음식점 생성' })
+@SubCommand({ name: 'create', description: '표준 데이터 장소 생성' })
 export class PlaceCreateCommand extends CommandRunner {
   constructor(
     @InjectRepository(StandardPlace)

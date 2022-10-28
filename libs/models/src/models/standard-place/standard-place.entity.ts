@@ -20,7 +20,7 @@ export class StandardPlace extends CommonEntity {
 
   @IsString()
   @Column({ type: 'int', nullable: true })
-  postalCode: number;
+  postalCode?: number;
 
   @IsString()
   @Column({ type: 'varchar' })
@@ -28,7 +28,7 @@ export class StandardPlace extends CommonEntity {
 
   @IsString()
   @Column({ type: 'varchar' })
-  roadAddress;
+  roadAddress?;
 
   @IsOptional()
   @IsString({ each: true })
