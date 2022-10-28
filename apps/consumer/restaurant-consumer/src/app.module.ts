@@ -7,13 +7,13 @@ import {
 } from '@gong-gu/config';
 import { RestaurantScrapeConsumer } from './restaurant-scrape.consumer';
 import { BullModule } from '@nestjs/bull';
-import { Restaurant } from '@gong-gu/models';
+import { StandardPlace } from '@gong-gu/models';
 
 @Module({
   imports: [
     PostgresConfigModule,
     TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
-    TypeOrmModule.forFeature([Restaurant]),
+    TypeOrmModule.forFeature([StandardPlace]),
     BullModule.registerQueue({
       name: RESTAURANTS_QUEUE_NAME,
       redis: {

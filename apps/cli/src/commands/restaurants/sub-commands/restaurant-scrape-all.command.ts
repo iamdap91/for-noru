@@ -8,7 +8,7 @@ import {
 } from '@gong-gu/engine';
 import ora from 'ora';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Restaurant } from '@gong-gu/models';
+import { StandardPlace } from '@gong-gu/models';
 import { Repository } from 'typeorm';
 
 @SubCommand({
@@ -18,8 +18,8 @@ import { Repository } from 'typeorm';
 })
 export class RestaurantScrapeAllCommand extends CommandRunner {
   constructor(
-    @InjectRepository(Restaurant)
-    private readonly repository: Repository<Restaurant>
+    @InjectRepository(StandardPlace)
+    private readonly repository: Repository<StandardPlace>
   ) {
     super();
   }

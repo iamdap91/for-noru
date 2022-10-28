@@ -1,6 +1,6 @@
 import { CommandRunner, SubCommand } from 'nest-commander';
 import { Repository } from 'typeorm';
-import { Restaurant } from '@gong-gu/models';
+import { StandardPlace } from '@gong-gu/models';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
@@ -12,8 +12,8 @@ import { RESTAURANTS_QUEUE_NAME } from '@gong-gu/config';
 })
 export class QueuePushRestaurantsCommand extends CommandRunner {
   constructor(
-    @InjectRepository(Restaurant)
-    private readonly repository: Repository<Restaurant>,
+    @InjectRepository(StandardPlace)
+    private readonly repository: Repository<StandardPlace>,
     @InjectQueue(RESTAURANTS_QUEUE_NAME)
     private readonly queue: Queue
   ) {

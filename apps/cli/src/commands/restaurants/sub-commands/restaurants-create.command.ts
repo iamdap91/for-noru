@@ -5,14 +5,14 @@ import { chunk } from 'lodash';
 import { Logger } from '@nestjs/common';
 import { serialize } from '../serialize';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Restaurant } from '@gong-gu/models';
+import { StandardPlace } from '@gong-gu/models';
 import { Repository } from 'typeorm';
 
 @SubCommand({ name: 'create', description: '음식점 생성' })
 export class RestaurantCreateCommand extends CommandRunner {
   constructor(
-    @InjectRepository(Restaurant)
-    private readonly repository: Repository<Restaurant>
+    @InjectRepository(StandardPlace)
+    private readonly repository: Repository<StandardPlace>
   ) {
     super();
   }

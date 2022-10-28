@@ -12,7 +12,7 @@ RUN npm ci
 
 COPY . .
 
-RUN npm run build:restaurant-consumer --prod
+RUN npm run build:standard-place-consumer --prod
 
 # RUNNER
 FROM node:16.14.0-stretch-slim

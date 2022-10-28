@@ -17,7 +17,7 @@ import {
 } from '@gong-gu/engine';
 import { waitForCondition } from '@gong-gu/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Restaurant } from '@gong-gu/models';
+import { StandardPlace } from '@gong-gu/models';
 import { RESTAURANTS_QUEUE_NAME } from '@gong-gu/config';
 import { Repository } from 'typeorm';
 
@@ -27,8 +27,8 @@ export class RestaurantScrapeConsumer implements OnModuleInit {
   private page: Page;
 
   constructor(
-    @InjectRepository(Restaurant)
-    private readonly repository: Repository<Restaurant>
+    @InjectRepository(StandardPlace)
+    private readonly repository: Repository<StandardPlace>
   ) {}
 
   @Process({ concurrency: 1 })

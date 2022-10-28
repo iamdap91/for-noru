@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'consumer-restaurant-consumer',
+  displayName: 'consumer-standard-place-consumer',
   preset: '../../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -12,5 +12,5 @@ export default {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../coverage/apps/consumer/restaurant-consumer',
+  coverageDirectory: '../../../coverage/apps/consumer/standard-place-consumer',
 };

@@ -3,7 +3,7 @@ import { Column, Entity, Index } from 'typeorm';
 import { IsOptional, IsString } from 'class-validator';
 
 @Entity()
-export class Restaurant extends CommonEntity {
+export class StandardPlace extends CommonEntity {
   @IsString()
   @Column({ type: 'varchar' })
   type: string;
