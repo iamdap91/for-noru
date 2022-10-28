@@ -3,7 +3,7 @@ import { Column, Entity, Index } from 'typeorm';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 @Entity()
-export class NaverPlace extends CommonEntity {
+export class Place extends CommonEntity {
   @IsString()
   @Column({ type: 'varchar' })
   type: string;
@@ -22,11 +22,6 @@ export class NaverPlace extends CommonEntity {
   @IsString()
   @Column({ type: 'varchar' })
   name: string;
-
-  @Index()
-  @IsString()
-  @Column({ type: 'boolean' })
-  petAllowed: boolean;
 
   @IsString()
   @Column({ type: 'varchar' })
