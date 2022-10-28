@@ -22,7 +22,7 @@ import { RESTAURANTS_QUEUE_NAME } from '@gong-gu/config';
 import { Repository } from 'typeorm';
 
 @Processor(RESTAURANTS_QUEUE_NAME)
-export class RestaurantScrapeConsumer implements OnModuleInit {
+export class ScrapePlaceConsumer implements OnModuleInit {
   private engine: EngineInterface;
   private page: Page;
 

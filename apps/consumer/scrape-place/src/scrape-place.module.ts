@@ -5,7 +5,7 @@ import {
   PostgresConfigService,
   RESTAURANTS_QUEUE_NAME,
 } from '@gong-gu/config';
-import { RestaurantScrapeConsumer } from './restaurant-scrape.consumer';
+import { ScrapePlaceConsumer } from './scrape-place.consumer';
 import { BullModule } from '@nestjs/bull';
 import { StandardPlace } from '@gong-gu/models';
 
@@ -22,6 +22,6 @@ import { StandardPlace } from '@gong-gu/models';
       },
     }),
   ],
-  providers: [RestaurantScrapeConsumer],
+  providers: [ScrapePlaceConsumer],
 })
-export class AppModule {}
+export class ScrapePlaceModule {}

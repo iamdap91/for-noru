@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 
-import { AppModule } from './app.module';
+import { ScrapePlaceModule } from './scrape-place.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(ScrapePlaceModule);
   const port = process.env.PORT || 3333;
   await app.listen(port);
 }
