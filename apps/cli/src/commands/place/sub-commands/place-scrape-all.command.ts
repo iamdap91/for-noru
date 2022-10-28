@@ -42,11 +42,8 @@ export class PlaceScrapeAllCommand extends CommandRunner {
     // 엔진 실행
     for (const { id, name, coordinates } of list) {
       try {
-        const restaurantInfo = await engine.restaurant(
-          { name, coordinates },
-          page
-        );
-        await this.repository.update(+id, restaurantInfo);
+        const placeInfo = await engine.restaurant({ name, coordinates }, page);
+        await this.repository.update(+id, placeInfo);
       } catch (e) {
         switch (true) {
           case e instanceof NavigationError:
