@@ -17,7 +17,7 @@ import {
 } from '@gong-gu/engine';
 import { throwIfIsNil, waitForCondition } from '@gong-gu/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { StandardPlace } from '@gong-gu/models';
+import { NaverPlace, StandardPlace } from '@gong-gu/models';
 import { STANDARD_PLACE_QUEUE_NAME } from '@gong-gu/config';
 import { Repository } from 'typeorm';
 import { NotFoundError } from 'rxjs';
@@ -29,7 +29,9 @@ export class ScrapePlaceConsumer implements OnModuleInit {
 
   constructor(
     @InjectRepository(StandardPlace)
-    private readonly repository: Repository<StandardPlace>
+    private readonly standardPlaceRepo: Repository<StandardPlace>,
+    @InjectRepository(NaverPlace)
+    private readonly naverPlaceRepo: Repository<NaverPlace>
   ) {}
 
   @Process({ concurrency: 1 })
@@ -37,16 +39,28 @@ export class ScrapePlaceConsumer implements OnModuleInit {
     await waitForCondition(() => !!this.page, 500);
 
     try {
-      const { name, coordinates } = await this.repository
-        .findOne({
-          where: { id },
-        })
-        .then(throwIfIsNil(new NotFoundError('표준 데이터 정보가 없습니다.')));
+      const { name, coordinates, active, naverPlace } =
+        await this.standardPlaceRepo
+          .findOne({ where: { id }, relations: ['naverPlace'] })
+          .then(
+            throwIfIsNil(new NotFoundError('표준 데이터 정보가 없습니다.'))
+          );
+
+      if (!active) {
+        await this.naverPlaceRepo.softDelete(naverPlace.id);
+        return;
+      }
+
       const placeInfo = await this.engine.place(
         { name, coordinates },
         this.page
       );
-      await this.repository.update(+id, placeInfo);
+
+      await this.naverPlaceRepo.save({
+        standardPlaceId: +id,
+        ...(naverPlace || {}),
+        ...placeInfo,
+      });
       done(null);
     } catch (e) {
       if (e instanceof ProtocolError) {

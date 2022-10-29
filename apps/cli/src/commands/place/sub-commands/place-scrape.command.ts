@@ -28,7 +28,7 @@ export class PlaceScrapeCommand extends CommandRunner {
     const { name, coordinates, active, naverPlace } =
       await this.standardPlaceRepo
         .findOne({ where: { id: +id }, relations: ['naverPlace'] })
-        .then(throwIfIsNil(new Error('존재하지 않는 장소입니다.')));
+        .then(throwIfIsNil(new Error('표준 데이터 정보가 없습니다.')));
 
     if (!active) {
       await this.naverPlaceRepo.softDelete(naverPlace.id);
