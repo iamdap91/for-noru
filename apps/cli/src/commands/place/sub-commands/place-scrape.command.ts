@@ -31,7 +31,6 @@ export class PlaceScrapeCommand extends CommandRunner {
         .then(throwIfIsNil(new Error('존재하지 않는 장소입니다.')));
 
     if (!active) {
-      // await this.naverPlaceRepo.update(id, { active });
       await this.naverPlaceRepo.softDelete(naverPlace.id);
       return;
     }
