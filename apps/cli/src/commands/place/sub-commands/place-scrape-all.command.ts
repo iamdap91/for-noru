@@ -8,7 +8,7 @@ import {
 } from '@gong-gu/engine';
 import ora from 'ora';
 import { InjectRepository } from '@nestjs/typeorm';
-import { StandardPlace } from '@gong-gu/models';
+import { NaverPlace, StandardPlace } from '@gong-gu/models';
 import { Repository } from 'typeorm';
 
 @SubCommand({
@@ -19,15 +19,18 @@ import { Repository } from 'typeorm';
 export class PlaceScrapeAllCommand extends CommandRunner {
   constructor(
     @InjectRepository(StandardPlace)
-    private readonly repository: Repository<StandardPlace>
+    private readonly standardPlaceRepo: Repository<StandardPlace>,
+    @InjectRepository(NaverPlace)
+    private readonly naverPlaceRepo: Repository<NaverPlace>
   ) {
     super();
   }
 
   async run([code]: string[]) {
     const spinner = ora('scrape-all start').start();
-    const list = await this.repository.find({
+    const list = await this.standardPlaceRepo.find({
       where: { active: true },
+      relations: ['naverPlace'],
     });
     spinner.warn(`List length : ${list.length}`);
 
@@ -40,10 +43,14 @@ export class PlaceScrapeAllCommand extends CommandRunner {
     const page = await browserFactory.getPage();
 
     // 엔진 실행
-    for (const { id, name, coordinates } of list) {
+    for (const { id, name, coordinates, naverPlace } of list) {
       try {
         const placeInfo = await engine.place({ name, coordinates }, page);
-        await this.repository.update(+id, placeInfo);
+        await this.naverPlaceRepo.save({
+          standardPlaceId: +id,
+          ...(naverPlace || {}),
+          ...placeInfo,
+        });
       } catch (e) {
         switch (true) {
           case e instanceof NavigationError:
