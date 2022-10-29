@@ -49,6 +49,7 @@ export class A001Service {
       categories: detail.categories || [],
       petAllowed: !!detail?.options?.find((option) => option.id === 15),
       coordinates: [placeInfo.x, placeInfo.y],
+      description: detail?.description || '',
     };
   }
 

@@ -6,4 +6,5 @@ export interface FormattedPlace {
   petAllowed: boolean;
   address?: string;
   coordinates: string[];
+  description: string;
 }

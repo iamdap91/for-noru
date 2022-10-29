@@ -1,6 +1,7 @@
 import { CommonEntity } from '../common.entity';
-import { Column, Entity, Index } from 'typeorm';
+import { Column, Entity, Index, OneToOne } from 'typeorm';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { StandardPlace } from './standard-place.entity';
 
 @Entity()
 export class NaverPlace extends CommonEntity {
@@ -50,4 +51,7 @@ export class NaverPlace extends CommonEntity {
   @IsString()
   @Column({ type: 'boolean' })
   petAllowed: boolean;
+
+  @OneToOne(() => StandardPlace, (standardPlace) => standardPlace.place)
+  standardPlace: StandardPlace;
 }

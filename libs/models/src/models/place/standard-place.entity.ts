@@ -1,6 +1,7 @@
 import { CommonEntity } from '../common.entity';
-import { Column, Entity, Index } from 'typeorm';
+import { Column, Entity, Index, OneToOne } from 'typeorm';
 import { IsOptional, IsString } from 'class-validator';
+import { NaverPlace } from './index';
 
 @Entity()
 export class StandardPlace extends CommonEntity {
@@ -39,4 +40,9 @@ export class StandardPlace extends CommonEntity {
   @IsString()
   @Column({ type: 'boolean' })
   active: boolean;
+
+  @OneToOne(() => NaverPlace, (naverPlace) => naverPlace.standardPlace, {
+    cascade: ['insert', 'update', 'soft-remove', 'remove'],
+  })
+  place: NaverPlace;
 }
