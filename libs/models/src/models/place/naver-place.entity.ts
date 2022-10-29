@@ -1,5 +1,5 @@
 import { CommonEntity } from '../common.entity';
-import { Column, Entity, Index, OneToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, OneToOne } from 'typeorm';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { StandardPlace } from './standard-place.entity';
 
@@ -9,11 +9,6 @@ export class NaverPlace extends CommonEntity {
   @IsNumber()
   @Column({ type: 'int' })
   code: number;
-
-  @Index()
-  @IsString()
-  @Column({ type: 'boolean' })
-  active: boolean;
 
   @Index()
   @IsString()
@@ -48,6 +43,11 @@ export class NaverPlace extends CommonEntity {
   @Column({ type: 'boolean' })
   petAllowed: boolean;
 
+  @Index()
+  @Column({ type: 'int' })
+  standardPlaceId: number;
+
   @OneToOne(() => StandardPlace, (standardPlace) => standardPlace.naverPlace)
+  @JoinColumn()
   standardPlace: StandardPlace;
 }

@@ -31,8 +31,8 @@ export class PlaceScrapeCommand extends CommandRunner {
         .then(throwIfIsNil(new Error('존재하지 않는 장소입니다.')));
 
     if (!active) {
-      await this.naverPlaceRepo.update(id, { active });
-      await this.naverPlaceRepo.softDelete(id);
+      // await this.naverPlaceRepo.update(id, { active });
+      await this.naverPlaceRepo.softDelete(naverPlace.id);
       return;
     }
 
@@ -44,6 +44,7 @@ export class PlaceScrapeCommand extends CommandRunner {
     const placeInfo = await engine.place({ name, coordinates }, page);
 
     await this.naverPlaceRepo.save({
+      standardPlaceId: +id,
       ...(naverPlace || {}),
       ...placeInfo,
     });
