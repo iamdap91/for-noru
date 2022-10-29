@@ -5,10 +5,6 @@ import { StandardPlace } from './standard-place.entity';
 
 @Entity()
 export class NaverPlace extends CommonEntity {
-  @IsString()
-  @Column({ type: 'varchar' })
-  type: string;
-
   @Index({ unique: true })
   @IsNumber()
   @Column({ type: 'int' })
@@ -52,6 +48,6 @@ export class NaverPlace extends CommonEntity {
   @Column({ type: 'boolean' })
   petAllowed: boolean;
 
-  @OneToOne(() => StandardPlace, (standardPlace) => standardPlace.place)
+  @OneToOne(() => StandardPlace, (standardPlace) => standardPlace.naverPlace)
   standardPlace: StandardPlace;
 }

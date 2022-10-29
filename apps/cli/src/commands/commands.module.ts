@@ -14,7 +14,7 @@ import {
   PlaceScrapeAllCommand,
 } from './place';
 import { QueueCommand, QueuePushPlaceCommand } from './queue';
-import { StandardPlace } from '@gong-gu/models';
+import { NaverPlace, StandardPlace } from '@gong-gu/models';
 import { BullModule } from '@nestjs/bull';
 
 @Module({
@@ -22,7 +22,7 @@ import { BullModule } from '@nestjs/bull';
     PostgresConfigModule,
     QueueConfigModule,
     TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
-    TypeOrmModule.forFeature([StandardPlace]),
+    TypeOrmModule.forFeature([StandardPlace, NaverPlace]),
     BullModule.registerQueueAsync({
       name: STANDARD_PLACE_QUEUE_NAME,
       useClass: QueueConfigService,

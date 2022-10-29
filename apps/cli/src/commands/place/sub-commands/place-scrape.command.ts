@@ -6,7 +6,7 @@ import {
 } from '@gong-gu/engine';
 import { throwIfIsNil } from '@gong-gu/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { StandardPlace } from '@gong-gu/models';
+import { NaverPlace, StandardPlace } from '@gong-gu/models';
 import { Repository } from 'typeorm';
 
 @SubCommand({
@@ -17,15 +17,24 @@ import { Repository } from 'typeorm';
 export class PlaceScrapeCommand extends CommandRunner {
   constructor(
     @InjectRepository(StandardPlace)
-    private readonly standardPlaceRepo: Repository<StandardPlace>
+    private readonly standardPlaceRepo: Repository<StandardPlace>,
+    @InjectRepository(NaverPlace)
+    private readonly naverPlaceRepo: Repository<NaverPlace>
   ) {
     super();
   }
 
   async run([code, id]: string[]) {
-    const { name, coordinates } = await this.standardPlaceRepo
-      .findOne({ where: { id: +id, active: true } })
-      .then(throwIfIsNil(new Error('존재하지 않는 장소입니다.')));
+    const { name, coordinates, active, naverPlace } =
+      await this.standardPlaceRepo
+        .findOne({ where: { id: +id }, relations: ['naverPlace'] })
+        .then(throwIfIsNil(new Error('존재하지 않는 장소입니다.')));
+
+    if (!active) {
+      await this.naverPlaceRepo.update(id, { active });
+      await this.naverPlaceRepo.softDelete(id);
+      return;
+    }
 
     const engine = await EngineFactory.build(code);
     const browserOptions: BrowserOptionInterface = EngineFactory.scan(engine);
@@ -34,6 +43,9 @@ export class PlaceScrapeCommand extends CommandRunner {
     const page = await browserFactory.getPage();
     const placeInfo = await engine.place({ name, coordinates }, page);
 
-    await this.standardPlaceRepo.update(+id, placeInfo);
+    await this.naverPlaceRepo.save({
+      ...(naverPlace || {}),
+      ...placeInfo,
+    });
   }
 }

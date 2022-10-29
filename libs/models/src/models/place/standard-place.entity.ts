@@ -44,5 +44,5 @@ export class StandardPlace extends CommonEntity {
   @OneToOne(() => NaverPlace, (naverPlace) => naverPlace.standardPlace, {
     cascade: ['insert', 'update', 'soft-remove', 'remove'],
   })
-  place: NaverPlace;
+  naverPlace: NaverPlace;
 }
