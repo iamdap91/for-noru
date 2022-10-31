@@ -13,3 +13,4 @@ $ npm ci
 * User web client
 * Admin web client
 * Consumer
+* Cli
