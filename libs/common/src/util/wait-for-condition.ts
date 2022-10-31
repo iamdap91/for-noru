@@ -1,4 +1,4 @@
-import { sleep } from '@gong-gu/common';
+import { sleep } from '@for-noru/common';
 
 export const waitForCondition = (
   condition: (...params: any[]) => boolean,

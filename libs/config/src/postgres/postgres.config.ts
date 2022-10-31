@@ -4,7 +4,7 @@ import {
   Product,
   ProductOption,
   StandardPlace,
-} from '@gong-gu/models';
+} from '@for-noru/models';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import { SnakeNamingStrategy } from './snake-naming.strategy';
 

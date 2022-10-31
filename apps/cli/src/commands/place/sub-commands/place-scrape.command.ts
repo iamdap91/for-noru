@@ -3,10 +3,10 @@ import {
   BrowserFactory,
   BrowserOptionInterface,
   EngineFactory,
-} from '@gong-gu/engine';
-import { throwIfIsNil } from '@gong-gu/common';
+} from '@for-noru/engine';
+import { throwIfIsNil } from '@for-noru/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { NaverPlace, StandardPlace } from '@gong-gu/models';
+import { NaverPlace, StandardPlace } from '@for-noru/models';
 import { Repository } from 'typeorm';
 
 @SubCommand({

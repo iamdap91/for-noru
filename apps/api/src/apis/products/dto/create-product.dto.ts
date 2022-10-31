@@ -1,7 +1,7 @@
 import { ApiProperty, PickType } from '@nestjs/swagger';
 import { IsNumber, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { Product, ProductOption } from '@gong-gu/models';
+import { Product, ProductOption } from '@for-noru/models';
 
 export class CreateProductDto extends PickType(Product, [
   'name',

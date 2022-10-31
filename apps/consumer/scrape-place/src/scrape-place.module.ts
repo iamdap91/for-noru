@@ -4,10 +4,10 @@ import {
   PostgresConfigModule,
   PostgresConfigService,
   STANDARD_PLACE_QUEUE_NAME,
-} from '@gong-gu/config';
+} from '@for-noru/config';
 import { ScrapePlaceConsumer } from './scrape-place.consumer';
 import { BullModule } from '@nestjs/bull';
-import { StandardPlace } from '@gong-gu/models';
+import { StandardPlace } from '@for-noru/models';
 import { environment } from './environments/environment';
 
 @Module({

@@ -5,10 +5,10 @@ import {
   EngineFactory,
   NavigationError,
   PageBlockedError,
-} from '@gong-gu/engine';
+} from '@for-noru/engine';
 import ora from 'ora';
 import { InjectRepository } from '@nestjs/typeorm';
-import { NaverPlace, StandardPlace } from '@gong-gu/models';
+import { NaverPlace, StandardPlace } from '@for-noru/models';
 import { Repository } from 'typeorm';
 
 @SubCommand({

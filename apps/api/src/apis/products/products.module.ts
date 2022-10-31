@@ -4,7 +4,7 @@ import { ProductsController } from './products.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductOptionsController } from './product-options.controller';
 import { ProductOptionsService } from './product-options.service';
-import { Product, ProductOption } from '@gong-gu/models';
+import { Product, ProductOption } from '@for-noru/models';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Product, ProductOption])],

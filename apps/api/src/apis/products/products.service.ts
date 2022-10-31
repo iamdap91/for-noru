@@ -1,14 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Between, Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { throwIfIsNil } from '@gong-gu/common';
+import { throwIfIsNil } from '@for-noru/common';
 import {
   UpdateProductDto,
   CreateProductDto,
   UpsertProductOptionDto,
   FindProductsDto,
 } from './dto';
-import { Product, ProductOption } from '@gong-gu/models';
+import { Product, ProductOption } from '@for-noru/models';
 
 @Injectable()
 export class ProductsService {

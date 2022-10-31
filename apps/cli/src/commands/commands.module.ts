@@ -6,7 +6,7 @@ import {
   QueueConfigModule,
   QueueConfigService,
   STANDARD_PLACE_QUEUE_NAME,
-} from '@gong-gu/config';
+} from '@for-noru/config';
 import {
   PlaceCommand,
   PlaceCreateCommand,
@@ -14,7 +14,7 @@ import {
   PlaceScrapeAllCommand,
 } from './place';
 import { QueueCommand, QueuePushPlaceCommand } from './queue';
-import { NaverPlace, StandardPlace } from '@gong-gu/models';
+import { NaverPlace, StandardPlace } from '@for-noru/models';
 import { BullModule } from '@nestjs/bull';
 
 @Module({

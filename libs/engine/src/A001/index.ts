@@ -1,5 +1,5 @@
 import { Page } from 'puppeteer';
-import { BaseEngine } from '@gong-gu/engine';
+import { BaseEngine } from '@for-noru/engine';
 import { WithBrowser } from '../decorators/with-browser';
 import { A001Service } from './A001.service';
 import { EngineParam } from '../interfaces/engine-param.interface';

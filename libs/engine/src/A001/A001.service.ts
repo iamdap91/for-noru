@@ -1,8 +1,8 @@
 import { Page } from 'puppeteer';
-import { FormattedPlace } from '@gong-gu/engine';
+import { FormattedPlace } from '@for-noru/engine';
 import { Injectable } from '@nestjs/common';
-import { sleep, throwIfIsNil } from '@gong-gu/common';
-import { EPS2097, nonBlank } from '@gong-gu/common';
+import { sleep, throwIfIsNil } from '@for-noru/common';
+import { EPS2097, nonBlank } from '@for-noru/common';
 import { EngineParam } from '../interfaces/engine-param.interface';
 import { NAVER_MAP_URL } from '../constants';
 import { PlaceDetail } from './interface';

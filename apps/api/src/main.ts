@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
-import { CommonConfigService } from '@gong-gu/config';
+import { CommonConfigService } from '@for-noru/config';
 
 const globalPrefix = 'api';
 
@@ -24,7 +24,7 @@ async function bootstrap() {
 
   if (!isProduction) {
     const doc = new DocumentBuilder()
-      .setTitle('gong-gu')
+      .setTitle('for-noru')
       .setDescription('to-noru API description')
       .setVersion('1.0')
       .build();

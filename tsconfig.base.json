@@ -15,10 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@gong-gu/common": ["libs/common/src/index.ts"],
-      "@gong-gu/config": ["libs/config/src/index.ts"],
-      "@gong-gu/engine": ["libs/engine/src/index.ts"],
-      "@gong-gu/models": ["libs/models/src/index.ts"]
+      "@for-noru/common": ["libs/common/src/index.ts"],
+      "@for-noru/config": ["libs/config/src/index.ts"],
+      "@for-noru/engine": ["libs/engine/src/index.ts"],
+      "@for-noru/models": ["libs/models/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

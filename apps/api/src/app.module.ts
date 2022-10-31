@@ -7,7 +7,7 @@ import {
   CommonConfigModule,
   PostgresConfigModule,
   PostgresConfigService,
-} from '@gong-gu/config';
+} from '@for-noru/config';
 
 @Module({
   imports: [

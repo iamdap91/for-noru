@@ -1,10 +1,10 @@
 import { CommandRunner, SubCommand } from 'nest-commander';
 import { Repository } from 'typeorm';
-import { StandardPlace } from '@gong-gu/models';
+import { StandardPlace } from '@for-noru/models';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
-import { STANDARD_PLACE_QUEUE_NAME } from '@gong-gu/config';
+import { STANDARD_PLACE_QUEUE_NAME } from '@for-noru/config';
 
 @SubCommand({
   name: 'place',

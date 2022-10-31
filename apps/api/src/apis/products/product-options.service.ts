@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ProductOption } from '@gong-gu/models';
+import { ProductOption } from '@for-noru/models';
 
 @Injectable()
 export class ProductOptionsService {

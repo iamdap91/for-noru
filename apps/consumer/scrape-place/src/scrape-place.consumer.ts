@@ -14,11 +14,11 @@ import {
   BrowserOptionInterface,
   EngineFactory,
   EngineInterface,
-} from '@gong-gu/engine';
-import { throwIfIsNil, waitForCondition } from '@gong-gu/common';
+} from '@for-noru/engine';
+import { throwIfIsNil, waitForCondition } from '@for-noru/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { NaverPlace, StandardPlace } from '@gong-gu/models';
-import { STANDARD_PLACE_QUEUE_NAME } from '@gong-gu/config';
+import { NaverPlace, StandardPlace } from '@for-noru/models';
+import { STANDARD_PLACE_QUEUE_NAME } from '@for-noru/config';
 import { Repository } from 'typeorm';
 import { NotFoundError } from 'rxjs';
 

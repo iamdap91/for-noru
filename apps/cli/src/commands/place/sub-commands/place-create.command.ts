@@ -5,7 +5,7 @@ import { chunk } from 'lodash';
 import { Logger } from '@nestjs/common';
 import { serialize } from '../serialize';
 import { InjectRepository } from '@nestjs/typeorm';
-import { StandardPlace } from '@gong-gu/models';
+import { StandardPlace } from '@for-noru/models';
 import { Repository } from 'typeorm';
 
 @SubCommand({ name: 'create', description: '표준 데이터 장소 생성' })
