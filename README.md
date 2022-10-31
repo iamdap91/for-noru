@@ -6,6 +6,8 @@
 ## 시작하기
 ```bash
 $ npm ci
+
+$ npm start:[APP_NAME]:dev
 ```
 
 ## 어플리케이션
