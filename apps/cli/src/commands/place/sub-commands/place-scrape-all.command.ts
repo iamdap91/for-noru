@@ -8,8 +8,9 @@ import {
 } from '@for-noru/engine';
 import ora from 'ora';
 import { InjectRepository } from '@nestjs/typeorm';
-import { NaverPlace, StandardPlace } from '@for-noru/models';
+import { StandardPlace } from '@for-noru/models';
 import { Repository } from 'typeorm';
+import { ElasticsearchService } from '@nestjs/elasticsearch';
 
 @SubCommand({
   name: 'scrape-all',
@@ -20,8 +21,7 @@ export class PlaceScrapeAllCommand extends CommandRunner {
   constructor(
     @InjectRepository(StandardPlace)
     private readonly standardPlaceRepo: Repository<StandardPlace>,
-    @InjectRepository(NaverPlace)
-    private readonly naverPlaceRepo: Repository<NaverPlace>
+    private readonly elasticsearchService: ElasticsearchService
   ) {
     super();
   }
@@ -30,7 +30,6 @@ export class PlaceScrapeAllCommand extends CommandRunner {
     const spinner = ora('scrape-all start').start();
     const list = await this.standardPlaceRepo.find({
       where: { active: true },
-      relations: ['naverPlace'],
     });
     spinner.warn(`List length : ${list.length}`);
 
@@ -43,13 +42,16 @@ export class PlaceScrapeAllCommand extends CommandRunner {
     const page = await browserFactory.getPage();
 
     // 엔진 실행
-    for (const { id, name, coordinates, naverPlace } of list) {
+    for (const { id, name, coordinates } of list) {
       try {
-        const placeInfo = await engine.place({ name, coordinates }, page);
-        await this.naverPlaceRepo.save({
-          standardPlaceId: +id,
-          ...(naverPlace || {}),
-          ...placeInfo,
+        const { lat, lon, ...placeInfo } = await engine.place(
+          { name, coordinates },
+          page
+        );
+        await this.elasticsearchService.create({
+          id: id.toString(),
+          index: 'place',
+          document: { ...placeInfo, pin: { location: { lat, lon } } },
         });
       } catch (e) {
         switch (true) {
