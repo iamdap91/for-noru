@@ -6,7 +6,7 @@ import {
   Process,
   Processor,
 } from '@nestjs/bull';
-import { Page, ProtocolError } from 'puppeteer';
+import { Page, ProtocolError, TimeoutError } from 'puppeteer';
 import { DoneCallback, Job } from 'bull';
 import { Logger, OnModuleInit } from '@nestjs/common';
 import {
@@ -14,6 +14,7 @@ import {
   BrowserOptionInterface,
   EngineFactory,
   EngineInterface,
+  PlaceNotFoundError,
 } from '@for-noru/engine';
 import { throwIfIsNil, waitForCondition } from '@for-noru/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -61,8 +62,14 @@ export class ScrapePlaceConsumer implements OnModuleInit {
 
       done(null);
     } catch (e) {
-      if (e instanceof ProtocolError) {
-        await this.onModuleInit();
+      switch (true) {
+        case e instanceof PlaceNotFoundError:
+        case e instanceof ProtocolError:
+        case e instanceof TimeoutError:
+          return done(e);
+        default:
+          console.error(e);
+          await this.onModuleInit();
       }
       done(e);
     }

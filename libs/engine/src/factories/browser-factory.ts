@@ -86,6 +86,7 @@ export class BrowserFactory {
     await page.setUserAgent(
       new UserAgent({ platform: 'Win32' }).random().toString()
     );
+    await page.setDefaultTimeout(5 * 1000);
 
     return page;
   }

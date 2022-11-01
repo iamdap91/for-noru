@@ -1,5 +1,5 @@
 import { Page } from 'puppeteer';
-import { FormattedPlace } from '@for-noru/engine';
+import { FormattedPlace, PlaceNotFoundError } from '@for-noru/engine';
 import { Injectable } from '@nestjs/common';
 import { sleep, throwIfIsNil } from '@for-noru/common';
 import { EPS2097, nonBlank } from '@for-noru/common';
@@ -27,7 +27,7 @@ export class A001Service {
       (item: { name: string }) => nonBlank(name).includes(nonBlank(item.name))
     );
     if (!placeInfo) {
-      throw new Error('장소 상세 정보를 가져오지 못했습니다.');
+      throw new PlaceNotFoundError();
     }
 
     const detailInterceptor = this.interceptRequest<PlaceDetail>(
@@ -37,7 +37,7 @@ export class A001Service {
 
     await page.goto(`${NAVER_MAP_URL}/${name}/place/${placeInfo?.id || ''}`);
     const detail: PlaceDetail = await detailInterceptor.then(
-      throwIfIsNil(new Error('장소 상세 정보를 가져오지 못했습니다.'))
+      throwIfIsNil(new PlaceNotFoundError())
     );
     await sleep(500);
 
