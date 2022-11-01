@@ -69,7 +69,6 @@ export class ScrapePlaceConsumer implements OnModuleInit {
         case e instanceof TimeoutError:
           return done(e);
         default:
-          console.error(e);
           await this.onModuleInit();
       }
       await this.browserFactory.randomizeUserAgent();
