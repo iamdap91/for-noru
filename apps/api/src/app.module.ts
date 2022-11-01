@@ -8,6 +8,7 @@ import {
 import { AppController } from './app.controller';
 import { RequestLoggerMiddleware } from './middlewares';
 import { PlacesModule } from './apis/places/places.module';
+import { ProductsModule } from './apis/products/products.module';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { PlacesModule } from './apis/places/places.module';
     PostgresConfigModule,
     TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
     PlacesModule,
-    // ProductsModule,
+    ProductsModule,
     PlacesModule,
   ],
   controllers: [AppController],
