@@ -13,11 +13,13 @@ export class PlacesService {
   ) {}
 
   async find() {
-    return await this.placeRepo.find();
+    return await this.placeRepo.find({ take: 100 });
   }
 
   async findOne(id: number) {
-    return await this.placeRepo.findOne({ where: { id } });
+    return await this.placeRepo
+      .findOne({ where: { id } })
+      .then(throwIfIsNil(new HttpException('NOT_FOUND', HttpStatus.NOT_FOUND)));
   }
 
   async update(id: number, updatePlaceDto: UpdatePlaceDto) {
