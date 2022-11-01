@@ -28,6 +28,7 @@ import { ElasticsearchService } from '@nestjs/elasticsearch';
 export class ScrapePlaceConsumer implements OnModuleInit {
   private engine: EngineInterface;
   private page: Page;
+  private browserFactory: BrowserFactory;
 
   constructor(
     @InjectRepository(Place)
@@ -71,6 +72,7 @@ export class ScrapePlaceConsumer implements OnModuleInit {
           console.error(e);
           await this.onModuleInit();
       }
+      await this.browserFactory.randomizeUserAgent();
       done(e);
     }
   }
@@ -83,8 +85,8 @@ export class ScrapePlaceConsumer implements OnModuleInit {
     );
 
     // 브라우저 생성
-    const browserFactory = await new BrowserFactory(browserOptions).init();
-    this.page = await browserFactory.getPage();
+    this.browserFactory = await new BrowserFactory(browserOptions).init();
+    this.page = await this.browserFactory.getPage();
   }
 
   @OnQueueActive()

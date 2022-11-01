@@ -91,6 +91,13 @@ export class BrowserFactory {
     return page;
   }
 
+  async randomizeUserAgent() {
+    const [page] = await this.browser.pages();
+    await page.setUserAgent(
+      new UserAgent({ deviceCategory: 'desktop' }).random().toString()
+    );
+  }
+
   async restartBrowser(): Promise<void> {
     await this.browser.close();
     this.browser = await this.createBrowser(this.options);
