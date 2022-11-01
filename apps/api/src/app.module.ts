@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from './app.controller';
@@ -8,6 +8,7 @@ import {
   PostgresConfigModule,
   PostgresConfigService,
 } from '@for-noru/config';
+import { RequestLoggerMiddleware } from './middlewares';
 
 @Module({
   imports: [
@@ -18,4 +19,8 @@ import {
   ],
   controllers: [AppController],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RequestLoggerMiddleware).forRoutes('*');
+  }
+}
