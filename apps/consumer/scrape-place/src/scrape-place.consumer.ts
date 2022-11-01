@@ -18,12 +18,12 @@ import {
 import { throwIfIsNil, waitForCondition } from '@for-noru/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Place } from '@for-noru/models';
-import { STANDARD_PLACE_QUEUE_NAME } from '@for-noru/config';
+import { PLACE_SCRAPER_QUEUE } from '@for-noru/config';
 import { Repository } from 'typeorm';
 import { NotFoundError } from 'rxjs';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 
-@Processor(STANDARD_PLACE_QUEUE_NAME)
+@Processor(PLACE_SCRAPER_QUEUE)
 export class ScrapePlaceConsumer implements OnModuleInit {
   private engine: EngineInterface;
   private page: Page;

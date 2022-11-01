@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import {
   PostgresConfigModule,
   PostgresConfigService,
-  STANDARD_PLACE_QUEUE_NAME,
+  PLACE_SCRAPER_QUEUE,
 } from '@for-noru/config';
 import { ScrapePlaceConsumer } from './scrape-place.consumer';
 import { BullModule } from '@nestjs/bull';
@@ -16,7 +16,7 @@ import { environment } from './environments/environment';
     TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
     TypeOrmModule.forFeature([Place]),
     BullModule.registerQueue({
-      name: STANDARD_PLACE_QUEUE_NAME,
+      name: PLACE_SCRAPER_QUEUE,
       redis: {
         host: environment.REDIS_HOST || 'redis',
         port: +environment.REDIS_PORT || 6379,

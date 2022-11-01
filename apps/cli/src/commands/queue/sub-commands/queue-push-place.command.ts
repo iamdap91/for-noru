@@ -4,7 +4,7 @@ import { Place } from '@for-noru/models';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
-import { STANDARD_PLACE_QUEUE_NAME } from '@for-noru/config';
+import { PLACE_SCRAPER_QUEUE } from '@for-noru/config';
 
 @SubCommand({
   name: 'place',
@@ -14,7 +14,7 @@ export class QueuePushPlaceCommand extends CommandRunner {
   constructor(
     @InjectRepository(Place)
     private readonly repository: Repository<Place>,
-    @InjectQueue(STANDARD_PLACE_QUEUE_NAME)
+    @InjectQueue(PLACE_SCRAPER_QUEUE)
     private readonly queue: Queue
   ) {
     super();
