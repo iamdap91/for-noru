@@ -43,7 +43,7 @@ export class ScrapePlaceConsumer implements OnModuleInit {
         .findOne({ where: { id } })
         .then(throwIfIsNil(new NotFoundError('표준 데이터 정보가 없습니다.')));
 
-      if (active) {
+      if (!active) {
         await this.esService.delete({ id, index: Indices.PLACES });
         return;
       }
