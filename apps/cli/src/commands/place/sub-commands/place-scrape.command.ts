@@ -8,7 +8,7 @@ import { throwIfIsNil } from '@for-noru/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StandardPlace } from '@for-noru/models';
 import { Repository } from 'typeorm';
-import axios from 'axios';
+import { ElasticsearchService } from '@nestjs/elasticsearch';
 
 @SubCommand({
   name: 'scrape',
@@ -18,15 +18,21 @@ import axios from 'axios';
 export class PlaceScrapeCommand extends CommandRunner {
   constructor(
     @InjectRepository(StandardPlace)
-    private readonly standardPlaceRepo: Repository<StandardPlace> // @InjectRepository(NaverPlace) // private readonly naverPlaceRepo: Repository<NaverPlace>
+    private readonly standardPlaceRepo: Repository<StandardPlace>,
+    private readonly esService: ElasticsearchService
   ) {
     super();
   }
 
   async run([code, id]: string[]) {
     const { name, coordinates, active } = await this.standardPlaceRepo
-      .findOne({ where: { id: +id }, relations: ['naverPlace'] })
+      .findOne({ where: { id: +id } })
       .then(throwIfIsNil(new Error('표준 데이터 정보가 없습니다.')));
+
+    if (active) {
+      await this.esService.delete({ id, index: 'place' });
+      return;
+    }
 
     const engine = await EngineFactory.build(code);
     const browserOptions: BrowserOptionInterface = EngineFactory.scan(engine);
@@ -38,11 +44,10 @@ export class PlaceScrapeCommand extends CommandRunner {
       page
     );
 
-    // todo active 가 true 가 아니면 삭제
-    await axios.post('http://localhost:9200/my_locations/_doc', {
-      ...placeInfo,
-      id: +id,
-      pin: { location: { lat, lon } },
+    await this.esService.create({
+      id,
+      index: 'place',
+      document: { ...placeInfo, pin: { location: { lat, lon } } },
     });
   }
 }
