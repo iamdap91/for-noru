@@ -9,6 +9,7 @@ import { AppController } from './app.controller';
 import { RequestLoggerMiddleware } from './middlewares';
 import { PlacesModule } from './apis/places/places.module';
 import { ProductsModule } from './apis/products/products.module';
+import { SearchModule } from './apis/search/search.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ProductsModule } from './apis/products/products.module';
     PlacesModule,
     ProductsModule,
     PlacesModule,
+    SearchModule,
   ],
   controllers: [AppController],
 })
