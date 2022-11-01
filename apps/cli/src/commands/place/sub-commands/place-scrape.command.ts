@@ -6,7 +6,7 @@ import {
 } from '@for-noru/engine';
 import { throwIfIsNil } from '@for-noru/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {  StandardPlace } from '@for-noru/models';
+import { StandardPlace } from '@for-noru/models';
 import { Repository } from 'typeorm';
 import axios from 'axios';
 
@@ -33,20 +33,16 @@ export class PlaceScrapeCommand extends CommandRunner {
 
     const browserFactory = await new BrowserFactory(browserOptions).init();
     const page = await browserFactory.getPage();
-    const placeInfo = await engine.place({ name, coordinates }, page);
+    const { lat, lon, ...placeInfo } = await engine.place(
+      { name, coordinates },
+      page
+    );
 
     // todo active 가 true 가 아니면 삭제
-
-    const { coordinates: coord } = placeInfo;
     await axios.post('http://localhost:9200/my_locations/_doc', {
       ...placeInfo,
       id: +id,
-      pin: {
-        location: {
-          lat: +coord[1],
-          lon: +coord[0],
-        },
-      },
+      pin: { location: { lat, lon } },
     });
   }
 }

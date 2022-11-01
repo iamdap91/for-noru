@@ -7,4 +7,7 @@ export interface FormattedPlace {
   address?: string;
   coordinates: string[];
   description: string;
+
+  lat: number;
+  lon: number;
 }

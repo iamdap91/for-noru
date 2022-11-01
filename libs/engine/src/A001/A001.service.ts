@@ -50,6 +50,8 @@ export class A001Service {
       petAllowed: !!detail?.options?.find((option) => option.id === 15),
       coordinates: [placeInfo.x, placeInfo.y],
       description: detail?.description || '',
+      lat: placeInfo.y,
+      lon: placeInfo.x,
     };
   }
 
