@@ -6,7 +6,7 @@ import {
 } from '@for-noru/engine';
 import { throwIfIsNil } from '@for-noru/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { StandardPlace } from '@for-noru/models';
+import { Place } from '@for-noru/models';
 import { Repository } from 'typeorm';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 
@@ -17,15 +17,15 @@ import { ElasticsearchService } from '@nestjs/elasticsearch';
 })
 export class PlaceScrapeCommand extends CommandRunner {
   constructor(
-    @InjectRepository(StandardPlace)
-    private readonly standardPlaceRepo: Repository<StandardPlace>,
+    @InjectRepository(Place)
+    private readonly placeRepo: Repository<Place>,
     private readonly esService: ElasticsearchService
   ) {
     super();
   }
 
   async run([code, id]: string[]) {
-    const { name, coordinates, active } = await this.standardPlaceRepo
+    const { name, coordinates, active } = await this.placeRepo
       .findOne({ where: { id: +id } })
       .then(throwIfIsNil(new Error('표준 데이터 정보가 없습니다.')));
 

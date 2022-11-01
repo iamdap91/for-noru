@@ -17,7 +17,7 @@ import {
 } from '@for-noru/engine';
 import { throwIfIsNil, waitForCondition } from '@for-noru/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { StandardPlace } from '@for-noru/models';
+import { Place } from '@for-noru/models';
 import { STANDARD_PLACE_QUEUE_NAME } from '@for-noru/config';
 import { Repository } from 'typeorm';
 import { NotFoundError } from 'rxjs';
@@ -29,8 +29,8 @@ export class ScrapePlaceConsumer implements OnModuleInit {
   private page: Page;
 
   constructor(
-    @InjectRepository(StandardPlace)
-    private readonly standardPlaceRepo: Repository<StandardPlace>,
+    @InjectRepository(Place)
+    private readonly placeRepo: Repository<Place>,
     private readonly esService: ElasticsearchService
   ) {}
 
@@ -39,7 +39,7 @@ export class ScrapePlaceConsumer implements OnModuleInit {
     await waitForCondition(() => !!this.page, 500);
 
     try {
-      const { name, coordinates, active } = await this.standardPlaceRepo
+      const { name, coordinates, active } = await this.placeRepo
         .findOne({ where: { id } })
         .then(throwIfIsNil(new NotFoundError('표준 데이터 정보가 없습니다.')));
 

@@ -16,7 +16,7 @@ import {
   PlaceScrapeAllCommand,
 } from './place';
 import { QueueCommand, QueuePushPlaceCommand } from './queue';
-import { NaverPlace, StandardPlace } from '@for-noru/models';
+import { NaverPlace, Place } from '@for-noru/models';
 import { BullModule } from '@nestjs/bull';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 
@@ -26,7 +26,7 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
     QueueConfigModule,
     ElasticsearchConfigModule,
     TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
-    TypeOrmModule.forFeature([StandardPlace, NaverPlace]),
+    TypeOrmModule.forFeature([Place, NaverPlace]),
     BullModule.registerQueueAsync({
       name: STANDARD_PLACE_QUEUE_NAME,
       useClass: QueueConfigService,

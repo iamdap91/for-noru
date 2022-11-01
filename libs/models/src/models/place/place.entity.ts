@@ -1,6 +1,6 @@
 import { CommonEntity } from '../common.entity';
 import { Column, Entity, Index } from 'typeorm';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 @Entity()
 export class Place extends CommonEntity {
@@ -9,14 +9,9 @@ export class Place extends CommonEntity {
   type: string;
 
   @Index({ unique: true })
-  @IsNumber()
-  @Column({ type: 'int' })
-  code: number;
-
-  @Index()
   @IsString()
-  @Column({ type: 'boolean' })
-  active: boolean;
+  @Column({ type: 'varchar' })
+  manageId: string;
 
   @Index()
   @IsString()
@@ -24,25 +19,24 @@ export class Place extends CommonEntity {
   name: string;
 
   @IsString()
+  @Column({ type: 'int', nullable: true })
+  postalCode?: number;
+
+  @IsString()
   @Column({ type: 'varchar' })
   address: string;
+
+  @IsString()
+  @Column({ type: 'varchar' })
+  roadAddress?;
 
   @IsOptional()
   @IsString({ each: true })
   @Column({ type: 'varchar', array: true, nullable: true })
   coordinates?: [string, string];
 
-  @IsOptional()
-  @IsString({ each: true })
-  @Column({ type: 'varchar', array: true, nullable: true })
-  images?: string[];
-
-  @IsOptional()
-  @IsString({ each: true })
-  @Column({ type: 'varchar', array: true, nullable: true })
-  categories?: string[];
-
+  @Index()
   @IsString()
-  @Column({ type: 'varchar' })
-  description: string;
+  @Column({ type: 'boolean' })
+  active: boolean;
 }

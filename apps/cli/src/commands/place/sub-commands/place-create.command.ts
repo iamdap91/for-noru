@@ -5,14 +5,14 @@ import { chunk } from 'lodash';
 import { Logger } from '@nestjs/common';
 import { serialize } from '../serialize';
 import { InjectRepository } from '@nestjs/typeorm';
-import { StandardPlace } from '@for-noru/models';
+import { Place } from '@for-noru/models';
 import { Repository } from 'typeorm';
 
 @SubCommand({ name: 'create', description: '표준 데이터 장소 생성' })
 export class PlaceCreateCommand extends CommandRunner {
   constructor(
-    @InjectRepository(StandardPlace)
-    private readonly repository: Repository<StandardPlace>
+    @InjectRepository(Place)
+    private readonly repository: Repository<Place>
   ) {
     super();
   }

@@ -1,6 +1,6 @@
 import { CommandRunner, SubCommand } from 'nest-commander';
 import { Repository } from 'typeorm';
-import { StandardPlace } from '@for-noru/models';
+import { Place } from '@for-noru/models';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
@@ -12,8 +12,8 @@ import { STANDARD_PLACE_QUEUE_NAME } from '@for-noru/config';
 })
 export class QueuePushPlaceCommand extends CommandRunner {
   constructor(
-    @InjectRepository(StandardPlace)
-    private readonly repository: Repository<StandardPlace>,
+    @InjectRepository(Place)
+    private readonly repository: Repository<Place>,
     @InjectQueue(STANDARD_PLACE_QUEUE_NAME)
     private readonly queue: Queue
   ) {

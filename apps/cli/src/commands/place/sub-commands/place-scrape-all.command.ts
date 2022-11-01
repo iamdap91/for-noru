@@ -8,7 +8,7 @@ import {
 } from '@for-noru/engine';
 import ora from 'ora';
 import { InjectRepository } from '@nestjs/typeorm';
-import { StandardPlace } from '@for-noru/models';
+import { Place } from '@for-noru/models';
 import { Repository } from 'typeorm';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 
@@ -19,8 +19,8 @@ import { ElasticsearchService } from '@nestjs/elasticsearch';
 })
 export class PlaceScrapeAllCommand extends CommandRunner {
   constructor(
-    @InjectRepository(StandardPlace)
-    private readonly standardPlaceRepo: Repository<StandardPlace>,
+    @InjectRepository(Place)
+    private readonly placeRepo: Repository<Place>,
     private readonly elasticsearchService: ElasticsearchService
   ) {
     super();
@@ -28,7 +28,7 @@ export class PlaceScrapeAllCommand extends CommandRunner {
 
   async run([code]: string[]) {
     const spinner = ora('scrape-all start').start();
-    const list = await this.standardPlaceRepo.find({
+    const list = await this.placeRepo.find({
       where: { active: true },
     });
     spinner.warn(`List length : ${list.length}`);

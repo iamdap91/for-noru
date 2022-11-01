@@ -7,14 +7,14 @@ import {
 } from '@for-noru/config';
 import { ScrapePlaceConsumer } from './scrape-place.consumer';
 import { BullModule } from '@nestjs/bull';
-import { StandardPlace } from '@for-noru/models';
+import { Place } from '@for-noru/models';
 import { environment } from './environments/environment';
 
 @Module({
   imports: [
     PostgresConfigModule,
     TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
-    TypeOrmModule.forFeature([StandardPlace]),
+    TypeOrmModule.forFeature([Place]),
     BullModule.registerQueue({
       name: STANDARD_PLACE_QUEUE_NAME,
       redis: {
