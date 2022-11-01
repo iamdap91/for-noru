@@ -6,8 +6,9 @@ import {
 } from '@for-noru/engine';
 import { throwIfIsNil } from '@for-noru/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { NaverPlace, StandardPlace } from '@for-noru/models';
+import {  StandardPlace } from '@for-noru/models';
 import { Repository } from 'typeorm';
+import axios from 'axios';
 
 @SubCommand({
   name: 'scrape',
@@ -17,23 +18,15 @@ import { Repository } from 'typeorm';
 export class PlaceScrapeCommand extends CommandRunner {
   constructor(
     @InjectRepository(StandardPlace)
-    private readonly standardPlaceRepo: Repository<StandardPlace>,
-    @InjectRepository(NaverPlace)
-    private readonly naverPlaceRepo: Repository<NaverPlace>
+    private readonly standardPlaceRepo: Repository<StandardPlace> // @InjectRepository(NaverPlace) // private readonly naverPlaceRepo: Repository<NaverPlace>
   ) {
     super();
   }
 
   async run([code, id]: string[]) {
-    const { name, coordinates, active, naverPlace } =
-      await this.standardPlaceRepo
-        .findOne({ where: { id: +id }, relations: ['naverPlace'] })
-        .then(throwIfIsNil(new Error('표준 데이터 정보가 없습니다.')));
-
-    if (!active) {
-      await this.naverPlaceRepo.softDelete(naverPlace.id);
-      return;
-    }
+    const { name, coordinates, active } = await this.standardPlaceRepo
+      .findOne({ where: { id: +id }, relations: ['naverPlace'] })
+      .then(throwIfIsNil(new Error('표준 데이터 정보가 없습니다.')));
 
     const engine = await EngineFactory.build(code);
     const browserOptions: BrowserOptionInterface = EngineFactory.scan(engine);
@@ -42,10 +35,18 @@ export class PlaceScrapeCommand extends CommandRunner {
     const page = await browserFactory.getPage();
     const placeInfo = await engine.place({ name, coordinates }, page);
 
-    await this.naverPlaceRepo.save({
-      standardPlaceId: +id,
-      ...(naverPlace || {}),
+    // todo active 가 true 가 아니면 삭제
+
+    const { coordinates: coord } = placeInfo;
+    await axios.post('http://localhost:9200/my_locations/_doc', {
       ...placeInfo,
+      id: +id,
+      pin: {
+        location: {
+          lat: +coord[1],
+          lon: +coord[0],
+        },
+      },
     });
   }
 }
