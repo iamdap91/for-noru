@@ -5,7 +5,6 @@ export interface FormattedPlace {
   categories?: string[];
   petAllowed: boolean;
   address?: string;
-  coordinates: string[];
   description: string;
 
   lat: number;

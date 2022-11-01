@@ -48,7 +48,6 @@ export class A001Service {
       images: [detail?.imageURL || detail?.images?.[0]?.url || ''],
       categories: detail.categories || [],
       petAllowed: !!detail?.options?.find((option) => option.id === 15),
-      coordinates: [placeInfo.x, placeInfo.y],
       description: detail?.description || '',
       lat: placeInfo.y,
       lon: placeInfo.x,
