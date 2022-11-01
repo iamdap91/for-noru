@@ -17,10 +17,11 @@ import {
 } from '@for-noru/engine';
 import { throwIfIsNil, waitForCondition } from '@for-noru/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { NaverPlace, StandardPlace } from '@for-noru/models';
+import { StandardPlace } from '@for-noru/models';
 import { STANDARD_PLACE_QUEUE_NAME } from '@for-noru/config';
 import { Repository } from 'typeorm';
 import { NotFoundError } from 'rxjs';
+import { ElasticsearchService } from '@nestjs/elasticsearch';
 
 @Processor(STANDARD_PLACE_QUEUE_NAME)
 export class ScrapePlaceConsumer implements OnModuleInit {
@@ -30,8 +31,7 @@ export class ScrapePlaceConsumer implements OnModuleInit {
   constructor(
     @InjectRepository(StandardPlace)
     private readonly standardPlaceRepo: Repository<StandardPlace>,
-    @InjectRepository(NaverPlace)
-    private readonly naverPlaceRepo: Repository<NaverPlace>
+    private readonly esService: ElasticsearchService
   ) {}
 
   @Process({ concurrency: 1 })
@@ -39,28 +39,26 @@ export class ScrapePlaceConsumer implements OnModuleInit {
     await waitForCondition(() => !!this.page, 500);
 
     try {
-      const { name, coordinates, active, naverPlace } =
-        await this.standardPlaceRepo
-          .findOne({ where: { id }, relations: ['naverPlace'] })
-          .then(
-            throwIfIsNil(new NotFoundError('표준 데이터 정보가 없습니다.'))
-          );
+      const { name, coordinates, active } = await this.standardPlaceRepo
+        .findOne({ where: { id } })
+        .then(throwIfIsNil(new NotFoundError('표준 데이터 정보가 없습니다.')));
 
-      if (!active) {
-        await this.naverPlaceRepo.softDelete(naverPlace.id);
+      if (active) {
+        await this.esService.delete({ id, index: 'place' });
         return;
       }
 
-      const placeInfo = await this.engine.place(
+      const { lat, lon, ...placeInfo } = await this.engine.place(
         { name, coordinates },
         this.page
       );
 
-      await this.naverPlaceRepo.save({
-        standardPlaceId: +id,
-        ...(naverPlace || {}),
-        ...placeInfo,
+      await this.esService.create({
+        id,
+        index: 'place',
+        document: { ...placeInfo, pin: { location: { lat, lon } } },
       });
+
       done(null);
     } catch (e) {
       if (e instanceof ProtocolError) {
