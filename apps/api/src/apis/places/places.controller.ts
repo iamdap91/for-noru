@@ -1,7 +1,9 @@
 import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { PlacesService } from './places.service';
 import { UpdatePlaceDto } from './dto/update-place.dto';
 
+@ApiTags('places')
 @Controller('places')
 export class PlacesController {
   constructor(private readonly placesService: PlacesService) {}
