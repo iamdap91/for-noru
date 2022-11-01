@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Place } from '@for-noru/models';
 import { Repository } from 'typeorm';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
+import { Indices } from '@for-noru/config';
 
 @SubCommand({
   name: 'scrape',
@@ -30,7 +31,7 @@ export class PlaceScrapeCommand extends CommandRunner {
       .then(throwIfIsNil(new Error('표준 데이터 정보가 없습니다.')));
 
     if (active) {
-      await this.esService.delete({ id, index: 'place' });
+      await this.esService.delete({ id, index: Indices.PLACES });
       return;
     }
 
@@ -46,7 +47,7 @@ export class PlaceScrapeCommand extends CommandRunner {
 
     await this.esService.create({
       id,
-      index: 'place',
+      index: Indices.PLACES,
       document: { ...placeInfo, pin: { location: { lat, lon } } },
     });
   }

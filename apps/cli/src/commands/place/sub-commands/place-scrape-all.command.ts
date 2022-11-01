@@ -11,6 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Place } from '@for-noru/models';
 import { Repository } from 'typeorm';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
+import { Indices } from '@for-noru/config';
 
 @SubCommand({
   name: 'scrape-all',
@@ -21,7 +22,7 @@ export class PlaceScrapeAllCommand extends CommandRunner {
   constructor(
     @InjectRepository(Place)
     private readonly placeRepo: Repository<Place>,
-    private readonly elasticsearchService: ElasticsearchService
+    private readonly esService: ElasticsearchService
   ) {
     super();
   }
@@ -48,9 +49,9 @@ export class PlaceScrapeAllCommand extends CommandRunner {
           { name, coordinates },
           page
         );
-        await this.elasticsearchService.create({
+        await this.esService.create({
           id: id.toString(),
-          index: 'place',
+          index: Indices.PLACES,
           document: { ...placeInfo, pin: { location: { lat, lon } } },
         });
       } catch (e) {

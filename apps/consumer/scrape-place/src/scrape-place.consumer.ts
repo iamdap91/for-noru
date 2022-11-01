@@ -18,7 +18,7 @@ import {
 import { throwIfIsNil, waitForCondition } from '@for-noru/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Place } from '@for-noru/models';
-import { PLACE_SCRAPER_QUEUE } from '@for-noru/config';
+import { Indices, PLACE_SCRAPER_QUEUE } from '@for-noru/config';
 import { Repository } from 'typeorm';
 import { NotFoundError } from 'rxjs';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
@@ -44,7 +44,7 @@ export class ScrapePlaceConsumer implements OnModuleInit {
         .then(throwIfIsNil(new NotFoundError('표준 데이터 정보가 없습니다.')));
 
       if (active) {
-        await this.esService.delete({ id, index: 'place' });
+        await this.esService.delete({ id, index: Indices.PLACES });
         return;
       }
 
@@ -55,7 +55,7 @@ export class ScrapePlaceConsumer implements OnModuleInit {
 
       await this.esService.create({
         id,
-        index: 'place',
+        index: Indices.PLACES,
         document: { ...placeInfo, pin: { location: { lat, lon } } },
       });
 
