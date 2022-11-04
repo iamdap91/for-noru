@@ -20,7 +20,7 @@ export class SearchService {
             must: { term: { petAllowed: true } },
             filter: {
               geo_distance: {
-                distance: '1000km',
+                distance: '100km',
                 'pin.location': { lat, lon },
               },
             },
