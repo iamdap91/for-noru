@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber } from 'class-validator';
+import {IsNumber, IsOptional, IsString} from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class SearchPlaceQuery {
@@ -12,4 +12,9 @@ export class SearchPlaceQuery {
   @IsNumber()
   @Transform(({ value }) => +value)
   lon: number;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  category: string;
 }

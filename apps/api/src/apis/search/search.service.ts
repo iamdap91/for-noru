@@ -8,7 +8,7 @@ import { figureDistance } from '../../../../../libs/common/src/util/figure-dista
 export class SearchService {
   constructor(private readonly elasticsearchService: ElasticsearchService) {}
 
-  async find({ lat, lon }: SearchPlaceQuery) {
+  async find({ lat, lon, category }: SearchPlaceQuery) {
     const {
       hits: { total, hits },
     } = await this.elasticsearchService.search({
@@ -18,12 +18,15 @@ export class SearchService {
         size: 20,
         query: {
           bool: {
-            filter: {
-              geo_distance: {
-                distance: '30km',
-                'pin.location': { lat, lon },
+            filter: [
+              { match: { categories: category } },
+              {
+                geo_distance: {
+                  distance: '30km',
+                  'pin.location': { lat, lon },
+                },
               },
-            },
+            ],
           },
         },
         sort: [
