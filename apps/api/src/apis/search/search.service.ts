@@ -3,6 +3,7 @@ import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { Indices } from '@for-noru/config';
 import { SearchPlaceQuery } from './dto';
 import { figureDistance } from '../../../../../libs/common/src/util/figure-distance';
+import {NAVER_MAP_URL} from "../../../../../libs/engine/src/constants";
 
 @Injectable()
 export class SearchService {
@@ -45,12 +46,15 @@ export class SearchService {
       total,
       hits: hits.map((hit) => {
         const { _id, _source } = hit;
+        const source = _source as any;
         return {
-          // todo 인터페이스 지정
+          // todo 인터페이스 지정.
           documentId: _id,
           // todo code, tags 모두 수집시에 처리.
           code: (_source as any).code.toString(),
+          mapUrl: `${NAVER_MAP_URL}/${source.name}/place/${source.code || ''}`,
           tags: (_source as any).tags || [],
+          // todo 거리 반올림
           distance:
             figureDistance((_source as any).pin.location, { lat, lon }) + 'km',
           ...(_source as Record<string, string>),
