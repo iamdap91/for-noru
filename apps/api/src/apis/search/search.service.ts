@@ -43,12 +43,14 @@ export class SearchService {
       hits: hits.map((hit) => {
         const { _id, _source } = hit;
         return {
+          // todo 인터페이스 지정
           documentId: _id,
-          ...(_source as Record<string, string>),
+          // todo code, tags 모두 수집시에 처리.
           code: (_source as any).code.toString(),
           tags: (_source as any).tags || [],
           distance:
             figureDistance((_source as any).pin.location, { lat, lon }) + 'km',
+          ...(_source as Record<string, string>),
         };
       }),
     };
