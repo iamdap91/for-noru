@@ -50,16 +50,18 @@ export class ScrapePlaceConsumer implements OnModuleInit {
         return;
       }
 
-      const { lat, lon, ...placeInfo } = await this.engine.place(
+      const { lat, lon, petAllowed, ...placeInfo } = await this.engine.place(
         { name, coordinates },
         this.page
       );
 
-      await this.esService.create({
-        id,
-        index: Indices.PLACES,
-        document: { ...placeInfo, pin: { location: { lat, lon } } },
-      });
+      if (petAllowed) {
+        await this.esService.create({
+          id,
+          index: Indices.PLACES,
+          document: { ...placeInfo, pin: { location: { lat, lon } } },
+        });
+      }
 
       done(null);
     } catch (e) {
