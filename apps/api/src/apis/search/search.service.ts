@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { Indices } from '@for-noru/config';
 import { SearchPlaceQuery } from './dto';
+import { figureDistance } from '../../../../../libs/common/src/util/figure-distance';
 
 @Injectable()
 export class SearchService {
@@ -32,7 +33,14 @@ export class SearchService {
       total,
       hits: hits.map((hit) => {
         const { _id, _source } = hit;
-        return { _id, ...(_source as Record<string, string>) };
+        return {
+          documentId: _id,
+          ...(_source as Record<string, string>),
+          code : (_source as any).code.toString(),
+          tags : (_source as any).tags || [],
+          distance:
+            figureDistance((_source as any).pin.location, { lat, lon }) + 'km',
+        };
       }),
     };
   }
