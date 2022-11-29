@@ -14,13 +14,12 @@ export class SearchService {
       index: Indices.PLACES,
       body: {
         from: 0,
-        size: 100,
+        size: 20,
         query: {
           bool: {
-            must: { term: { petAllowed: true } },
             filter: {
               geo_distance: {
-                distance: '100km',
+                distance: '30km',
                 'pin.location': { lat, lon },
               },
             },
@@ -29,6 +28,12 @@ export class SearchService {
       },
     });
 
-    return { total, hits };
+    return {
+      total,
+      hits: hits.map((hit) => {
+        const { _id, _source } = hit;
+        return { _id, ...(_source as Record<string, string>) };
+      }),
+    };
   }
 }
