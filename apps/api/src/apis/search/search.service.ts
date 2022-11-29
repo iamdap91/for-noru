@@ -26,6 +26,15 @@ export class SearchService {
             },
           },
         },
+        sort: [
+          {
+            _geo_distance: {
+              'pin.location': { lat, lon },
+              order: 'asc',
+              unit: 'km',
+            },
+          },
+        ],
       },
     });
 
@@ -36,8 +45,8 @@ export class SearchService {
         return {
           documentId: _id,
           ...(_source as Record<string, string>),
-          code : (_source as any).code.toString(),
-          tags : (_source as any).tags || [],
+          code: (_source as any).code.toString(),
+          tags: (_source as any).tags || [],
           distance:
             figureDistance((_source as any).pin.location, { lat, lon }) + 'km',
         };
