@@ -16,7 +16,7 @@ import {
   EngineInterface,
   PlaceNotFoundError,
 } from '@for-noru/engine';
-import { throwIfIsNil, waitForCondition } from '@for-noru/common';
+import { sleep, throwIfIsNil, waitForCondition } from '@for-noru/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Place } from '@for-noru/models';
 import { Indices, PLACE_SCRAPER_QUEUE } from '@for-noru/config';
@@ -105,9 +105,9 @@ export class ScrapePlaceConsumer implements OnModuleInit {
   async onQueueFailed(job: Job) {
     Logger.error(`jobId: ${job?.data}  Failed : ${job?.failedReason}`);
     if (this.failCount++ > 100) {
-      Logger.debug('fail count > 100. re-init module');
+      Logger.debug('fail count > 100. sleep 5 sec.');
       this.failCount = 0;
-      await this.onModuleInit();
+      await sleep(5 * 1000);
     }
   }
 
