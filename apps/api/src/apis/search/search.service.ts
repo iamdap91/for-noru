@@ -50,13 +50,12 @@ export class SearchService {
         return {
           // todo 인터페이스 지정.
           documentId: _id,
-          // todo code, tags 모두 수집시에 처리.
-          code: (_source as any).code.toString(),
           mapUrl: `${NAVER_MAP_URL}/${source.name}/place/${source.code || ''}`,
+          // todo tags 수집시에 처리.
           tags: (_source as any).tags || [],
           // todo 거리 반올림
           distance:
-            figureDistance((_source as any).pin.location, { lat, lon }) + 'km',
+            figureDistance((_source as any).pin.location, { lat, lon }) + ' km',
           ...(_source as Record<string, string>),
         };
       }),
