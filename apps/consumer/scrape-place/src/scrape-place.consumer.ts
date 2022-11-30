@@ -55,13 +55,13 @@ export class ScrapePlaceConsumer implements OnModuleInit {
         this.page
       );
 
-      if (petAllowed) {
-        await this.esService.create({
-          id,
-          index: Indices.PLACES,
-          document: { ...placeInfo, pin: { location: { lat, lon } } },
-        });
-      }
+      // if (petAllowed) {
+      await this.esService.create({
+        id,
+        index: Indices.PLACES,
+        document: { ...placeInfo, pin: { location: { lat, lon } } },
+      });
+      // }
 
       done(null);
     } catch (e) {
