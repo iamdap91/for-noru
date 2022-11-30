@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { Indices } from '@for-noru/config';
+import { figureDistance } from '@for-noru/common';
+import { NAVER_MAP_URL, PlaceEsDoc } from '@for-noru/engine';
 import { SearchPlaceQuery } from './dto';
-import { figureDistance } from '../../../../../libs/common/src/util/figure-distance';
-import {NAVER_MAP_URL} from "../../../../../libs/engine/src/constants";
 
 @Injectable()
 export class SearchService {
@@ -12,7 +12,7 @@ export class SearchService {
   async find({ lat, lon, category }: SearchPlaceQuery) {
     const {
       hits: { total, hits },
-    } = await this.elasticsearchService.search({
+    } = await this.elasticsearchService.search<PlaceEsDoc>({
       index: Indices.PLACES,
       body: {
         from: 0,
@@ -23,7 +23,7 @@ export class SearchService {
               { match: { categories: category } },
               {
                 geo_distance: {
-                  distance: '30km',
+                  distance: '1000km',
                   'pin.location': { lat, lon },
                 },
               },
@@ -46,15 +46,12 @@ export class SearchService {
       total,
       hits: hits.map((hit) => {
         const { _id, _source } = hit;
-        const source = _source as any;
         return {
-          // todo 인터페이스 지정.
           documentId: _id,
-          mapUrl: `${NAVER_MAP_URL}/${source.name}/place/${source.code || ''}`,
-          tags: (_source as any).tags || ['소형견', '중형견', '대형견', '칸 분리'],
-          distance:
-            figureDistance((_source as any).pin.location, { lat, lon }) + ' km',
-          ...(_source as Record<string, string>),
+          mapUrl: `${NAVER_MAP_URL}/${_source.name}/place/${_source.code}`,
+          tags: ['소형견', '중형견', '대형견', '칸 분리'],
+          distance: figureDistance(_source.pin.location, { lat, lon }) + ' km',
+          ..._source,
         };
       }),
     };
