@@ -51,7 +51,7 @@ export class A001Service {
           ...(detail?.images?.map((image) => image.url) || []),
         ]),
       ].filter((item) => item),
-      categories: [...new Set(detail.categories.join('').split(','))],
+      categories: [...new Set(detail.categories.join(',').split(','))],
       petAllowed: !!detail?.options?.find((option) => option.id === 15),
       description: detail?.description || '',
       lat: detail.y,

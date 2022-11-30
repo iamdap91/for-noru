@@ -29,6 +29,7 @@ export class ScrapePlaceConsumer implements OnModuleInit {
   private engine: EngineInterface;
   private page: Page;
   private browserFactory: BrowserFactory;
+  private failCount = 0;
 
   constructor(
     @InjectRepository(Place)
@@ -103,6 +104,11 @@ export class ScrapePlaceConsumer implements OnModuleInit {
   @OnQueueFailed()
   async onQueueFailed(job: Job) {
     Logger.error(`jobId: ${job?.data}  Failed : ${job?.failedReason}`);
+    if (this.failCount++ > 100) {
+      Logger.debug('fail count > 100. re-init module');
+      this.failCount = 0;
+      await this.onModuleInit();
+    }
   }
 
   @OnQueueError()

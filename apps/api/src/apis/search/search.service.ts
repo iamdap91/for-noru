@@ -16,14 +16,14 @@ export class SearchService {
       index: Indices.PLACES,
       body: {
         from: 0,
-        size: 20,
+        size: 50,
         query: {
           bool: {
             filter: [
               { match: { categories: category } },
               {
                 geo_distance: {
-                  distance: '50km',
+                  distance: '1000km',
                   'pin.location': { lat, lon },
                 },
               },
