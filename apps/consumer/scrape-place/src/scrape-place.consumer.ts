@@ -69,11 +69,11 @@ export class ScrapePlaceConsumer implements OnModuleInit {
         case e instanceof PlaceNotFoundError:
         case e instanceof ProtocolError:
         case e instanceof TimeoutError:
+          await this.browserFactory.randomizeUserAgent();
           return done(e);
         default:
           await this.onModuleInit();
       }
-      await this.browserFactory.randomizeUserAgent();
       done(e);
     }
   }
