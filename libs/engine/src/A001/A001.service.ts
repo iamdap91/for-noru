@@ -45,12 +45,18 @@ export class A001Service {
       code: detail?.id,
       name: detail?.name || name,
       address: detail?.address || '',
-      images: [detail?.imageURL || detail?.images?.[0]?.url || ''],
-      categories: detail.categories || [],
+      // images: [detail?.imageURL || detail?.images?.[0]?.url || ''],
+      images: [
+        ...new Set([
+          detail?.imageURL,
+          ...(detail?.images?.map((image) => image.url) || []),
+        ]),
+      ],
+      categories: [...new Set(detail.categories.join('').split(','))],
       petAllowed: !!detail?.options?.find((option) => option.id === 15),
       description: detail?.description || '',
-      lat: placeInfo.y,
-      lon: placeInfo.x,
+      lat: detail.y,
+      lon: detail.x,
     };
   }
 

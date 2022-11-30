@@ -51,9 +51,7 @@ export class SearchService {
           // todo 인터페이스 지정.
           documentId: _id,
           mapUrl: `${NAVER_MAP_URL}/${source.name}/place/${source.code || ''}`,
-          // todo tags 수집시에 처리.
-          tags: (_source as any).tags || [],
-          // todo 거리 반올림
+          tags: (_source as any).tags || ['소형견', '중형견', '대형견', '칸 분리'],
           distance:
             figureDistance((_source as any).pin.location, { lat, lon }) + ' km',
           ...(_source as Record<string, string>),
