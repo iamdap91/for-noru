@@ -16,7 +16,7 @@ import {
   EngineInterface,
   PlaceNotFoundError,
 } from '@for-noru/engine';
-import { sleep, throwIfIsNil, waitForCondition } from '@for-noru/common';
+import { throwIfIsNil, waitForCondition } from '@for-noru/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Place } from '@for-noru/models';
 import { Indices, PLACE_SCRAPER_QUEUE } from '@for-noru/config';
@@ -66,6 +66,11 @@ export class ScrapePlaceConsumer implements OnModuleInit {
 
       done(null);
     } catch (e) {
+      if (this.failCount++ > 30) {
+        this.failCount = 0;
+        await this.restartBrowser();
+      }
+
       switch (true) {
         case e instanceof PlaceNotFoundError:
         case e instanceof ProtocolError:
@@ -73,7 +78,7 @@ export class ScrapePlaceConsumer implements OnModuleInit {
           await this.browserFactory.randomizeUserAgent();
           return done(e);
         default:
-          await this.onModuleInit();
+          await this.restartBrowser();
       }
       done(e);
     }
@@ -91,6 +96,12 @@ export class ScrapePlaceConsumer implements OnModuleInit {
     this.page = await this.browserFactory.getPage();
   }
 
+  async restartBrowser() {
+    Logger.debug('restart browser');
+    await this.browserFactory.restartBrowser();
+    this.page = await this.browserFactory.getPage();
+  }
+
   @OnQueueActive()
   async onQueueActive(job: Job) {
     Logger.log(`jobId: ${job.id} start`);
@@ -103,12 +114,8 @@ export class ScrapePlaceConsumer implements OnModuleInit {
 
   @OnQueueFailed()
   async onQueueFailed(job: Job) {
+    this.failCount++;
     Logger.error(`jobId: ${job?.data}  Failed : ${job?.failedReason}`);
-    if (this.failCount++ > 100) {
-      Logger.debug('fail count > 100. sleep 5 sec.');
-      this.failCount = 0;
-      await sleep(5 * 1000);
-    }
   }
 
   @OnQueueError()
