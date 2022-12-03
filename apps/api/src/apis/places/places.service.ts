@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { UpdatePlaceDto } from './dto/update-place.dto';
 import { Repository } from 'typeorm';
 import { Place } from '@for-noru/models';
 import { InjectRepository } from '@nestjs/typeorm';
 import { throwIfIsNil } from '@for-noru/common';
+import { VoteDto, UpdatePlaceDto } from './dto';
 
 @Injectable()
 export class PlacesService {
@@ -38,5 +38,10 @@ export class PlacesService {
 
     await this.placeRepo.save({ ...place, active: false });
     // todo queue es 업데이트큐에 집어넣자
+  }
+
+  vote(voteDto: VoteDto) {
+    console.log(voteDto);
+    return null;
   }
 }
