@@ -56,4 +56,11 @@ export class SearchService {
       }),
     };
   }
+
+  async findOne(id: string) {
+    return this.elasticsearchService.get<PlaceEsDoc>({
+      index: 'places',
+      id: id,
+    });
+  }
 }

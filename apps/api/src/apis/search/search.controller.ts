@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { SearchService } from './search.service';
 import { SearchPlaceQuery } from './dto';
@@ -11,5 +11,10 @@ export class SearchController {
   @Get()
   find(@Query() query: SearchPlaceQuery) {
     return this.searchService.find(query);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.searchService.findOne(id);
   }
 }
