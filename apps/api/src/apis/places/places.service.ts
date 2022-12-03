@@ -3,13 +3,16 @@ import { Repository } from 'typeorm';
 import { Place } from '@for-noru/models';
 import { InjectRepository } from '@nestjs/typeorm';
 import { throwIfIsNil } from '@for-noru/common';
+import Redis from 'ioredis';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { VoteDto, UpdatePlaceDto } from './dto';
 
 @Injectable()
 export class PlacesService {
   constructor(
     @InjectRepository(Place)
-    private readonly placeRepo: Repository<Place>
+    private readonly placeRepo: Repository<Place>,
+    @InjectRedis() private readonly redis: Redis
   ) {}
 
   async find() {
@@ -40,8 +43,8 @@ export class PlacesService {
     // todo queue es 업데이트큐에 집어넣자
   }
 
-  vote(voteDto: VoteDto) {
-    console.log(voteDto);
+  async vote(voteDto: VoteDto) {
+    const { code, voteType, castType, deviceId } = voteDto;
     return null;
   }
 }

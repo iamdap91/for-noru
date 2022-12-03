@@ -12,7 +12,7 @@ export class VoteDto {
 
   @ApiProperty()
   @IsString()
-  type: string;
+  voteType: string;
 
   @ApiProperty()
   @IsString()
