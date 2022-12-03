@@ -1,9 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import Redis from 'ioredis';
 import { Repository } from 'typeorm';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Place } from '@for-noru/models';
 import { InjectRepository } from '@nestjs/typeorm';
 import { throwIfIsNil } from '@for-noru/common';
-import Redis from 'ioredis';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { VoteDto, UpdatePlaceDto } from './dto';
 
@@ -43,8 +43,28 @@ export class PlacesService {
     // todo queue es 업데이트큐에 집어넣자
   }
 
-  async vote(voteDto: VoteDto) {
-    const { code, voteType, castType, deviceId } = voteDto;
-    return null;
+  async vote({ code, deviceId, voteType, castType }: VoteDto) {
+    const key = `${code}:${deviceId}:${voteType}`;
+
+    // 투표 여부 체크
+    const isMember = await this.redis.sismember('voters', key);
+    if (isMember) {
+      throw new HttpException(
+        '해당 항목은 이미 투표하셨습니다.',
+        HttpStatus.BAD_REQUEST
+      );
+    }
+    await this.redis.sadd('voters', key);
+
+    // 투표 결과 반영
+    const vote = (await this.redis.hget('votes', `${code}`)) || '0|0';
+    let [allowed, notAllowed] = vote.split('|').map((item) => +item);
+    castType === 'INCREMENT' ? (allowed += 1) : (notAllowed += 1);
+
+    await this.redis.hset(
+      'votes',
+      `${code}:${voteType}`,
+      `${allowed}|${notAllowed}`
+    );
   }
 }
