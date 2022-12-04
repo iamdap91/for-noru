@@ -1,7 +1,9 @@
+import { ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { VotesService } from './votes.service';
 import { CreateVoteDto } from './dto';
 
+@ApiTags('votes')
 @Controller('votes')
 export class VotesController {
   constructor(private readonly votesService: VotesService) {}
@@ -12,7 +14,7 @@ export class VotesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.votesService.findOne(+id);
+  figurePercentages(@Param('id') id: string) {
+    return this.votesService.figurePercentages(id);
   }
 }

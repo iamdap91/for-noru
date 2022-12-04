@@ -11,6 +11,7 @@ import { PlacesModule } from './apis/places/places.module';
 import { ProductsModule } from './apis/products/products.module';
 import { SearchModule } from './apis/search/search.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { VotesModule } from './apis/votes/votes.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
     ProductsModule,
     PlacesModule,
     SearchModule,
+    VotesModule,
   ],
   controllers: [AppController],
 })

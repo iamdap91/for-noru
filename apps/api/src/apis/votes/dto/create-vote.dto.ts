@@ -1,11 +1,11 @@
-import { IsEnum, IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { VOTE_CAST_TYPE, VOTE_TYPE } from '@for-noru/common';
 
 export class CreateVoteDto {
   @ApiProperty()
-  @IsNumber()
-  code: number;
+  @IsString()
+  id: string;
 
   @ApiProperty()
   @IsString()

@@ -47,7 +47,7 @@ export class SearchService {
       hits: hits.map((hit) => {
         const { _id, _source } = hit;
         return {
-          documentId: _id,
+          id: _id,
           mapUrl: `${NAVER_MAP_URL}/${_source.name}/place/${_source.code}`,
           tags: ['소형견', '중형견', '대형견', '칸 분리'],
           distance: figureDistance(_source.pin.location, { lat, lon }) + ' km',
@@ -64,7 +64,7 @@ export class SearchService {
     });
 
     return {
-      documentId: _id,
+      id: _id,
       mapUrl: `${NAVER_MAP_URL}/${_source.name}/place/${_source.code}`,
       tags: ['소형견', '중형견', '대형견', '칸 분리'],
       ..._source,
