@@ -1,15 +1,7 @@
-import {
-  Controller,
-  Get,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Post,
-} from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { PlacesService } from './places.service';
-import { UpdatePlaceDto, VoteDto } from './dto';
+import { UpdatePlaceDto } from './dto';
 
 @ApiTags('places')
 @Controller('places')
@@ -34,10 +26,5 @@ export class PlacesController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.placesService.remove(+id);
-  }
-
-  @Post('vote')
-  vote(@Body() voteDto: VoteDto) {
-    return this.placesService.vote(voteDto);
   }
 }
