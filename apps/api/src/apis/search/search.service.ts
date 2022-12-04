@@ -58,9 +58,16 @@ export class SearchService {
   }
 
   async findOne(id: string) {
-    return this.elasticsearchService.get<PlaceEsDoc>({
+    const { _id, _source } = await this.elasticsearchService.get<PlaceEsDoc>({
       index: 'places',
       id: id,
     });
+
+    return {
+      documentId: _id,
+      mapUrl: `${NAVER_MAP_URL}/${_source.name}/place/${_source.code}`,
+      tags: ['소형견', '중형견', '대형견', '칸 분리'],
+      ..._source,
+    };
   }
 }
