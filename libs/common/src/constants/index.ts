@@ -1,0 +1,11 @@
+export enum VOTE_TYPE {
+  SMALL = 'SMALL',
+  MIDDLE = 'MIDDLE',
+  BIG = 'BIG',
+  SEPARATED = 'SEPARATED',
+}
+
+export enum VOTE_CAST_TYPE {
+  INCREMENT = 'INCREMENT',
+  DECREMENT = 'DECREMENT',
+}

@@ -3,9 +3,9 @@ import { Repository } from 'typeorm';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Place } from '@for-noru/models';
 import { InjectRepository } from '@nestjs/typeorm';
-import { throwIfIsNil } from '@for-noru/common';
+import { throwIfIsNil, VOTE_CAST_TYPE } from '@for-noru/common';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
-import { VoteDto, UpdatePlaceDto } from './dto';
+import { UpdatePlaceDto, VoteDto } from './dto';
 
 @Injectable()
 export class PlacesService {
@@ -59,7 +59,7 @@ export class PlacesService {
     // 투표 결과 반영
     const vote = (await this.redis.hget('votes', `${code}`)) || '0|0';
     let [allowed, notAllowed] = vote.split('|').map((item) => +item);
-    castType === 'INCREMENT' ? (allowed += 1) : (notAllowed += 1);
+    castType === VOTE_CAST_TYPE.INCREMENT ? (allowed += 1) : (notAllowed += 1);
 
     await this.redis.hset(
       'votes',
