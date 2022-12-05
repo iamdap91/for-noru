@@ -4,6 +4,7 @@ import {
   CommonConfigModule,
   PostgresConfigModule,
   PostgresConfigService,
+  RedisConfigModule,
 } from '@for-noru/config';
 import { AppController } from './app.controller';
 import { RequestLoggerMiddleware } from './middlewares';
@@ -12,15 +13,17 @@ import { ProductsModule } from './apis/products/products.module';
 import { SearchModule } from './apis/search/search.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { VotesModule } from './apis/votes/votes.module';
+import { RedisConfigService } from '@for-noru/config';
 
 @Module({
   imports: [
-    RedisModule.forRoot({
-      config: { host: 'localhost', port: 6379 },
+    TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
+    RedisModule.forRootAsync({
+      imports: [RedisConfigModule],
+      useExisting: RedisConfigService,
     }),
     CommonConfigModule,
     PostgresConfigModule,
-    TypeOrmModule.forRootAsync({ useClass: PostgresConfigService }),
     PlacesModule,
     ProductsModule,
     PlacesModule,

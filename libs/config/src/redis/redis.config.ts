@@ -1,13 +1,16 @@
 import { registerAs } from '@nestjs/config';
-import { RedisOptions } from 'ioredis';
+import {
+  RedisClientOptions,
+  RedisModuleOptions,
+} from '@liaoliaots/nestjs-redis';
 
 const { env } = process;
 
-export default registerAs('redis', () => {
-  const config: RedisOptions = {
+export default registerAs<RedisModuleOptions>('redis', () => {
+  const config: RedisClientOptions = {
     host: env.REDIS_HOST || 'redis',
     port: Number(env.REDIS_PORT) || 6379,
   };
 
-  return config;
+  return { config };
 });

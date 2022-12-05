@@ -9,7 +9,8 @@ import { ConfigService } from '@nestjs/config';
 export class RedisConfigService implements RedisOptionsFactory {
   constructor(private configService: ConfigService) {}
 
-  async createRedisOptions(): Promise<RedisModuleOptions> {
+  createRedisOptions(): RedisModuleOptions | Promise<RedisModuleOptions> {
     return this.configService.get('redis');
   }
+
 }
